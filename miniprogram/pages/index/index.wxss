@@ -1,0 +1,42 @@
+/**index.wxss**/
+
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.disable {
+  color: #888;
+}
+
+.map-view-height {
+  height: 100%;
+}
+
+.map_size {
+  height: 60%;
+}
+
+.pressedbutton {
+  color: #fff;
+  background-color: #000;
+}
+
+ .tellinput {
+   border: 1px solid #efeff4;
+}
+
+.tellsection input {
+  color: #000;
+  width: 100%;
+}
+
+.two-button-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
