@@ -21,7 +21,7 @@
 
 - 请保证手机微信版本已经是最新版本，本小程序要求基础库版本至少为2.9.0
 
-### 项目开发和调试
+#### 项目开发和调试
 
 - 开发环境: 微信开发者工具
 
@@ -29,7 +29,7 @@
 
 ### 开发依赖组件介绍
 
-## 云开发 quickstart
+#### 云开发 quickstart
 
 这是云开发的快速启动指引，其中演示了如何上手使用云开发的三大基础能力：
 
@@ -37,13 +37,12 @@
 - 文件存储：在小程序前端直接上传/下载云端文件，在云开发控制台可视化管理
 - 云函数：在云端运行的代码，微信私有协议天然鉴权，开发者只需编写业务逻辑代码
 
-## 参考文档
+参考文档
 
 - [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
 
-## weui-miniprogram
+#### weui-miniprogram
 - 请下载weui-miniprogram，并将weui-miniprogram文件夹放置于miniprogram文件夹下，并将weui.wxss放置于style文件夹下！
 - 或者使用npm构建并引入小程序
-# 参考教程: https://www.cnblogs.com/jianxian/p/11121514.html 
-# or https://developers.weixin.qq.com/miniprogram/dev/extended/weui/quickstart.html
+- 参考教程: https://www.cnblogs.com/jianxian/p/11121514.html or https://developers.weixin.qq.com/miniprogram/dev/extended/weui/quickstart.html
 
