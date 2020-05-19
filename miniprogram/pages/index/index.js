@@ -30,7 +30,7 @@ Page({
     input: '',
     scale: 16,
     buttons: [{ text: '取消' }, { text: '确定' }],
-    tappedMarker: {},
+    creating: false,
   },
 
   // 点击marker触发事件 修改想法
@@ -87,7 +87,7 @@ Page({
     const touch = e.detail.index
     if (touch) {
       // 确认
-      this.place_marker(this.data.tappedMarker)
+      this.place_marker()
     } else {
       // 取消
     }
@@ -111,19 +111,14 @@ Page({
   },
 
   // 放置marker label
-  place_marker: async function(e) {
+  place_marker: async function() {
     let that = this
     let markers = that.data.markers
-    let mlen = markers.length
-    console.log(e)
     if (that.compareVersion(that.data.sdk_version, "2.9.0")) {
-      let latitude = e.detail.latitude
-      let longitude = e.detail.longitude
       let scale = await wx.createMapContext('testmap').getScale()
       let marker = {
-        latitude: latitude,
-        longitude: longitude,
-        id: mlen,
+        latitude: that.data.latitude,
+        longitude: that.data.longitude,
         iconPath: '/images/marker.png', // 默认的图标不能放大
         like: 0,
         width: this.suitWH(0, scale.scale),
@@ -132,26 +127,54 @@ Page({
           content: this.data.input,
           color: "#000",
           fontSize: 16,
-          bgColor: "#00000000",
+          bgColor: "",
         }
       }
       markers.push(marker)
       that.setData({
         markers: markers
       })
+      // TODO: 把marker同步到云端的数据库
+
       console.log("success! A marker is set.")
       console.log(this.data.markers)
     }
+    else {
+      // 基础库版本过低
+      wx.showToast({
+        title: '微信基础库版本过低，请升级微信版本',
+        icon: 'none',
+        duration: 1500
+      })
+    }
+    
+    // 取消掉中间的靶心
+    that.setData({
+      creating: false
+    })
   },
 
-  // 点击地图触发
-  clickmap: function(e) {
+  // 点击发布想法
+  createMarker: function() {
+    this.setData({
+      creating: true
+    })
+  },
+
+  // 点击选定(创建marker位置)触发
+  settleMarker: function(e) {
     // 放置marker label
     this.setData({
       addtellHidden: false,
-      tappedMarker: e,
       modified: false,
       modifiedHidden: true  // 强制取消修改模式
+    })
+  },
+
+  // 点击取消(创建marker位置)触发
+  cancelMarker: function() {
+    this.setData({
+      creating: false
     })
   },
 

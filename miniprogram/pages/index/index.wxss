@@ -14,10 +14,21 @@ page {
 
 .map-view-height {
   height: 100%;
+  width: 100%;
 }
 
 .map_size {
   height: 60%;
+  width: 100%;
+}
+
+.mapCenter {
+  position: absolute;
+  top: 48%;
+  left: 48%;
+  width: 4%;
+  height: 4%;
+  background-color: #000;
 }
 
 .pressedbutton {
