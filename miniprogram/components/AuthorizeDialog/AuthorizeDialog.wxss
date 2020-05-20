@@ -1,0 +1,2 @@
+/* components/AuthorizeDialog/AuthorizeDialog.wxss */
+@import "../../style/weui.wxss";

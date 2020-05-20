@@ -1,0 +1,6 @@
+<!--components/AuthorizeDialog/AuthorizeDialog.wxml-->
+<mp-dialog title="确认授权" show="{{!authorizeHidden}}">
+    <view>Wedea将获得你的用户个人信息(昵称，头像等)</view>
+    <button class="weui-btn weui-btn_primary mt20"
+      open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">授权</button>
+</mp-dialog>

@@ -37,34 +37,12 @@ page {
   width: 100%;
 }
 
-.cross {
-  position: relative;
-  width: 8%;
-  height: 8%;
-  top: 50%;
-  left: 50%;
-  margin-top: -7.2%;
-  margin-left: -4%;
-}
-
-.cross::before, .cross::after {
-  content: "";
+.cross-image {
   position: absolute;
-  background: #000;
-}
-
-.cross::before {
-  left: 50%;
-  width: 10%;
-  margin-left: -5%;
-  height: 100%;
-}
-
-.cross::after {
-  top: 50%;
-  height: 10%;
-  margin-top: -5%;
-  width: 100%;
+  top: 42%;
+  left: 46%;
+  height: 8%;
+  width: 8%;
 }
 
 .pressedbutton {
