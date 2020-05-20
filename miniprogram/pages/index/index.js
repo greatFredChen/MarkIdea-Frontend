@@ -64,8 +64,8 @@ Page({
   addMarkerAttr: function(markers, scale) {
     for(let i = 0; i < markers.length; i++) {
       markers[i].iconPath = '/images/marker.png'
-      markers[i].width = this.suitWH(0, scale.scale)
-      markers[i].height = this.suitWH(0, scale.scale)
+      markers[i].width = this.suitWH(markers[i].likes, scale.scale)
+      markers[i].height = this.suitWH(markers[i].likes, scale.scale)
     }
     return markers
   },
