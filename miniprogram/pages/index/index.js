@@ -27,10 +27,7 @@ Page({
     modified: false,
     addtellHidden: true,
     modifiedHidden: true,
-    title_input: '',
-    description_input: '',
     scale: 16,
-    buttons: [{ text: '取消' }, { text: '确定' }],
     creating: false,
   },
 
@@ -72,7 +69,7 @@ Page({
       for (let i = 0; i < marker_len; i++) {
         if (markers[i].id == markid) {
           // 设置label
-          markers[i].callout.content = that.data.title_input
+          // markers[i].callout.content = that.data.title_input
           break
         }
       }
@@ -84,11 +81,11 @@ Page({
 
   // 新建marker窗口
   tapDialogButton (e) {
-    let that = this
+    console.log(e)
     const touch = e.detail.index
-    if (touch == 1 && that.data.title_input != '') {
+    if (touch == 1 && e.detail.title_input != '') {
       // 确认
-      this.place_marker()
+      this.place_marker(e)
       this.setData({
         addtellHidden: true
       })
@@ -107,20 +104,6 @@ Page({
     }
   },
 
-  // 标题输入框
-  saveUsertell: function(e) {
-    this.setData({
-      title_input: e.detail.value
-    })
-  },
-
-  // 描述输入框
-  saveUserDescription: function(e) {
-    this.setData({
-      description_input: e.detail.value
-    })
-  },
-
   // 修改模式按钮
   pressbutton: function() {
     this.setData({
@@ -129,7 +112,7 @@ Page({
   },
 
   // 放置marker label
-  place_marker: async function() {
+  place_marker: async function(e) {
     let that = this
     let markers = that.data.markers
     if (that.compareVersion(that.data.sdk_version, "2.9.0")) {
@@ -142,7 +125,7 @@ Page({
         width: this.suitWH(0, scale.scale),
         height: this.suitWH(0, scale.scale),
         callout: {
-          content: this.data.title_input,
+          content: e.detail.title_input,
           color: "#000",
           fontSize: 16,
           bgColor: "",

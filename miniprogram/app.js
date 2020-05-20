@@ -15,6 +15,9 @@ App({
       })
     }
 
-    this.globalData = {}
+    // openid在后台获取并在加载小程序时从后台返回
+    this.globalData = {
+      openid: '',
+    }
   }
 })

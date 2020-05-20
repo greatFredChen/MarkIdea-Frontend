@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "detail": "../components/detail/detail",
-    "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog"
+    "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
+    "idea-dialog": "../components/ideaDialog/ideaDialog"
   }
 }
