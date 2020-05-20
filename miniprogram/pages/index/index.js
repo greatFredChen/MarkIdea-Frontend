@@ -27,7 +27,8 @@ Page({
     modified: false,
     addtellHidden: true,
     modifiedHidden: true,
-    input: '',
+    title_input: '',
+    description_input: '',
     scale: 16,
     buttons: [{ text: '取消' }, { text: '确定' }],
     creating: false,
@@ -71,7 +72,7 @@ Page({
       for (let i = 0; i < marker_len; i++) {
         if (markers[i].id == markid) {
           // 设置label
-          markers[i].callout.content = that.data.input
+          markers[i].callout.content = that.data.title_input
           break
         }
       }
@@ -83,23 +84,40 @@ Page({
 
   // 新建marker窗口
   tapDialogButton (e) {
-    console.log(e)
+    let that = this
     const touch = e.detail.index
-    if (touch) {
+    if (touch == 1 && that.data.title_input != '') {
       // 确认
       this.place_marker()
+      this.setData({
+        addtellHidden: true
+      })
+    } else if(touch == 1) {
+      // 标题为空
+      wx.showToast({
+        title: '标题不能为空',
+        icon:'none',
+        duration: 1000
+      })
     } else {
-      // 取消
+      // 取消按钮
+      this.setData({
+        addtellHidden: true
+      })
     }
+  },
+
+  // 标题输入框
+  saveUsertell: function(e) {
     this.setData({
-      addtellHidden: true
+      title_input: e.detail.value
     })
   },
 
-  // bindinput 每次修改输入框都会激活
-  saveUsertell: function(e) {
+  // 描述输入框
+  saveUserDescription: function(e) {
     this.setData({
-      input: e.detail.value
+      description_input: e.detail.value
     })
   },
 
@@ -124,7 +142,7 @@ Page({
         width: this.suitWH(0, scale.scale),
         height: this.suitWH(0, scale.scale),
         callout: {
-          content: this.data.input,
+          content: this.data.title_input,
           color: "#000",
           fontSize: 16,
           bgColor: "",

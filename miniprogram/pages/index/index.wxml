@@ -2,19 +2,25 @@
 <view class="container map-view-height page__bd page__bd_spacing">
   <map id="testmap" class="map_size" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" setting="{{setting}}" bindupdated="bindupdated" bindregionchange="regionchange" bindmarkertap="markertap" show-location="true" markers="{{markers}}" polyline="{{polyline}}"
     scale="{{scale}}">
-  <cover-view class="mapCenter" hidden="{{!creating}}"></cover-view>
+  <cover-view class="cross" hidden="{{!creating}}"></cover-view>
   </map>
-  <detail hide="false" markid="{{selectMarkId}}" bind:like="onLike"></detail>
-  <view class="two-button-flex" hidden="{{creating}}">
+  <!-- <detail hide="false" markid="{{selectMarkId}}" bind:like="onLike"></detail> -->
+  <view class="two-button-flex mt20" hidden="{{creating}}">
       <button class="weui-btn weui-btn_primary" bindtap="createMarker">发布想法</button>
   </view>
-  <view class="two-button-flex" hidden="{{!creating}}">
+  <view class="two-button-flex mt20" hidden="{{!creating}}">
       <button class="weui-btn weui-btn_primary" bindtap="settleMarker">选定</button>
       <button class="weui-btn weui-btn_primary" bindtap="cancelMarker">取消</button>
   </view>
     <mp-dialog title="输入想法" show="{{!addtellHidden}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
-        <view>test content</view>
-        <input class="tellinput" bindinput="saveUsertell" placeholder="输入想法" />
+        <view class="row-flex">
+        <view class="mr20">标题</view>
+        <input class="tellinput" bindinput="saveUsertell" placeholder="输入标题" />
+        </view>
+        <view class="row-flex">
+        <view class="mr20">描述</view>
+        <input class="tellinput" bindinput="saveUserDescription" placeholder="输入描述" />
+        </view>
     </mp-dialog>
     <mp-dialog title="修改想法" show="{{!modifiedHidden}}" bindbuttontap="tapModifiedButton" buttons="{{buttons}}">
         <view>test modified</view>
