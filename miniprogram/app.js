@@ -15,7 +15,7 @@ App({
         traceUser: true
       })
     }
-    
+
     this.globalData = {
       backendHost: sensitiveData.backendHost,
       backendKey: sensitiveData.backendKey,
