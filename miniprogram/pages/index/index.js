@@ -1,5 +1,7 @@
 //index.js
 const app = getApp()
+// util.js
+let util = require('../../utils/util.js')
 
 Page({
   data: {
@@ -21,9 +23,7 @@ Page({
       ne: '',
     },
     sdk_version: '',
-    modified: false,
     addtellHidden: true,
-    modifiedHidden: true,
     authorizeHidden: true,
     scale: 16,
     creating: false,
@@ -32,52 +32,10 @@ Page({
   // 点击marker触发事件 修改想法
   markertap: function(e) {
     let that = this
-    console.log(e)
-    if(that.data.modified == true) {
-      that.setData({
-        selectMarkId: e.detail.markerId,
-        modifiedHidden: false
-      })
-  }
+    //TODO: 查看marker信息以及修改marker信息
   },
 
-  // 修改窗口
-  tapModifiedButton: function(e) {
-    console.log(e)
-    const touch = e.detail.index
-    if (touch) {
-      // 确认
-      this.modified_callout()
-    } else {
-      // 取消
-    }
-    this.setData({
-      modifiedHidden: true,
-      modified: false
-    })
-  },
-
-  // 修改标签
-  modified_callout: function() {
-    let that = this
-    if (that.data.modified == true) {
-      let markid = that.data.selectMarkId
-      let markers = that.data.markers
-      let marker_len = markers.length
-      for (let i = 0; i < marker_len; i++) {
-        if (markers[i].id == markid) {
-          // 设置label
-          // markers[i].callout.content = that.data.title_input
-          break
-        }
-      }
-      that.setData({
-        markers: markers
-      })
-    }
-  },
-
-  // 新建marker窗口
+  // 新建marker模态窗
   tapDialogButton (e) {
     console.log(e)
     const touch = e.detail.index
@@ -102,41 +60,55 @@ Page({
     }
   },
 
-  // 修改模式按钮
-  pressbutton: function() {
-    this.setData({
-      modified: true
-    })
+  // 为marker增加属性
+  addMarkerAttr: function(markers, scale) {
+    for(let i = 0; i < markers.length; i++) {
+      markers[i].iconPath = '/images/marker.png'
+      markers[i].width = this.suitWH(0, scale.scale)
+      markers[i].height = this.suitWH(0, scale.scale)
+    }
+    return markers
   },
 
   // 放置marker label
   place_marker: async function(e) {
     let that = this
-    let markers = that.data.markers
-    if (that.compareVersion(that.data.sdk_version, "2.9.0")) {
+    let currentTime = new Date().getTime() // 单位为ms
+    if (util.compareVersion(that.data.sdk_version, "2.9.0")) {
       let scale = await wx.createMapContext('testmap').getScale()
       let marker = {
         latitude: that.data.latitude,
         longitude: that.data.longitude,
         iconPath: '/images/marker.png', // 默认的图标不能放大
-        like: 0,
+        author_id: app.globalData.openid,
+        title: e.detail.title_input,
+        created_at: currentTime,
+        likes: 0,
+        description: e.detail.description_input,
         width: this.suitWH(0, scale.scale),
         height: this.suitWH(0, scale.scale),
-        callout: {
-          content: e.detail.title_input,
-          color: "#000",
-          fontSize: 16,
-          bgColor: "",
-        }
       }
-      markers.push(marker)
-      that.setData({
-        markers: markers
+      wx.cloud.callFunction({
+        name: 'createIdea',
+        data: {
+          marker: marker
+        },
+        success: res => {
+          let markers = res.result.markers
+          markers = that.addMarkerAttr(markers, scale)
+          that.setData({
+            markers: res.result.markers
+          })
+        },
+        fail: err => {
+          wx.showToast({
+            title: '同步失败',
+            icon: 'none',
+            duration: 2000
+          })
+          console.log(err)
+        }
       })
-      // TODO: 把marker同步到云端的数据库
-
-      console.log("success! A marker is set.")
-      console.log(this.data.markers)
     }
     else {
       // 基础库版本过低
@@ -177,30 +149,6 @@ Page({
     })
   },
 
-  // 比较版本号 version1 >= version2时返回true
-  compareVersion: function(version1, version2) {
-    let v1 = version1.split('.') // array
-    let v2 = version2.split('.') // array
-    let len = Math.max(v1.length, v2.length)
-    while (v1.length < len) {
-      v1.push('0')
-    }
-    while (v2.length < len) {
-      v2.push('0')
-    }
-    // 比较每一位
-    for (let i = 0; i < len; i++) {
-      let num1 = parseInt(v1[i])
-      let num2 = parseInt(v2[i])
-      if (num1 < num2) {
-        return false // version1 < version2
-      } else if (num1 > num2) {
-        return true // version1 > version2
-      }
-    }
-    return true // version1 == version2
-  },
-
   suitWH(cnt, scale) {
     const base = 40.0;
     const scaleBase = 20.0;
@@ -225,9 +173,9 @@ Page({
           // console.log(res)
           const scale = res.scale
           for (let m of markers) {
-            m.width = that.suitWH(m.like, scale)
-            m.height = that.suitWH(m.like, scale)
-            console.log(m.width)
+            m.width = that.suitWH(m.likes, scale)
+            m.height = that.suitWH(m.likes, scale)
+            // console.log(m.width)
           }
           that.setData({
             markers: markers,
@@ -259,10 +207,10 @@ Page({
     const idx = markers.findIndex(obj => obj.id === id)
     if (idx === -1) return -1
     const obj = markers[idx]
-    obj.like = obj.like ? obj.like + 1 : 1;
+    obj.likes = obj.likes ? obj.likes + 1 : 1;
     let scale = await wx.createMapContext('testmap').getScale()
-    obj.width = this.suitWH(obj.like, scale.scale)
-    obj.height = this.suitWH(obj.like, scale.scale)
+    obj.width = this.suitWH(obj.likes, scale.scale)
+    obj.height = this.suitWH(obj.likes, scale.scale)
     this.setData({
       markers: markers,
     })
@@ -274,6 +222,7 @@ Page({
     // console.log(this.data.markers)
   },
 
+  // 连线函数
   onLink(e) {
     const arr1 = []
     const arr2 = []
@@ -302,7 +251,7 @@ Page({
   },
 
   // 加载
-  onLoad: function() {
+  onLoad: async function() {
     let that = this
     if (!wx.cloud) {
       wx.redirectTo({
@@ -310,6 +259,9 @@ Page({
       })
       return
     }
+
+    // 缩放幅度
+    let scale = await wx.createMapContext('testmap').getScale()
 
     // 获取用户信息
     wx.getSetting({
@@ -354,6 +306,28 @@ Page({
       }
     })
 
+    // 获取当前地图上所有markers
+    wx.cloud.callFunction({
+      name: 'getIdea',
+      data: {},
+      success: res => {
+        console.log(res.result)
+        let markers = res.result.markers
+        markers = that.addMarkerAttr(markers, scale)
+        that.setData({
+          markers: markers
+        })
+      },
+      fail: err => {
+        wx.showToast({
+          title: '获取markers失败',
+          icon: 'none',
+          duration: 2000
+        })
+        console.log(err)
+      }
+    })
+
     // 获取微信用户当前版本号
     wx.getSystemInfo({
       success: function(res) {
@@ -389,6 +363,7 @@ Page({
         app.globalData.userInfo = userInfo
       },
       fail: err => {
+        // 若用户没有授权过
         that.setData({
           authorizeHidden: false
         })
@@ -397,6 +372,7 @@ Page({
 
   },
   
+  // 授权
   getUserInfo: function(e) {
     this.setData({
       authorizeHidden: true,

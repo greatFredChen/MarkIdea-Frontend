@@ -3,20 +3,19 @@
 #### 项目结构:
 
 - cloudfunctions/: 云函数目录
-  - callback/: 云端函数回调代码目录
-  - echo/:
-  - login/: 云端函数登录代码目录
-  - openapi/: 云端函数api代码目录
+  - getOpenId/: 获取openid的云函数
+  - createIdea/: 处理想法创建并同步到数据库的云函数
 - miniprogram/: 小程序源代码(前端)
   - components/: 组件目录
   - images/: 图片资源目录
   - pages/: 小程序页面及页面逻辑代码(包含wxml,wxss,js,json)
+  - utils/: 容器js，主要为自己写的外部逻辑功能函数
   - style/: 小程序引用的外部wxss文件所在目录
   - app.js: 全局函数以及全局变量
   - app.json: 全局布局设置以及外部组件引用
   - app.wxss: 全局页面/组件布局以及引用外部wxss
-  - sitemap.json: 
- 
+- sitemap.json: 
+  
 - 项目基于微信小程序云开发以及weui组件库，云开发负责实现请求以及关系型数据库，weui组件库负责实现外观美化
 
 - 请保证手机微信版本已经是最新版本，本小程序要求基础库版本至少为2.9.0
