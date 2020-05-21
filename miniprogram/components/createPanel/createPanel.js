@@ -14,11 +14,11 @@ Component({
    */
   data: {
     switchButtonGroup: false,
-    addTellHidden: true,
+    addTellHidden: true
   },
 
   lifetimes: {
-    attached() {
+    attached () {
       app.event.on('setButtonGroup', (switchButtonGroup) => {
         this.setData({
           switchButtonGroup
@@ -54,9 +54,9 @@ Component({
       app.event.emit('setcreating', true)
     },
     // 新建marker模态窗
-    async tapDialogButton(e) {
+    async tapDialogButton (e) {
       const touch = e.detail.index
-      if (touch == 1 && e.detail.title_input != '') {
+      if (touch === 1 && e.detail.title_input !== '') {
         // 确认
         // this.place_marker(e)
         const res = await app.ideaMng.createIdea(e)
@@ -66,7 +66,7 @@ Component({
         // 终止创建状态
         app.event.emit('setcreating', false)
         app.event.emit('setMarkers', res)
-      } else if (touch == 1) {
+      } else if (touch === 1) {
         // 标题为空
         wx.showToast({
           title: '标题不能为空',
@@ -79,6 +79,6 @@ Component({
           addTellHidden: true
         })
       }
-    },
+    }
   }
 })

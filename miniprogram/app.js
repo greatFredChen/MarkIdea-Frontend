@@ -1,6 +1,5 @@
-//app.js
+// app.js
 import { Event } from './utils/event'
-import { IdeaManager } from './class/IdeaManager'
 App({
   onLaunch: function () {
     if (!wx.cloud) {
@@ -12,7 +11,7 @@ App({
         //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
         //   如不填则使用默认环境（第一个创建的环境）
         // env: 'my-env-id',
-        traceUser: true,
+        traceUser: true
       })
     }
 
@@ -21,9 +20,9 @@ App({
       openid: '',
       logged: false,
       userInfo: {},
-      avatarUrl: './user-unlogin.png',
+      avatarUrl: './user-unlogin.png'
     }
   },
   event: new Event(),
-  ideaMng: [],
+  ideaMng: []
 })

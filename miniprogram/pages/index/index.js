@@ -1,4 +1,4 @@
-//index.js
+// index.js
 const app = getApp()
 // util.js
 const util = require('../../utils/util.js')
@@ -6,15 +6,15 @@ const util = require('../../utils/util.js')
 Page({
   data: {
     sdk_version: '',
-    authorizeHidden: true,
+    authorizeHidden: true
   },
 
   // 加载
   onLoad: async function () {
-    let that = this
+    const that = this
     if (!wx.cloud) {
       wx.redirectTo({
-        url: '../chooseLib/chooseLib',
+        url: '../chooseLib/chooseLib'
       })
       return
     }
@@ -65,7 +65,7 @@ Page({
     // 若用户已经授权
     wx.getUserInfo({
       success: res => {
-        let userInfo = JSON.parse(res.rawData)
+        const userInfo = JSON.parse(res.rawData)
         app.globalData.logged = true
         app.globalData.avatarUrl = userInfo.avatarUrl
         app.globalData.userInfo = userInfo
@@ -78,7 +78,7 @@ Page({
       }
     })
 
-    if (!util.compareVersion(that.data.sdk_version, "2.9.0")) {
+    if (!util.compareVersion(that.data.sdk_version, '2.9.0')) {
       // 基础库版本过低
       wx.showToast({
         title: '微信基础库版本过低，请升级微信版本',
@@ -87,7 +87,7 @@ Page({
       })
     }
   },
-  onReady() {
+  onReady () {
     // 设置事件监听
     app.event.on('authorizeHidden', (status) => {
       this.setData({

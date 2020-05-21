@@ -15,7 +15,7 @@ Component({
     author: '作者',
     time: '发布时间',
     like: 0,
-    idea: 'idea',
+    idea: 'idea'
   },
 
   /**
@@ -24,20 +24,20 @@ Component({
   methods: {
     bindtap () {
       this.setData({
-        like: this.data.like+1,
+        like: this.data.like + 1
       })
       this.triggerEvent('like', {
         like: this.data.like,
-        id: this.properties.markid,
+        id: this.properties.markid
       })
     }
   },
 
   observers: {
-    'markid': function (payload) {
+    markid: function (payload) {
       // 此处应该获取对应markid的数据
       this.setData({
-        like: 0,
+        like: 0
       })
     }
   }

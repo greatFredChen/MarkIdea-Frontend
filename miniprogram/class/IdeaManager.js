@@ -1,11 +1,10 @@
-const util = require('../utils/util.js')
-
 class IdeaManager {
-  constructor(app, map) {
+  constructor (app, map) {
     this.app = app
     this.map = map
   }
-  async createIdea(e) {
+
+  async createIdea (e) {
     let res = []
     let scale = 15
     try {
@@ -26,7 +25,7 @@ class IdeaManager {
         likes: 0,
         description: e.detail.description_input,
         width: this.suitWH(0, scale.scale),
-        height: this.suitWH(0, scale.scale),
+        height: this.suitWH(0, scale.scale)
       }
       res = await wx.cloud.callFunction({
         name: 'createIdea',
@@ -45,8 +44,9 @@ class IdeaManager {
     }
     return this.addMarkerAttr(res.result.markers, scale)
   }
+
   // 为marker增加属性
-  addMarkerAttr(markers, scale) {
+  addMarkerAttr (markers, scale) {
     for (let i = 0; i < markers.length; i++) {
       markers[i].iconPath = '/images/marker.png'
       markers[i].width = this.suitWH(markers[i].likes, scale.scale)
@@ -55,9 +55,9 @@ class IdeaManager {
     return markers
   }
 
-  suitWH(cnt, scale) {
-    const base = 40.0;
-    const scaleBase = 20.0;
+  suitWH (cnt, scale) {
+    const base = 40.0
+    const scaleBase = 20.0
     // const iter = Math.log10;
     const iter = (i) => Math.max(1, i)
     return iter(cnt) * base * scale * scale / scaleBase / scaleBase

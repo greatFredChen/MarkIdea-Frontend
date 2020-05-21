@@ -23,20 +23,20 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    onGetUserInfo: function(e) {
+    onGetUserInfo: function (e) {
       if (e.detail.userInfo) {
         this.setData({
           logged: true,
           avatarUrl: e.detail.userInfo.avatarUrl,
-          userInfo: e.detail.userInfo,
+          userInfo: e.detail.userInfo
         })
-        let info = {
+        const info = {
           logged: true,
           avatarUrl: e.detail.userInfo.avatarUrl,
-          userInfo: e.detail.userInfo,
+          userInfo: e.detail.userInfo
         }
         this.triggerEvent('authButton', info)
       }
-    },
+    }
   }
 })

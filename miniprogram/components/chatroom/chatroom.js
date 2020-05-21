@@ -1,7 +1,7 @@
 const FATAL_REBUILD_TOLERANCE = 10
 const SETDATA_SCROLL_TO_BOTTOM = {
   scrollTop: 100000,
-  scrollWithAnimation: true,
+  scrollWithAnimation: true
 }
 
 Component({
@@ -12,11 +12,11 @@ Component({
     groupName: String,
     userInfo: Object,
     onGetUserInfo: {
-      type: Function,
+      type: Function
     },
     getOpenID: {
-      type: Function,
-    },
+      type: Function
+    }
   },
 
   data: {
@@ -25,32 +25,32 @@ Component({
     openId: '',
     scrollTop: 0,
     scrollToMessage: '',
-    hasKeyboard: false,
+    hasKeyboard: false
   },
 
   methods: {
-    onGetUserInfo(e) {
+    onGetUserInfo (e) {
       this.properties.onGetUserInfo(e)
     },
 
-    getOpenID() { 
-      return this.properties.getOpenID() 
+    getOpenID () {
+      return this.properties.getOpenID()
     },
 
-    mergeCommonCriteria(criteria) {
+    mergeCommonCriteria (criteria) {
       return {
         groupId: this.data.groupId,
-        ...criteria,
+        ...criteria
       }
     },
 
-    async initRoom() {
+    async initRoom () {
       this.try(async () => {
         await this.initOpenID()
 
         const { envId, collection } = this.properties
         const db = this.db = wx.cloud.database({
-          env: envId,
+          env: envId
         })
         const _ = db.command
 
@@ -60,60 +60,60 @@ Component({
 
         this.setData({
           chats: initList.reverse(),
-          scrollTop: 10000,
+          scrollTop: 10000
         })
 
         this.initWatch(initList.length ? {
-          sendTimeTS: _.gt(initList[initList.length - 1].sendTimeTS),
+          sendTimeTS: _.gt(initList[initList.length - 1].sendTimeTS)
         } : {})
       }, '初始化失败')
     },
 
-    async initOpenID() {
+    async initOpenID () {
       return this.try(async () => {
         const openId = await this.getOpenID()
 
         this.setData({
-          openId,
+          openId
         })
       }, '初始化 openId 失败')
     },
 
-    async initWatch(criteria) {
+    async initWatch (criteria) {
       this.try(() => {
         const { collection } = this.properties
         const db = this.db
         const _ = db.command
 
-        console.warn(`开始监听`, criteria)
+        console.warn('开始监听', criteria)
         this.messageListener = db.collection(collection).where(this.mergeCommonCriteria(criteria)).watch({
           onChange: this.onRealtimeMessageSnapshot.bind(this),
           onError: e => {
             if (!this.inited || this.fatalRebuildCount >= FATAL_REBUILD_TOLERANCE) {
               this.showError(this.inited ? '监听错误，已断开' : '初始化监听失败', e, '重连', () => {
                 this.initWatch(this.data.chats.length ? {
-                  sendTimeTS: _.gt(this.data.chats[this.data.chats.length - 1].sendTimeTS),
+                  sendTimeTS: _.gt(this.data.chats[this.data.chats.length - 1].sendTimeTS)
                 } : {})
               })
             } else {
               this.initWatch(this.data.chats.length ? {
-                sendTimeTS: _.gt(this.data.chats[this.data.chats.length - 1].sendTimeTS),
+                sendTimeTS: _.gt(this.data.chats[this.data.chats.length - 1].sendTimeTS)
               } : {})
             }
-          },
+          }
         })
       }, '初始化监听失败')
     },
 
-    onRealtimeMessageSnapshot(snapshot) {
-      console.warn(`收到消息`, snapshot)
+    onRealtimeMessageSnapshot (snapshot) {
+      console.warn('收到消息', snapshot)
 
       if (snapshot.type === 'init') {
         this.setData({
           chats: [
             ...this.data.chats,
-            ...[...snapshot.docs].sort((x, y) => x.sendTimeTS - y.sendTimeTS),
-          ],
+            ...[...snapshot.docs].sort((x, y) => x.sendTimeTS - y.sendTimeTS)
+          ]
         })
         this.scrollToBottom()
         this.inited = true
@@ -130,7 +130,7 @@ Component({
                 if (chats[ind].msgType === 'image' && chats[ind].tempFilePath) {
                   chats.splice(ind, 1, {
                     ...docChange.doc,
-                    tempFilePath: chats[ind].tempFilePath,
+                    tempFilePath: chats[ind].tempFilePath
                   })
                 } else chats.splice(ind, 1, docChange.doc)
               } else {
@@ -142,7 +142,7 @@ Component({
           }
         }
         this.setData({
-          chats: chats.sort((x, y) => x.sendTimeTS - y.sendTimeTS),
+          chats: chats.sort((x, y) => x.sendTimeTS - y.sendTimeTS)
         })
         if (hasOthersMessage || hasNewMessage) {
           this.scrollToBottom()
@@ -150,7 +150,7 @@ Component({
       }
     },
 
-    async onConfirmSendText(e) {
+    async onConfirmSendText (e) {
       this.try(async () => {
         if (!e.detail.value) {
           return
@@ -158,7 +158,6 @@ Component({
 
         const { collection } = this.properties
         const db = this.db
-        const _ = db.command
 
         const doc = {
           _id: `${Math.random()}_${Date.now()}`,
@@ -168,7 +167,7 @@ Component({
           msgType: 'text',
           textContent: e.detail.value,
           sendTime: new Date(),
-          sendTimeTS: Date.now(), // fallback
+          sendTimeTS: Date.now() // fallback
         }
 
         this.setData({
@@ -178,14 +177,14 @@ Component({
             {
               ...doc,
               _openid: this.data.openId,
-              writeStatus: 'pending',
-            },
-          ],
+              writeStatus: 'pending'
+            }
+          ]
         })
         this.scrollToBottom(true)
 
         await db.collection(collection).add({
-          data: doc,
+          data: doc
         })
 
         this.setData({
@@ -193,15 +192,15 @@ Component({
             if (chat._id === doc._id) {
               return {
                 ...chat,
-                writeStatus: 'written',
+                writeStatus: 'written'
               }
             } else return chat
-          }),
+          })
         })
       }, '发送文字失败')
     },
 
-    async onChooseImage(e) {
+    async onChooseImage (e) {
       wx.chooseImage({
         count: 1,
         sourceType: ['album', 'camera'],
@@ -214,7 +213,7 @@ Component({
             nickName: this.data.userInfo.nickName,
             msgType: 'image',
             sendTime: new Date(),
-            sendTimeTS: Date.now(), // fallback
+            sendTimeTS: Date.now() // fallback
           }
 
           this.setData({
@@ -224,8 +223,8 @@ Component({
                 ...doc,
                 _openid: this.data.openId,
                 tempFilePath: res.tempFilePaths[0],
-                writeStatus: 0,
-              },
+                writeStatus: 0
+              }
             ]
           })
           this.scrollToBottom(true)
@@ -234,21 +233,21 @@ Component({
             cloudPath: `${this.data.openId}/${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
             filePath: res.tempFilePaths[0],
             config: {
-              env: envId,
+              env: envId
             },
             success: res => {
               this.try(async () => {
                 await this.db.collection(collection).add({
                   data: {
                     ...doc,
-                    imgFileID: res.fileID,
-                  },
+                    imgFileID: res.fileID
+                  }
                 })
               }, '发送图片失败')
             },
             fail: e => {
               this.showError('发送图片失败', e)
-            },
+            }
           })
 
           uploadTask.onProgressUpdate(({ progress }) => {
@@ -257,23 +256,23 @@ Component({
                 if (chat._id === doc._id) {
                   return {
                     ...chat,
-                    writeStatus: progress,
+                    writeStatus: progress
                   }
                 } else return chat
               })
             })
           })
-        },
+        }
       })
     },
 
-    onMessageImageTap(e) {
+    onMessageImageTap (e) {
       wx.previewImage({
-        urls: [e.target.dataset.fileid],
+        urls: [e.target.dataset.fileid]
       })
     },
 
-    scrollToBottom(force) {
+    scrollToBottom (force) {
       if (force) {
         console.log('force scroll to bottom')
         this.setData(SETDATA_SCROLL_TO_BOTTOM)
@@ -281,7 +280,7 @@ Component({
       }
 
       this.createSelectorQuery().select('.body').boundingClientRect(bodyRect => {
-        this.createSelectorQuery().select(`.body`).scrollOffset(scroll => {
+        this.createSelectorQuery().select('.body').scrollOffset(scroll => {
           if (scroll.scrollTop + bodyRect.height * 3 > scroll.scrollHeight) {
             console.log('should scroll to bottom')
             this.setData(SETDATA_SCROLL_TO_BOTTOM)
@@ -290,23 +289,23 @@ Component({
       }).exec()
     },
 
-    async onScrollToUpper() {
+    async onScrollToUpper () {
       if (this.db && this.data.chats.length) {
         const { collection } = this.properties
         const _ = this.db.command
         const { data } = await this.db.collection(collection).where(this.mergeCommonCriteria({
-          sendTimeTS: _.lt(this.data.chats[0].sendTimeTS),
+          sendTimeTS: _.lt(this.data.chats[0].sendTimeTS)
         })).orderBy('sendTimeTS', 'desc').get()
         this.data.chats.unshift(...data.reverse())
         this.setData({
           chats: this.data.chats,
           scrollToMessage: `item-${data.length}`,
-          scrollWithAnimation: false,
+          scrollWithAnimation: false
         })
       }
     },
 
-    async try(fn, title) {
+    async try (fn, title) {
       try {
         await fn()
       } catch (e) {
@@ -314,23 +313,23 @@ Component({
       }
     },
 
-    showError(title, content, confirmText, confirmCallback) {
+    showError (title, content, confirmText, confirmCallback) {
       console.error(title, content)
       wx.showModal({
         title,
         content: content.toString(),
-        showCancel: confirmText ? true : false,
+        showCancel: !!confirmText,
         confirmText,
         success: res => {
           res.confirm && confirmCallback()
-        },
+        }
       })
-    },
+    }
   },
 
-  ready() {
+  ready () {
     global.chatroom = this
     this.initRoom()
     this.fatalRebuildCount = 0
-  },
+  }
 })

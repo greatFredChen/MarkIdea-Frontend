@@ -16,9 +16,9 @@ const formatNumber = n => {
 
 // 比较版本号 version1 >= version2时返回true
 const compareVersion = (version1, version2) => {
-  let v1 = version1.split('.') // array
-  let v2 = version2.split('.') // array
-  let len = Math.max(v1.length, v2.length)
+  const v1 = version1.split('.') // array
+  const v2 = version2.split('.') // array
+  const len = Math.max(v1.length, v2.length)
   while (v1.length < len) {
     v1.push('0')
   }
@@ -27,8 +27,8 @@ const compareVersion = (version1, version2) => {
   }
   // 比较每一位
   for (let i = 0; i < len; i++) {
-    let num1 = parseInt(v1[i])
-    let num2 = parseInt(v2[i])
+    const num1 = parseInt(v1[i])
+    const num2 = parseInt(v2[i])
     if (num1 < num2) {
       return false // version1 < version2
     } else if (num1 > num2) {
@@ -40,5 +40,5 @@ const compareVersion = (version1, version2) => {
 
 module.exports = {
   formatTime: formatTime,
-  compareVersion: compareVersion,
+  compareVersion: compareVersion
 }
