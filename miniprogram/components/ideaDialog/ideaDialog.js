@@ -4,7 +4,7 @@ Component({
    * 组件的属性列表 外部绑定
    */
   properties: {
-    addtellHidden: {
+    addTellHidden: {
       type: Boolean,
       value: true
     },

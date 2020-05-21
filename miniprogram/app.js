@@ -1,7 +1,8 @@
 //app.js
+import { Event } from './utils/event'
+import { IdeaManager } from './class/IdeaManager'
 App({
   onLaunch: function () {
-    
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -22,5 +23,7 @@ App({
       userInfo: {},
       avatarUrl: './user-unlogin.png',
     }
-  }
+  },
+  event: new Event(),
+  ideaMng: [],
 })

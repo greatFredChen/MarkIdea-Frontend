@@ -1,21 +1,6 @@
-<!--index.wxml-->
+<!-- index.wxml -->
 <view class="container map-view-height page__bd page__bd_spacing">
-  <map id="testmap" class="map_size" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" setting="{{setting}}" bindupdated="bindupdated" bindregionchange="regionchange" bindmarkertap="markertap" show-location="true" markers="{{markers}}" polyline="{{polyline}}"
-    scale="{{scale}}">
-  <cover-image src="/images/cross.png" class="cross-image" hidden="{{!creating}}">
-  </cover-image>
-  </map>
-  <!-- <detail hide="false" markid="{{selectMarkId}}" bind:like="onLike"></detail> -->
-  <view class="two-button-flex mt20" hidden="{{creating}}">
-      <button class="weui-btn weui-btn_primary" bindtap="createMarker"
-      open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">发布想法</button>
-  </view>
-  <view class="two-button-flex mt20" hidden="{{!creating}}">
-      <button class="weui-btn weui-btn_primary" bindtap="settleMarker">选定</button>
-      <button class="weui-btn weui-btn_primary" bindtap="cancelMarker">取消</button>
-  </view>
-  <idea-dialog addtellHidden="{{addtellHidden}}" bind:dialogButton="tapDialogButton">
-  </idea-dialog>
-  <auth-dialog authorizeHidden="{{authorizeHidden}}" bind:authButton="getUserInfo">
-  </auth-dialog>
+  <wedea-map class="map_size"></wedea-map>
+  <create-panel></create-panel>
+  <auth-dialog authorizeHidden="{{authorizeHidden}}" bind:authButton="getUserInfo"></auth-dialog>
 </view>
