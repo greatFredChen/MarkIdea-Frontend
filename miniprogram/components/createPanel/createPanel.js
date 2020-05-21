@@ -59,6 +59,9 @@ Component({
       if (touch === 1 && e.detail.title_input !== '') {
         // 确认
         // this.place_marker(e)
+        wx.showLoading({
+          title: '创建中'
+        })
         const res = await app.ideaMng.createIdea(e)
         this.setData({
           addTellHidden: true
@@ -79,6 +82,7 @@ Component({
           addTellHidden: true
         })
       }
+      wx.hideLoading()
     }
   }
 })

@@ -1,45 +1,75 @@
-// 云函数入口文件
 const cloud = require('wx-server-sdk')
+const axios = require('axios')
+const qs = require('qs')
 
 cloud.init()
 
 const db = cloud.database()
+const key = process.env.APIKEY // 需要在环境变量中设置 KEY
+const BASEURL = process.env.BASEURL || 'http://49.235.106.108:8080'
+const failPck = {
+  Msg: 'fail to add Idea!',
+  code: -1
+}
+const okPck = {
+  Msg: 'Add Idea successfully!',
+  code: 201
+}
 
-// 云函数入口函数
 exports.main = async (event, context) => {
-  const marker = event.marker
-  let Msg = ''
-  let code = 0
-  let resMarker = []
+  console.log(event)
+  let ideaId = -1
 
-  // add a marker to the database
-  await db.collection('Idea').add({
-    data: {
-      author_id: marker.author_id,
-      title: marker.title,
-      created_at: marker.created_at,
-      likes: marker.likes,
-      description: marker.description,
-      latitude: marker.latitude,
-      longitude: marker.longitude
+  // Try to connect to Neo4j server
+  try {
+    const res = await axios.post(`${BASEURL}/idea/create`, qs.stringify({
+      key
+    }))
+    console.log(res)
+    if (res.data.idea_id === undefined) {
+      throw new Error()
     }
-  }).then(res => {
-    Msg = 'Add Idea successfully!'
-    code = 201
-  }).catch(err => {
-    Msg = 'fail to add Idea!'
-    code = -1
-  })
+    ideaId = res.data.idea_id
+  } catch (e) {
+    console.log(e)
+    return failPck
+  }
 
+  // Neo4j Insert Ok
+  // add a marker to the database
+  try {
+    const res = await db.collection('Idea').add({
+      data: {
+        ...event.marker,
+        idea_id: ideaId
+      }
+    })
+    console.log(res)
+  } catch (err) {
+    // Insert into wxcloud db fail
+    // Role back
+    // Delete IdeaNode on Neo4j server
+    // U Must be Ok
+    console.log(err)
+    try {
+      const res = await axios.post(`${BASEURL}/idea/delete`, qs.stringify({
+        key,
+        idea_id: ideaId
+      }))
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+    return failPck
+  }
+
+  // Insert into wxcloud db ok && Neo4j ok
   // get collection of markers
-  await db.collection('Idea').get(
-  ).then(res => {
-    resMarker = res.data
-  })
+  const res = await db.collection('Idea').get()
+  console.log(res)
 
   return {
-    Msg: Msg,
-    code: code,
-    markers: resMarker
+    ...okPck,
+    markers: res.data
   }
 }
