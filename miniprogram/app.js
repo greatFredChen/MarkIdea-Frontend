@@ -1,6 +1,6 @@
 // app.js
 import { Event } from './utils/event'
-let sensitiveData = require('./sensitive-config.js')
+const sensitiveData = require('./sensitive-config.js')
 App({
   onLaunch: function () {
     if (!wx.cloud) {
@@ -15,11 +15,11 @@ App({
         traceUser: true
       })
     }
-    
+
     this.globalData = {
       backendHost: sensitiveData.backendHost,
       backendKey: sensitiveData.backendKey,
-      qqmapKey: sensitiveData.qqmapSdkKey,
+      qqmapKey: sensitiveData.qqmapSdkKey
     }
 
     this.globalData = {
@@ -36,7 +36,7 @@ App({
       avatarUrl: './user-unlogin.png',
       backendHost: sensitiveData.backendHost,
       backendKey: sensitiveData.backendKey,
-      qqmapKey: sensitiveData.qqmapSdkKey,
+      qqmapKey: sensitiveData.qqmapSdkKey
     }
   },
   event: new Event(),

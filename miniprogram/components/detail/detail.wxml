@@ -1,9 +1,0 @@
-<!--components/detail/detail.wxml-->
-<view>
-  <view class="weui-flex">
-    {{markid}} {{title}} {{author}} {{time}} {{like}} {{idea}}
-  </view>
-  <view class="weui-flex">
-    <button class="weui-btn weui-btn_primary" bindtap="bindtap" disabled="{{markid === -1}}">点赞</button>
-  </view>
-</view>

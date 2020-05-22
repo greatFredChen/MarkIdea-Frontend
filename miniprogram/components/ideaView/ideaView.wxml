@@ -1,0 +1,31 @@
+<!-- components/ideaView/ideaView.wxml
+<mp-dialog show="{{show}}">
+
+</mp-dialog> -->
+<view class="fadeIn" wx:if="{{show}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog weui-dialog__attach">
+    <view class="weui-dialog__hd">
+      <strong class="weui-dialog__title">{{title}}</strong>
+    </view>
+    <view class="weui-dialog__bd weui-dialog__hd__attach">
+      {{description}}
+      <view class="page">
+        <view class="page__bd">
+          <view class="weui-article">
+            <view class="weui-article__section">
+              <view class="weui-article__h2">附加想法</view>
+              <view class="weui-article__section" wx:for="{{attach}}" wx:for-index="idx" wx:key="idx">
+                <view class="weui-article__h3">{{item.title}}</view>
+                <view class="weui-article__p weui-article__p__attach">{{item.description}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-dialog__ft weui-dialog__ft__attach">
+      <a class="weui-btn weui-btn_primary" bindtap="close">返回</a>
+    </view>
+  </view>
+</view>
