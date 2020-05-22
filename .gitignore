@@ -2,3 +2,4 @@ weui-miniprogram/
 weui.wxss
 *.zip
 node_modules
+sensitive-config.js

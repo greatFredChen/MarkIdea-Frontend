@@ -33,7 +33,7 @@ class IdeaManager {
           marker: marker
         }
       })
-      if (res.result.markers === undefined) {
+      if (res.result.code === -1) {
         throw new Error()
       }
     } catch (e) {
@@ -43,8 +43,11 @@ class IdeaManager {
         duration: 2000
       })
       console.log(e)
-      return false
+      // 返回原来的marker数组
+      return this.addMarkerAttr(res.result.markers, scale)
     }
+
+    // 成功完成整个插入过程
     return this.addMarkerAttr(res.result.markers, scale)
   }
 

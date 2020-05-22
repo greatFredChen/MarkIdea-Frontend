@@ -1,12 +1,13 @@
 const cloud = require('wx-server-sdk')
 const axios = require('axios')
 const qs = require('qs')
+const sensitiveData = require('./sensitive-config.js')
 
 cloud.init()
 
 const db = cloud.database()
-const key = process.env.APIKEY // 需要在环境变量中设置 KEY
-const BASEURL = 'http://49.235.106.108:8080'
+const key = sensitiveData.backendKey // 需要在环境变量中设置 KEY
+const BASEURL = sensitiveData.backendHost
 const failPck = {
   Msg: 'fail to add Idea!',
   code: -1
@@ -19,7 +20,8 @@ const okPck = {
 exports.main = async (event, context) => {
   console.log(event)
   let ideaId = -1
-
+  // get the origin markers
+  let _res = await db.collection('Idea').get()
   // Try to connect to Neo4j server
   try {
     const res = await axios.post(`${BASEURL}/idea/create`, qs.stringify({
@@ -32,7 +34,10 @@ exports.main = async (event, context) => {
     ideaId = res.data.idea_id
   } catch (e) {
     console.log('connect to Neo4j server failed!', e)
-    return failPck
+    return {
+      ...failPck,
+      markers: _res.data
+    }
   }
 
   // Neo4j Insert Ok
@@ -60,16 +65,19 @@ exports.main = async (event, context) => {
     } catch (err) {
       console.log('Delete failed!', err)
     }
-    return failPck
+    return {
+      ...failPck,
+      markers: _res.data
+    }
   }
 
   // Insert into wxcloud db ok && Neo4j ok
   // get collection of markers
-  const res = await db.collection('Idea').get()
-  console.log(res)
+  _res = await db.collection('Idea').get()
+  console.log(_res)
 
   return {
     ...okPck,
-    markers: res.data
+    markers: _res.data
   }
 }
