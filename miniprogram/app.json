@@ -15,8 +15,5 @@
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序初始定位"
     }
-  },
-  "useExtendedLib": {
-    "weui": true
   }
 }

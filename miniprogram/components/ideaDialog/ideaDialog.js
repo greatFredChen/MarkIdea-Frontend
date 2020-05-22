@@ -4,10 +4,10 @@ Component({
    * 组件的属性列表 外部绑定
    */
   properties: {
-    addtellHidden: {
+    addTellHidden: {
       type: Boolean,
       value: true
-    },
+    }
   },
 
   /**
@@ -16,7 +16,7 @@ Component({
   data: {
     title_input: '',
     description_input: '',
-    buttons: [{ text: '取消' }, { text: '确定' }],
+    buttons: [{ text: '取消' }, { text: '确定' }]
   },
 
   /**
@@ -24,23 +24,23 @@ Component({
    */
   methods: {
     // 标题输入框
-    saveUsertell: function(e) {
+    saveUsertell: function (e) {
       this.setData({
         title_input: e.detail.value
       })
     },
 
     // 描述输入框
-    saveUserDescription: function(e) {
+    saveUserDescription: function (e) {
       this.setData({
         description_input: e.detail.value
       })
     },
 
     // trigger转到外部实现窗口
-    bindDialogButton: function(e) {
-      let that = this
-      let info = {
+    bindDialogButton: function (e) {
+      const that = this
+      const info = {
         title_input: that.data.title_input,
         description_input: that.data.description_input,
         index: e.detail.index

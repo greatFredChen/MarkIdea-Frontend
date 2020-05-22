@@ -2,7 +2,8 @@
   "usingComponents": {
     "detail": "../components/detail/detail",
     "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
-    "idea-dialog": "../components/ideaDialog/ideaDialog",
-    "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog"
+    "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
+    "wedea-map": "../components/wedeaMap/wedeaMap",
+    "create-panel": "../components/createPanel/createPanel"
   }
 }

@@ -1,4 +1,6 @@
 // components/AuthorizeDialog/AuthorizeDialog.js
+const app = getApp()
+
 Component({
   /**
    * 组件的属性列表
@@ -23,20 +25,24 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    onGetUserInfo: function(e) {
+    onGetUserInfo: function (e) {
       if (e.detail.userInfo) {
         this.setData({
           logged: true,
           avatarUrl: e.detail.userInfo.avatarUrl,
-          userInfo: e.detail.userInfo,
+          userInfo: e.detail.userInfo
         })
-        let info = {
-          logged: true,
-          avatarUrl: e.detail.userInfo.avatarUrl,
-          userInfo: e.detail.userInfo,
-        }
-        this.triggerEvent('authButton', info)
+        app.globalData.logged = true
+        app.globalData.avatarUrl = e.detail.userInfo.avatarUrl
+        app.globalData.userInfo = e.detail.userInfo
+      } else {
+        wx.showToast({
+          title: 'Get userInfo failed!',
+          icon: 'none',
+          duration: 2000
+        })
       }
-    },
+      app.event.emit('authorizeHidden', true)
+    }
   }
 })

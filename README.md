@@ -14,8 +14,8 @@
   - app.js: 全局函数以及全局变量
   - app.json: 全局布局设置以及外部组件引用
   - app.wxss: 全局页面/组件布局以及引用外部wxss
-- sitemap.json: 
-  
+- sitemap.json:
+
 - 项目基于微信小程序云开发以及weui组件库，云开发负责实现请求以及关系型数据库，weui组件库负责实现外观美化
 
 - 请保证手机微信版本已经是最新版本，本小程序要求基础库版本至少为2.9.0
@@ -45,3 +45,8 @@
 - 或者使用npm构建并引入小程序
 - 参考教程: https://www.cnblogs.com/jianxian/p/11121514.html or https://developers.weixin.qq.com/miniprogram/dev/extended/weui/quickstart.html
 
+#### eslint
+配置使用的 eslint 使用 standard 规则，与项目代码最接近
+使用：
+安装软件包 npm i
+运行规范脚本 npm run eslint

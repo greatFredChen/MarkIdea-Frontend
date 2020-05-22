@@ -11,6 +11,6 @@ exports.main = async (event, context) => {
     event,
     openid: wxContext.OPENID,
     appid: wxContext.APPID,
-    env: wxContext.ENV,
+    env: wxContext.ENV
   }
 }
