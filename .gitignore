@@ -1,5 +1,6 @@
 weui-miniprogram/
 weui.wxss
-*.zip
-node_modules
 sensitive-config.js
+*node_modules
+.vscode
+*.zip
