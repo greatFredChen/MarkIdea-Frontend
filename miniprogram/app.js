@@ -15,6 +15,12 @@ App({
         traceUser: true
       })
     }
+    
+    this.globalData = {
+      backendHost: sensitiveData.backendHost,
+      backendKey: sensitiveData.backendKey,
+      qqmapKey: sensitiveData.qqmapSdkKey,
+    }
 
     this.globalData = {
       backendHost: sensitiveData.backendHost,
