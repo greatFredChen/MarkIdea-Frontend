@@ -6,7 +6,7 @@ cloud.init()
 
 const db = cloud.database()
 const key = process.env.APIKEY // 需要在环境变量中设置 KEY
-const BASEURL = process.env.BASEURL || 'http://49.235.106.108:8080'
+const BASEURL = 'http://49.235.106.108:8080'
 const failPck = {
   Msg: 'fail to add Idea!',
   code: -1
@@ -25,13 +25,13 @@ exports.main = async (event, context) => {
     const res = await axios.post(`${BASEURL}/idea/create`, qs.stringify({
       key
     }))
-    console.log(res)
+    console.log('connecting to Neo4j server', res)
     if (res.data.idea_id === undefined) {
       throw new Error()
     }
     ideaId = res.data.idea_id
   } catch (e) {
-    console.log(e)
+    console.log('connect to Neo4j server failed!', e)
     return failPck
   }
 
@@ -44,7 +44,7 @@ exports.main = async (event, context) => {
         idea_id: ideaId
       }
     })
-    console.log(res)
+    console.log('Add data to cloud database successfully!', res)
   } catch (err) {
     // Insert into wxcloud db fail
     // Role back
@@ -56,9 +56,9 @@ exports.main = async (event, context) => {
         key,
         idea_id: ideaId
       }))
-      console.log(res)
+      console.log('Delete successfully!', res)
     } catch (err) {
-      console.log(err)
+      console.log('Delete failed!', err)
     }
     return failPck
   }

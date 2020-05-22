@@ -26,11 +26,16 @@ Page({
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           wx.getUserInfo({
             success: res => {
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo
-              })
+              const userInfo = JSON.parse(res.rawData)
+              app.globalData.logged = true
+              app.globalData.avatarUrl = userInfo.avatarUrl
+              app.globalData.userInfo = userInfo
             }
+          })
+        } else {
+          // 若用户没有授权过
+          that.setData({
+            authorizeHidden: false
           })
         }
       }
@@ -59,22 +64,6 @@ Page({
           duration: 1500
         })
         console.log(err)
-      }
-    })
-
-    // 若用户已经授权
-    wx.getUserInfo({
-      success: res => {
-        const userInfo = JSON.parse(res.rawData)
-        app.globalData.logged = true
-        app.globalData.avatarUrl = userInfo.avatarUrl
-        app.globalData.userInfo = userInfo
-      },
-      fail: err => {
-        // 若用户没有授权过
-        that.setData({
-          authorizeHidden: false
-        })
       }
     })
 

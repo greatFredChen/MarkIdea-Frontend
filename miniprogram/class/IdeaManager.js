@@ -24,8 +24,8 @@ class IdeaManager {
         created_at: currentTime,
         likes: 0,
         description: e.detail.description_input,
-        width: this.suitWH(0, scale.scale),
-        height: this.suitWH(0, scale.scale)
+        width: this.suitWH(0, scale),
+        height: this.suitWH(0, scale)
       }
       res = await wx.cloud.callFunction({
         name: 'createIdea',
@@ -33,6 +33,9 @@ class IdeaManager {
           marker: marker
         }
       })
+      if (res.result.markers === undefined) {
+        throw new Error()
+      }
     } catch (e) {
       wx.showToast({
         title: '创建失败',
@@ -49,8 +52,8 @@ class IdeaManager {
   addMarkerAttr (markers, scale) {
     for (let i = 0; i < markers.length; i++) {
       markers[i].iconPath = '/images/marker.png'
-      markers[i].width = this.suitWH(markers[i].likes, scale.scale)
-      markers[i].height = this.suitWH(markers[i].likes, scale.scale)
+      markers[i].width = this.suitWH(markers[i].likes, scale)
+      markers[i].height = this.suitWH(markers[i].likes, scale)
     }
     return markers
   }

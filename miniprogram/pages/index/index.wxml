@@ -2,5 +2,5 @@
 <view class="container map-view-height page__bd page__bd_spacing">
   <wedea-map class="map_size"></wedea-map>
   <create-panel></create-panel>
-  <auth-dialog authorizeHidden="{{authorizeHidden}}" bind:authButton="getUserInfo"></auth-dialog>
+  <auth-dialog authorizeHidden="{{authorizeHidden}}"></auth-dialog>
 </view>
