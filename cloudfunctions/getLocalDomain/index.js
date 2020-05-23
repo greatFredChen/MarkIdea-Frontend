@@ -36,16 +36,17 @@ async function _getRegionInfo (params) {
       // 地址地区code, 唯一标识符
       id: result.ad_info.city_code,
       // 地区描述, 便于阅读
-      desc : result.address_component.province + '-' +
+      desc: result.address_component.province + '-' +
           result.address_component.city,
-      code : 200
+      code: 200
     }
   } catch (error) {
-    throw {
-      msg : '获取位置逆解析信息失败',
+    const err = {
+      msg: '获取位置逆解析信息失败',
       error: error,
       code: 500
     }
+    throw err
   }
 }
 
@@ -60,10 +61,10 @@ async function _getDomainIdByRegion (params) {
   //   如果不存在记录 -1
   const result = await db.collection('RegionDomain')
     .field({ domainId: true }).where({ _id: params.id }).get()
-  if (result.data.length > 0) { 
-    return result.data[0].domainId 
+  if (result.data.length > 0) {
+    return result.data[0].domainId
   } else {
-    return -1 
+    return -1
   }
 }
 
@@ -92,11 +93,11 @@ async function _createRegionDomainTransaction (params) {
     )
     domainId = res.data.domain_id
   } catch (err) {
-    let error = {}
+    const error = {}
     error.msg = '获取当地Domain对象时申请后端创建Domain节点失败'
     error.error = err
     console.log(error)
-    if (err.response.data.code === 401000) { 
+    if (err.response.data.code === 401000) {
       error.msg += '原因: 授权key错误'
       error.code = 401
     } else {
@@ -124,22 +125,24 @@ async function _createRegionDomainTransaction (params) {
       console.log('backenddelete')
       console.log(res)
     } catch (requestError) {
-      throw {
-        msg : '获取当地Domain对象申请时数据库记录创建失败后回滚',
-        error : {
+      const err = {
+        msg: '获取当地Domain对象申请时数据库记录创建失败后回滚',
+        error: {
           cloud_db_err: clondDbErr,
           request_err: requestError
         },
-        code : 500
+        code: 500
       }
+      throw err
     }
-    throw {
-      msg : '获取当地Domain对象申请时数据库记录创建失败并成功回滚后端服务器',
-      error : clondDbErr,
-      code : 500
+    const err = {
+      msg: '获取当地Domain对象申请时数据库记录创建失败并成功回滚后端服务器',
+      error: clondDbErr,
+      code: 500
     }
+    throw err
   }
-  return {code: 201, domain_id: domainId}
+  return { code: 201, domain_id: domainId }
 }
 
 // 云函数入口函数
@@ -194,9 +197,9 @@ exports.main = async (event, context) => {
     regionId = res.id
   } catch (error) {
     return {
-      msg : '获取地区信息异常',
-      code : 500,
-      error : error
+      msg: '获取地区信息异常',
+      code: 500,
+      error: error
     }
   }
 
@@ -207,9 +210,9 @@ exports.main = async (event, context) => {
     domainId = res
   } catch (error) {
     return {
-      msg : '获取地区domain异常',
-      code : error.code ? error.code : 500,
-      error : error
+      msg: '获取地区domain异常',
+      code: error.code ? error.code : 500,
+      error: error
     }
   }
 
@@ -233,9 +236,9 @@ exports.main = async (event, context) => {
       })
     } catch (error) {
       return {
-        msg : '创建地区domain异常',
-        code : error.code ? error.code : 500,
-        error : error
+        msg: '创建地区domain异常',
+        code: error.code ? error.code : 500,
+        error: error
       }
     }
   }
