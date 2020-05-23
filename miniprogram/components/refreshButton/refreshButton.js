@@ -16,7 +16,7 @@ Component({
     latitude: '',
     longitude: '',
     domain_id: -1,
-    scale: -1,
+    scale: -1
   },
 
   /**
@@ -38,13 +38,13 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    refreshMap: async function() {
+    refreshMap: async function () {
       // 先获取经度和纬度
       app.event.emit('getCenterRequest', {})
       // 刷新
       try {
         // 获取当前中心对应的domain_id
-        let _ = await wx.cloud.callFunction({
+        await wx.cloud.callFunction({
           name: 'getLocalDomain',
           data: {
             latitude: this.data.latitude,
@@ -53,9 +53,9 @@ Component({
             create_domain: true,
             backend_host: app.globalData.backendHost,
             backend_key: app.globalData.backendKey
-          },
+          }
         }).then(res => {
-          if(res.result.code === 0) {
+          if (res.result.code === 0) {
             this.setData({
               domain_id: res.result.domainId
             })
@@ -72,15 +72,14 @@ Component({
         })
 
         // 获取当前domain_id对应的所有marker
-        let markers = []
-        let ___ = await wx.cloud.callFunction({
+        await wx.cloud.callFunction({
           name: 'getDomainContains',
           data: {
             domain_id: this.data.domain_id,
             backend_host: app.globalData.backendHost
-          },
+          }
         }).then(res => {
-          if(res.result.code === 0) {
+          if (res.result.code === 0) {
             let markers = res.result.idea
             markers = app.ideaMng.addMarkerAttr(markers, this.data.scale)
             app.event.emit('setMarkers', markers)
@@ -96,7 +95,7 @@ Component({
           app.event.emit('setMarkers', [])
           console.log(err)
         })
-      } catch(e) {
+      } catch (e) {
         console.log(e)
         wx.showToast({
           title: '获取markers失败',

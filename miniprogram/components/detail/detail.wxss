@@ -1,6 +1,0 @@
-/* components/detail/detail.wxss */
-@import "../../style/weui.wxss";
-/* .detail {
-  width: 750rpx;
-  height: 50rpx;
-} */

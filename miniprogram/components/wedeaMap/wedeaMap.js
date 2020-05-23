@@ -28,7 +28,7 @@ Component({
       sw: '',
       ne: ''
     },
-    domain_id: -1,
+    domain_id: -1
   },
 
   /**
@@ -37,7 +37,7 @@ Component({
   lifetimes: {
     async attached () {
       // 获取用户坐标
-      let GL = await this.getUserLocation()
+      await this.getUserLocation()
 
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
@@ -62,6 +62,12 @@ Component({
       })
 
       app.event.on('setMarkers', (markers) => {
+        // marker 点击事件回调会返回此 id。建议为每个 marker 设置上 number 类型 id，保证更新 marker 时有更好的性能。
+        // 人话：如果没有 id，bindmarkertap 就不会被触发
+        markers.map((marker) => {
+          marker.id = Number(marker._id)
+          return marker
+        })
         this.setData({
           markers
         })
@@ -82,7 +88,7 @@ Component({
    */
   methods: {
     // 获取用户本地地址，异步
-    getUserLocation: async function() {
+    getUserLocation: async function () {
       // 获取用户坐标
       return new Promise((resolve, reject) => {
         wx.getLocation({
@@ -100,7 +106,7 @@ Component({
             duration: 2000
           })
           console.log(err)
-          reject(false)
+          reject(err)
         })
       })
     },
@@ -108,6 +114,7 @@ Component({
     // 点击marker触发事件 修改想法
     markertap: function (e) {
       // TODO: 查看marker信息以及修改marker信息
+      app.event.emit('viewIdea', e.detail.markerId)
     },
     // 移动地图触发
     regionchange: function (e) {

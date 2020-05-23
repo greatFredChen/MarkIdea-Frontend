@@ -4,4 +4,5 @@
   <create-panel></create-panel>
   <refresh></refresh>
   <auth-dialog authorizeHidden="{{authorizeHidden}}"></auth-dialog>
+  <idea-view></idea-view>
 </view>

@@ -37,15 +37,15 @@ exports.main = async (event, context) => {
   // failPck
   // }
   console.log(event)
-  let key = event.key // 后端key
-  let BASEURL = event.backendHost // 后端ip地址
-  let domain_id = event.domain_id
+  const key = event.key // 后端key
+  const BASEURL = event.backendHost // 后端ip地址
+  const domainId = event.domain_id
   let ideaId = -1
   // Try to connect to Neo4j server
   try {
     const res = await axios.post(`${BASEURL}/idea/create`, qs.stringify({
       key: key,
-      domain_id: domain_id
+      domain_id: domainId
     }))
     console.log('connecting to Neo4j server', res)
     if (res.data.idea_id === undefined) {
@@ -55,7 +55,7 @@ exports.main = async (event, context) => {
   } catch (e) {
     console.log('connect to Neo4j server failed!', e)
     return {
-      ...failPck,
+      ...failPck
     }
   }
 
@@ -85,11 +85,11 @@ exports.main = async (event, context) => {
       console.log('Delete failed!', err)
     }
     return {
-      ...failPck,
+      ...failPck
     }
   }
 
   return {
-    ...okPck,
+    ...okPck
   }
 }
