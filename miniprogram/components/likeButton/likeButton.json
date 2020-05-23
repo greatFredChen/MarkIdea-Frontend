@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon",
+    "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog"
+  }
+}

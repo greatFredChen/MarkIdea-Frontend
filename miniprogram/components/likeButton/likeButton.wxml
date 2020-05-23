@@ -1,0 +1,7 @@
+<!--components/likeButton.wxml-->
+<button>
+    <view class="col-flex" bindtap="ontap">
+        <mp-icon color="{{liked ? 'rgb(252, 156, 153)':'grey'}}" type="field" icon="like" size="{{32}}"></mp-icon>
+        <font class="{{liked ? 'liked':'normal'}}">{{likes}}</font>
+    </view>
+</button>
