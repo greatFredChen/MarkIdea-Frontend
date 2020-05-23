@@ -28,7 +28,7 @@ exports.main = async (event, context) => {
   if (!event.user_id || !event.idea_id) { return { code: 400, msg: '输入参数不正确', error: {} } }
   const ideaId = event.idea_id.toString()
   const userId = event.user_id
-  const idea = await db.collection('Idea').field({likes: true}).where({_id:ideaId}).get()
+  const idea = await db.collection('Idea').field({ likes: true }).where({ _id: ideaId }).get()
   // console.log(idea)
   if (idea.data.length === 0) {
     return {
@@ -38,7 +38,7 @@ exports.main = async (event, context) => {
     }
   }
   const likes = idea.data[0].likes
-  const events = await db.collection('IdeaLikeEvent').where({ idea_id:ideaId, user_id:userId}).count()
+  const events = await db.collection('IdeaLikeEvent').where({ idea_id: ideaId, user_id: userId }).count()
   // console.log(events)
   return {
     code: 200,
