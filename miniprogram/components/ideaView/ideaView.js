@@ -1,4 +1,9 @@
 // components/ideaView/ideaView.js
+/**
+ * 用法
+ * 查看想法详情组件
+ * app.event.emit('viewIdea', 209)
+ */
 const app = getApp()
 Component({
   /**
@@ -12,7 +17,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    show: true,
+    show: false,
     title: '想法示例',
     description: '最近我去了一次海南看火箭发射，看的时候一脸懵逼，白烟是啥，黑线是啥，喷火的颜色又代表啥...为了下次看的时候不要再懵圈，我决定好好补一课！',
     attach: [
@@ -62,7 +67,8 @@ Component({
         delete res.result.code
         delete res.result.Msg
         this.setData({
-          ...res.result
+          ...res.result,
+          show: true
         })
       } catch (e) {
         console.log(e)
@@ -86,7 +92,6 @@ Component({
       app.event.on('viewIdea', (ideaId) => {
         this.fetchIdea(ideaId)
       })
-      app.event.emit('viewIdea', 0)
     },
     detached () {
       app.event.off('viewIdea')

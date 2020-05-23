@@ -89,5 +89,8 @@ Page({
       app.event.emit('setButtonGroup', status)
       app.event.emit('setCrossImage', status)
     })
+
+    // // 查看想法示例
+    // app.event.emit('viewIdea', 209)
   }
 })
