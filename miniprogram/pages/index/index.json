@@ -1,10 +1,10 @@
 {
   "usingComponents": {
-    "detail": "../components/detail/detail",
     "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
     "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
     "wedea-map": "../components/wedeaMap/wedeaMap",
     "create-panel": "../components/createPanel/createPanel",
-    "refresh": "../components/refreshButton/refreshButton"
+    "refresh": "../components/refreshButton/refreshButton",
+    "idea-view": "../components/ideaView/ideaView"
   }
 }
