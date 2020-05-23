@@ -1,0 +1,4 @@
+<!--components/refreshButton/refreshButton.wxml-->
+<view class="mt20">
+    <button class="weui-btn weui-btn_primary" bindtap="refreshMap">刷新地图</button>
+</view>
