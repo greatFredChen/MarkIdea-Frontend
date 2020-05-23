@@ -28,7 +28,7 @@ Component({
       sw: '',
       ne: ''
     },
-    domain_id: -1,
+    domain_id: -1
   },
 
   /**
@@ -37,7 +37,7 @@ Component({
   lifetimes: {
     async attached () {
       // 获取用户坐标
-      let GL = await this.getUserLocation()
+      await this.getUserLocation()
 
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
@@ -88,7 +88,7 @@ Component({
    */
   methods: {
     // 获取用户本地地址，异步
-    getUserLocation: async function() {
+    getUserLocation: async function () {
       // 获取用户坐标
       return new Promise((resolve, reject) => {
         wx.getLocation({
@@ -106,7 +106,7 @@ Component({
             duration: 2000
           })
           console.log(err)
-          reject(false)
+          reject(err)
         })
       })
     },

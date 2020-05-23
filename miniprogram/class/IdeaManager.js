@@ -7,7 +7,7 @@ class IdeaManager {
   async createIdea (e) {
     let res = []
     let scale = 15
-    let domain_id = -1
+    let domainId = -1
     try {
       const currentTime = new Date().getTime() // 单位为ms
       const pck = await this.map.getScale()
@@ -30,7 +30,7 @@ class IdeaManager {
       }
 
       // 获取当前位置的domain_id
-      let __ = await wx.cloud.callFunction({
+      await wx.cloud.callFunction({
         name: 'getLocalDomain',
         data: {
           latitude: latitude,
@@ -39,10 +39,10 @@ class IdeaManager {
           create_domain: true,
           backend_host: this.app.globalData.backendHost,
           backend_key: this.app.globalData.backendKey
-        },
+        }
       }).then(res => {
-        if(res.result.code === 0) {
-          domain_id = res.result.domainId
+        if (res.result.code === 0) {
+          domainId = res.result.domainId
         } else {
           throw new Error()
         }
@@ -61,7 +61,7 @@ class IdeaManager {
           marker: marker,
           key: this.app.globalData.backendKey,
           backendHost: this.app.globalData.backendHost,
-          domain_id: domain_id
+          domain_id: domainId
         }
       })
       if (res.result.code === -1) {
@@ -78,25 +78,25 @@ class IdeaManager {
 
     // 创建动作完成后，无论成不成功，都要获取当前地区的所有Idea
     let markers = []
-    let _ = await wx.cloud.callFunction({
+    await wx.cloud.callFunction({
       name: 'getDomainContains',
-        data: {
-          domain_id: domain_id,
-          backend_host: this.app.globalData.backendHost
-        },
-      }).then(res => {
-        if(res.result.code === 0) {
-          markers = res.result.idea
-        } else {
-          throw new Error()
-        }
-      }).catch(err => {
-        wx.showToast({
-          title: '获取markers失败',
-          icon: 'none',
-          duration: 2000
-        })
-        console.log(err)
+      data: {
+        domain_id: domainId,
+        backend_host: this.app.globalData.backendHost
+      }
+    }).then(res => {
+      if (res.result.code === 0) {
+        markers = res.result.idea
+      } else {
+        throw new Error()
+      }
+    }).catch(err => {
+      wx.showToast({
+        title: '获取markers失败',
+        icon: 'none',
+        duration: 2000
+      })
+      console.log(err)
     })
 
     // 成功完成整个插入过程

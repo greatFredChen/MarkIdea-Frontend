@@ -25,7 +25,7 @@ App({
     this.globalData = {
       backendHost: sensitiveData.backendHost,
       backendKey: sensitiveData.backendKey,
-      qqmapKey: sensitiveData.qqmapSdkKey,
+      qqmapKey: sensitiveData.qqmapSdkKey
     }
 
     // openid在后台获取并在加载小程序时从后台返回

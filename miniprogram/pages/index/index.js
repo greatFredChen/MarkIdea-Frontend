@@ -75,7 +75,6 @@ Page({
         duration: 1500
       })
     }
-
   },
   onReady () {
     // 设置事件监听
