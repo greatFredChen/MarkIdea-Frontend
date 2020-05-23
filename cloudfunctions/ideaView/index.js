@@ -1,7 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-// const axios = require('axios')
-// const qs = require('qs')
 
 cloud.init()
 
@@ -41,19 +39,6 @@ async function fetchIdeaFromWxdb (ideaId, whatIneed) {
 }
 
 /**
- * 从 Neo4j 获取 idea 信息
- * @param {对应 Neo4j 图数据库中节点的 id} ideaId
- */
-async function fetchIdeaFromNeo4j (ideaId) {
-  // TODO: fetch properties from Neo4j
-  // const res = await axios.post(`${BASEURL}/idea/get`, qs.stringify({
-  //   key: key,
-  //   idea_id: ideaId
-  // })
-  return {}
-}
-
-/**
  * 获取 idea 详情
  *
  * @param {*} event
@@ -75,18 +60,15 @@ async function fetchIdeaFromNeo4j (ideaId) {
 exports.main = async (event, context) => {
   console.log(event)
   try {
-    const ideaId = Number(event.ideaId)
+    const ideaId = String(event.ideaId)
     const resWxdb = await fetchIdeaFromWxdb(ideaId, kvSetForWxdb)
     console.log(resWxdb)
-    const resNeo4j = await fetchIdeaFromNeo4j(ideaId)
-    console.log(resNeo4j)
     return {
       ...okPck,
-      ...resWxdb,
-      ...resNeo4j
+      ...resWxdb
     }
   } catch (e) {
-    // Number(ideaId) 可能为 小数\NaN\整数，查询失败 (not exist) 都会被此处捕获
+    // String(ideaId) 查询失败 (not exist) 都会被此处捕获
     // 微信数据库查询结果中没有需要的 key，在此处被捕获
     console.log(e)
     return {

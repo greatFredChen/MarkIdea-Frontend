@@ -1,6 +1,6 @@
 <!-- components/ideaView/ideaView.wxml
 </mp-dialog> -->
-<view class="fadeIn" wx:if="{{show}}">
+<view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
     <view class="weui-dialog__hd">

@@ -91,6 +91,6 @@ Page({
     })
 
     // // 查看想法示例
-    // app.event.emit('viewIdea', 209)
+    // app.event.emit('viewIdea', '300')
   }
 })

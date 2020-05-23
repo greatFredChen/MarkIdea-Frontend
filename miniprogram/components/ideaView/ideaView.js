@@ -2,7 +2,7 @@
 /**
  * 用法
  * 查看想法详情组件
- * app.event.emit('viewIdea', 209)
+ * app.event.emit('viewIdea', '300')
  */
 const app = getApp()
 Component({
