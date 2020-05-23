@@ -44,7 +44,7 @@ exports.main = async (event, context) => {
     relationship = res.data.relationship
   } catch (error) {
     return {
-      msg : '获取domain图结构失败',
+      msg: '获取domain图结构失败',
       error: error,
       code: error.response.status ? error.response.status : 500
     }
@@ -52,12 +52,12 @@ exports.main = async (event, context) => {
   if (idea.length === 0) {
     // 如果没有id, 则直接返回
     return {
-      code : 200,
-      idea : [],
+      code: 200,
+      idea: [],
       relationship: []
     }
   }
-  
+
   // 查询云数据库补全idea信息
   const ideaIdList = idea.map(String)
   console.log(ideaIdList)
@@ -65,8 +65,8 @@ exports.main = async (event, context) => {
     .where({ _id: cmd.in(ideaIdList) }).get()
   console.log(result)
   return {
-    code : 200,
-    idea : result.data,
+    code: 200,
+    idea: result.data,
     relationship: relationship
   }
 }
