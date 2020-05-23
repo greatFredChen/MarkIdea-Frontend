@@ -1,19 +1,7 @@
-<!--index.wxml-->
+<!-- index.wxml -->
 <view class="container map-view-height page__bd page__bd_spacing">
-  <map id="testmap" class="map_size" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" setting="{{setting}}" bindtap="clickmap" bindupdated="bindupdated" bindregionchange="regionchange" bindmarkertap="markertap" show-location="true" markers="{{markers}}" polyline="{{polyline}}"
-    scale="{{scale}}"></map>
-  <detail hide="false" markid="{{selectMarkId}}" bind:like="onLike"></detail>
-  <view class="two-button-flex">
-      <button class="weui-btn weui-btn_primary" bindtap="onLink">随机连线</button>
-      <button class="weui-btn weui-btn_primary" bindtap="pressbutton" 
-      disabled="{{modified? true: false}}">修改模式</button>
-  </view>
-    <mp-dialog title="输入想法" show="{{!addtellHidden}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
-        <view>test content</view>
-        <input class="tellinput" bindinput="saveUsertell" placeholder="输入想法" />
-    </mp-dialog>
-    <mp-dialog title="修改想法" show="{{!modifiedHidden}}" bindbuttontap="tapModifiedButton" buttons="{{buttons}}">
-        <view>test modified</view>
-        <input class="tellinput" bindinput="saveUsertell" placeholder="输入想法" />
-    </mp-dialog>
+  <wedea-map class="map_size"></wedea-map>
+  <create-panel></create-panel>
+  <refresh></refresh>
+  <auth-dialog authorizeHidden="{{authorizeHidden}}"></auth-dialog>
 </view>

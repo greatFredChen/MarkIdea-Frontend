@@ -1,0 +1,11 @@
+<!--components/createPanel/createPanel.wxml-->
+<view class="create-panel">
+  <view class="two-button-flex mt20" hidden="{{switchButtonGroup}}">
+    <button class="weui-btn weui-btn_primary" bindtap="createMarker" open-type="getUserInfo" bindgetuserinfo="getUserInfo">发布想法</button>
+  </view>
+  <view class="two-button-flex mt20" hidden="{{!switchButtonGroup}}">
+    <button class="weui-btn weui-btn_primary" bindtap="settleMarker">选定</button>
+    <button class="weui-btn weui-btn_primary" bindtap="cancelMarker">取消</button>
+  </view>
+  <idea-dialog addTellHidden="{{addTellHidden}}" bind:dialogButton="tapDialogButton"></idea-dialog>
+</view>

@@ -1,7 +1,8 @@
-//app.js
+// app.js
+import { Event } from './utils/event'
+let sensitiveData = require('./sensitive-config.js')
 App({
   onLaunch: function () {
-    
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -11,10 +12,27 @@ App({
         //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
         //   如不填则使用默认环境（第一个创建的环境）
         // env: 'my-env-id',
-        traceUser: true,
+        traceUser: true
       })
     }
+    
+    this.globalData = {
+      backendHost: sensitiveData.backendHost,
+      backendKey: sensitiveData.backendKey,
+      qqmapKey: sensitiveData.qqmapSdkKey,
+    }
 
-    this.globalData = {}
-  }
+    // openid在后台获取并在加载小程序时从后台返回
+    this.globalData = {
+      openid: '',
+      logged: false,
+      userInfo: {},
+      avatarUrl: './user-unlogin.png',
+      backendHost: sensitiveData.backendHost,
+      backendKey: sensitiveData.backendKey,
+      qqmapKey: sensitiveData.qqmapSdkKey,
+    }
+  },
+  event: new Event(),
+  ideaMng: []
 })

@@ -1,0 +1,6 @@
+/* components/refreshButton/refreshButton.wxss */
+@import "../../style/weui.wxss";
+
+.mt20 {
+  margin-top: 20rpx;
+}

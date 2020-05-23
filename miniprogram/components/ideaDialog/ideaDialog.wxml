@@ -1,0 +1,11 @@
+<!-- components/ideaDialog/ideaDialog.wxml -->
+<mp-dialog title="输入想法" show="{{!addTellHidden}}" bindbuttontap="bindDialogButton" buttons="{{buttons}}">
+  <view class="row-flex">
+    <view class="mr20">标题</view>
+    <input class="tellinput" bindinput="saveUsertell" placeholder="输入标题" />
+  </view>
+  <view class="row-flex">
+    <view class="mr20">描述</view>
+    <input class="tellinput" bindinput="saveUserDescription" placeholder="输入描述" />
+  </view>
+</mp-dialog>

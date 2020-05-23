@@ -1,0 +1,26 @@
+/* components/createPanel/createPanel.wxss */
+@import "../../style/weui.wxss";
+
+.tellinput {
+  border: 2rpx solid #efeff4;
+}
+
+.tellsection input {
+  color: #000;
+  width: 100%;
+}
+
+.two-button-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mt20 {
+  margin-top: 20rpx;
+}
+
+.mr20 {
+  margin-right: 20rpx;
+}
