@@ -2,7 +2,7 @@
 Component({
 
   lifetimes: {
-    attached() {
+    attached () {
       // 获取用户点赞数据
       wx.cloud.callFunction({
         name: 'getUserLikeIdeaInfo',
@@ -12,7 +12,12 @@ Component({
         }
       }).then(res => {
         if (res.result.code !== 200) {
-          throw result
+          const err = {
+            msg: '返回状态码不为 200',
+            error: res,
+            code: res.result.code
+          }
+          throw err
         }
         this.setData({
           liked: res.result.liked,
@@ -37,7 +42,7 @@ Component({
     // 这个点赞按钮对应的ideaId
     ideaId: String,
     // 用户id
-    userId: String,
+    userId: String
   },
 
   /**
@@ -66,7 +71,7 @@ Component({
       this.setData({
         liked: !this.data.liked,
         likes: this.data.likes + (this.data.liked ? -1 : 1),
-        enable: false  // 组件变得不可用
+        enable: false // 组件变得不可用
       })
       wx.cloud.callFunction({
         name: 'likeIdea',
@@ -76,13 +81,18 @@ Component({
         }
       }).then(res => {
         if (res.result.code !== 200) {
-          throw result
+          const err = {
+            msg: '返回状态码不为 200',
+            error: res,
+            code: res.result.code
+          }
+          throw err
         }
         // 更新数据
         this.setData({
           liked: res.result.liked,
           likes: res.result.likes,
-          enable: true  // 组件重新变得可用
+          enable: true // 组件重新变得可用
         })
         // 触发idea点赞数事件
         this.triggerEvent('idealikeschange', {
