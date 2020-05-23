@@ -1,0 +1,19 @@
+/* components/likeButton.wxss */
+.col-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border:5px solid rgba(52, 140, 208, 0.7);
+  border-radius: 50px;
+}
+
+.liked {
+  font-size: 10px;
+  color: rgb(252, 156, 153);
+}
+
+.normal {
+  font-size: 10px;
+  color: grey
+}
