@@ -16,19 +16,11 @@ async function _getRegionInfo (params) {
   //    key: 腾讯位置服务的开发者key
   // }
   // 返回:
-  // 成功
   // {
-  //    code: 0
+  //    code: 200
   //    id: 地区唯一描述符
   //    desc: 地区描述
   // }
-  // 失败:
-  // {
-  //    code: 非0
-  //    error: 错误信息体
-  //    msg: 错误信息描述
-  // }
-  const response = {}
   try {
     const res = await axios({
       url: 'https://apis.map.qq.com/ws/geocoder/v1',
@@ -40,18 +32,22 @@ async function _getRegionInfo (params) {
       responseType: 'json'
     })
     const result = res.data.result
-    // 地址地区code, 唯一标识符
-    response.id = result.ad_info.city_code
-    // 地区描述, 便于阅读
-    response.desc = result.address_component.province + '-' +
-         result.address_component.city
-    response.code = 0
+    return {
+      // 地址地区code, 唯一标识符
+      id: result.ad_info.city_code,
+      // 地区描述, 便于阅读
+      desc: result.address_component.province + '-' +
+          result.address_component.city,
+      code: 200
+    }
   } catch (error) {
-    response.msg = '获取位置逆解析信息失败'
-    response.error = error
-    response.code = -1
+    const err = {
+      msg: '获取位置逆解析信息失败',
+      error: error,
+      code: 500
+    }
+    throw err
   }
-  return response
 }
 
 async function _getDomainIdByRegion (params) {
@@ -65,7 +61,11 @@ async function _getDomainIdByRegion (params) {
   //   如果不存在记录 -1
   const result = await db.collection('RegionDomain')
     .field({ domainId: true }).where({ _id: params.id }).get()
-  if (result.data.length > 0) { return result.data[0].domainId } else { return -1 }
+  if (result.data.length > 0) {
+    return result.data[0].domainId
+  } else {
+    return -1
+  }
 }
 
 async function _createRegionDomainTransaction (params) {
@@ -82,33 +82,29 @@ async function _createRegionDomainTransaction (params) {
   // 返回
   // 成功:
   // {
-  //   code: 0
+  //   code: 201,
+  //   domain_id: 新创建的domain_id
   // }
-  // 失败:
-  // {
-  //   code: 非0
-  //   error: 错误信息体
-  //   msg: 失败信息描述
-  // }
-  const response = {}
   // 请求后端创建一个domain对象, 并返回其id
+  let domainId = null
   try {
     const res = await axios.post(params.host + '/domain/create',
       qs.stringify({ key: params.key })
     )
-    response.domainId = res.data.domain_id
-    response.code = 0
-  } catch (error) {
-    response.msg = '获取当地Domain对象时申请后端创建Domain节点失败'
-    response.error = error
-    if (response.error.response.data.code === 401000) { response.msg += '原因: 授权key错误' }
-    response.code = -1
+    domainId = res.data.domain_id
+  } catch (err) {
+    const error = {}
+    error.msg = '获取当地Domain对象时申请后端创建Domain节点失败'
+    error.error = err
+    console.log(error)
+    if (err.response.data.code === 401000) {
+      error.msg += '原因: 授权key错误'
+      error.code = 401
+    } else {
+      error.code = 500
+    }
+    throw error
   }
-
-  if (response.code !== 0) {
-    return response
-  }
-  const domainId = response.domainId
   try {
     // 创建数据库记录
     await db.collection('RegionDomain').add({
@@ -128,19 +124,25 @@ async function _createRegionDomainTransaction (params) {
         }))
       console.log('backenddelete')
       console.log(res)
-    } catch (error) {
-      response.msg = '获取当地Domain对象申请时数据库记录创建失败后回滚'
-      response.error = {
-        cloud_db_err: clondDbErr,
-        request_backEnd_err: error
+    } catch (requestError) {
+      const err = {
+        msg: '获取当地Domain对象申请时数据库记录创建失败后回滚',
+        error: {
+          cloud_db_err: clondDbErr,
+          request_err: requestError
+        },
+        code: 500
       }
-      response.code = -3
+      throw err
     }
-    response.msg = '获取当地Domain对象申请时数据库记录创建失败并成功回滚后端服务器'
-    response.error = clondDbErr
-    response.code = -2
+    const err = {
+      msg: '获取当地Domain对象申请时数据库记录创建失败并成功回滚后端服务器',
+      error: clondDbErr,
+      code: 500
+    }
+    throw err
   }
-  return response
+  return { code: 201, domain_id: domainId }
 }
 
 // 云函数入口函数
@@ -166,23 +168,24 @@ exports.main = async (event, context) => {
   // 返回
   // 正常:
   // {
-  //   code: 0 code=0表示正常
+  //   code: 201 新domain对象创建成功 或者200 查询正常
   //   domainId: 如果是非负整数, 则是对应的domain对象id, 如果是负数, 则表明不存在对应的domain对象
   // }
   // 不正常:
   // {
-  //   code: 非0, 非0表示不正常
+  //   code: 非201
   //   error: 异常信息体
   //   msg: 异常错误信息描述
   // }
 
   // 参数检查
-  if (!event.latitude || !event.longitude || !event.key) { return { code: -1, msg: '输入参数不正确', error: {} } }
+  if (!event.latitude || !event.longitude || !event.key) { return { code: 400, msg: '输入参数不正确', error: {} } }
   if (event.create_domain === true) {
-    if (!event.backend_host || !event.backend_key) { return { code: -1, msg: '输入参数不正确', error: {} } }
+    if (!event.backend_host || !event.backend_key) { return { code: 400, msg: '输入参数不正确', error: {} } }
   }
 
-  let response = null
+  let desc = null
+  let regionId = null
   try {
     // 获取地区的id和描述信息
     const res = await _getRegionInfo({
@@ -190,62 +193,58 @@ exports.main = async (event, context) => {
       longitude: event.longitude,
       key: event.key
     })
-    response = res
+    desc = res.desc
+    regionId = res.id
   } catch (error) {
-    response.msg = '获取地区信息异常'
-    response.code = -1
-    response.error = error
-  }
-  if (response.code !== 0) {
-    // 获取地区信息异常
-    return response
+    return {
+      msg: '获取地区信息异常',
+      code: 500,
+      error: error
+    }
   }
 
   // 查询云数据库是否有对应地区信息的domainId记录
-  const desc = response.desc
-  const regionId = response.id
   let domainId = -1
   try {
     const res = await _getDomainIdByRegion({ id: regionId })
     domainId = res
   } catch (error) {
-    response.msg = '获取地区domain异常'
-    response.code = -1
-    response.error = error
-  }
-  if (response.code !== 0) {
-    // 获取地区domain异常
-    return response
+    return {
+      msg: '获取地区domain异常',
+      code: error.code ? error.code : 500,
+      error: error
+    }
   }
 
   if (domainId >= 0) {
     // 找到对应的domain
     return {
-      code: 0,
+      code: 200,
       domainId: domainId
     }
   }
+
   // 找不到对应的domain
   if (event.create_domain === true) {
-    // 创建新的domain
+    // 试图创建新的domain
     try {
-      const res = await _createRegionDomainTransaction({
+      return await _createRegionDomainTransaction({
         id: regionId,
         desc: desc,
         key: event.backend_key,
         host: event.backend_host
       })
-      response = res
     } catch (error) {
-      response.msg = '创建地区domain异常'
-      response.code = -1
-      response.error = error
+      return {
+        msg: '创建地区domain异常',
+        code: error.code ? error.code : 500,
+        error: error
+      }
     }
-    return response
   }
   // 不创建新的domain
   return {
-    code: 0,
+    code: 200,
     domainId: -1
   }
 }
