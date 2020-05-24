@@ -41,7 +41,7 @@ class IdeaManager {
           backend_key: this.app.globalData.backendKey
         }
       }).then(res => {
-        if (res.result.code === 0) {
+        if (res.result.code === 201 || res.result.code === 200) {
           domainId = res.result.domainId
         } else {
           throw new Error()
@@ -85,7 +85,7 @@ class IdeaManager {
         backend_host: this.app.globalData.backendHost
       }
     }).then(res => {
-      if (res.result.code === 0) {
+      if (res.result.code === 200) {
         markers = res.result.idea
       } else {
         throw new Error()
