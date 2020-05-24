@@ -13,13 +13,13 @@
           <view class="weui-cell__bd">
             <textarea class="weui-textarea" id="description" placeholder="请描述你的想法" maxlength="200" bindinput="bindinput" value="{{description}}"></textarea>
             <view class="weui-textarea-counter">
-              <text>{{wordsCount}}</text>/200</view>
+              <text>{{desCount}}</text>/200</view>
           </view>
         </view>
       </view>
     </view>
   </view>
   <view class="weui-form__opr-area">
-    <button class="weui-btn weui-btn_primary" bindtap="enter">确定</button>
+    <button class="weui-btn weui-btn_primary" bindtap="enter" disabled="{{titleCount === 0}}">确定</button>
   </view>
 </view>
