@@ -22,8 +22,9 @@
         </view>
       </view>
     </view>
-    <view class="weui-dialog__ft weui-dialog__ft__attach">
-      <a class="weui-btn weui-btn_primary" bindtap="close">返回</a>
+    <view class="weui-dialog__ft weui-dialog__ft__attach weui-dialog__ft__flex">
+      <a class="weui-dialog__ft__button" bindtap="close">返回</a>
+      <like-button ideaId="{{ideaId}}"></like-button>
     </view>
   </view>
 </view>

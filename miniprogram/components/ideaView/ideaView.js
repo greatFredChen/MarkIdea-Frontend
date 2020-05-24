@@ -25,7 +25,8 @@ Component({
       //   title: '一去二三里',
       //   description: '烟村四五家'
       // }
-    ]
+    ],
+    ideaId: String(-1)
   },
 
   /**
@@ -56,7 +57,8 @@ Component({
         delete res.result.Msg
         this.setData({
           ...res.result,
-          show: true
+          show: true,
+          ideaId: String(ideaId)
         })
       } catch (e) {
         console.log(e)

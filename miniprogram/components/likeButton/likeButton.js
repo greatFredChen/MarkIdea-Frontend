@@ -1,4 +1,5 @@
 // components/likeButton.js
+const app = getApp()
 Component({
 
   lifetimes: {
@@ -8,7 +9,7 @@ Component({
         name: 'getUserLikeIdeaInfo',
         data: {
           idea_id: this.properties.ideaId,
-          user_id: this.properties.userId
+          user_id: app.globalData.openid
         }
       }).then(res => {
         if (res.result.code !== 200) {
@@ -40,9 +41,7 @@ Component({
    */
   properties: {
     // 这个点赞按钮对应的ideaId
-    ideaId: String,
-    // 用户id
-    userId: String
+    ideaId: String
   },
 
   /**
@@ -77,7 +76,7 @@ Component({
         name: 'likeIdea',
         data: {
           idea_id: this.properties.ideaId,
-          user_id: this.properties.userId
+          user_id: app.globalData.openid
         }
       }).then(res => {
         if (res.result.code !== 200) {

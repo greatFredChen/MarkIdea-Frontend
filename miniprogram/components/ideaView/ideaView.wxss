@@ -32,3 +32,20 @@
 .weui-article__p__attach {
   color: var(--weui-FG-1);
 }
+
+.weui-dialog__ft__flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.weui-dialog__ft__button {
+  background-color: var(--weui-BRAND);
+  color: #FFF;
+  height: 40px;
+  line-height: 40px;
+  width: 40%;
+  text-align: center;
+  border-radius: 10px;
+}

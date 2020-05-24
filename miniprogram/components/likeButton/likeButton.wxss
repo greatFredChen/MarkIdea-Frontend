@@ -17,3 +17,7 @@
   font-size: 10px;
   color: grey
 }
+
+.bgwhite {
+  background-color: #FFF;
+}
