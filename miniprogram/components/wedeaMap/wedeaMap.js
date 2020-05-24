@@ -80,6 +80,18 @@ Component({
           scale: this.data.scale
         })
       })
+
+      app.event.on('SingleIdeaUpdate', ({ _id, title, description }) => {
+        console.log(_id, title, description)
+        const markers = this.data.markers
+        const single = markers.find(i => i._id === _id)
+        console.log(single, markers)
+        single.title = title
+        single.description = description
+        this.setData({
+          markers
+        })
+      })
     }
   },
 

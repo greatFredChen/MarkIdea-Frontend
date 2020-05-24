@@ -1,0 +1,32 @@
+/* miniprogram/pages/ideaEdit/ideaEdit.wxss */
+
+.plain-border {
+  border: 1px solid #1aad19;
+}
+
+.inline-btn {
+  display: inline-block;
+}
+
+.inline-btn:first-child {
+  margin-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.inline-btn:last-child {
+  margin-left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.flex-wrp__attach {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+page {
+  background: unset;
+}
+

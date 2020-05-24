@@ -10,7 +10,6 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
   },
 
   /**
@@ -20,13 +19,15 @@ Component({
     show: false,
     title: '想法示例',
     description: '最近我去了一次海南看火箭发射，看的时候一脸懵逼，白烟是啥，黑线是啥，喷火的颜色又代表啥...为了下次看的时候不要再懵圈，我决定好好补一课！',
+    author_id: -1,
     attach: [
       // {
       //   title: '一去二三里',
       //   description: '烟村四五家'
       // }
     ],
-    ideaId: String(-1)
+    ideaId: String(-1),
+    OPENID: -1
   },
 
   /**
@@ -80,7 +81,19 @@ Component({
   lifetimes: {
     attached () {
       app.event.on('viewIdea', (ideaId) => {
+        // 为什么在此处 set OPENID？
+        // attached 中globalData 未初始化
+        this.setData({
+          OPENID: app.globalData.openid
+        })
         this.fetchIdea(ideaId)
+      })
+      app.event.on('viewIdeaLocalUpdate', ({ title, description }) => {
+        console.log(title, description)
+        this.setData({
+          title,
+          description
+        })
       })
     },
     detached () {

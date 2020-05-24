@@ -1,0 +1,15 @@
+<mp-navigation-bar title="想法编辑" back="{{true}}"></mp-navigation-bar>
+<view class="page">
+  <view class="page__hd flex-wrp flex-wrp__attach">
+    <button id="0" class="inline-btn plain-border" type="primary" plain="{{inEditPreview !== 0}}" bindtap="bindtap">编辑</button>
+    <button id="1" class="inline-btn plain-border" type="primary" plain="{{inEditPreview !== 1}}" bindtap="bindtap">预览</button>
+  </view>
+  <view class="page__bd page__bd_spacing">
+    <view hidden="{{inEditPreview !== 0}}">
+      <edit-box bind:editUpdate="bindEditUpdate" bind:enter="enter" title="{{title}}" description="{{description}}"></edit-box>
+    </view>
+    <view wx:if="{{inEditPreview === 1}}">
+      <description-box title="{{title}}" description="{{description}}"></description-box>
+    </view>
+  </view>
+</view>

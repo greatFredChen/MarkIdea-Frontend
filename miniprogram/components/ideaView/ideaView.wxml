@@ -4,26 +4,12 @@
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
     <a class="close-topright" bindtap="close">
-    <mp-icon icon="close" size="{{25}}"></mp-icon>
+      <mp-icon icon="close" size="{{25}}"></mp-icon>
     </a>
-    <view class="weui-dialog__hd">
-      <strong class="weui-dialog__title">{{title}}</strong>
-    </view>
-    <view class="weui-dialog__bd weui-dialog__hd__attach">
-      {{description}}
-      <view class="page">
-        <view class="page__bd">
-          <view class="weui-article">
-            <view class="weui-article__section" wx:if="{{attach.length !== 0}}">
-              <view class="weui-article__h2">附加想法</view>
-              <view class="weui-article__section" wx:for="{{attach}}" wx:for-index="idx" wx:key="idx">
-                <view class="weui-article__h3">{{item.title}}</view>
-                <view class="weui-article__p weui-article__p__attach">{{item.description}}</view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
+    {{app.globalData.openid}}
+    <description-box title="{{title}}" description="{{description}}" attach="{{attach}}"></description-box>
+    <view slot="btns" wx:if="{{author_id === OPENID}}">
+      <navigator class="weui-btn weui-btn_primary" url="/pages/ideaEdit/ideaEdit?_id={{ideaId}}&title={{title}}&description={{description}}">编辑</navigator>
     </view>
     <view class="weui-dialog__ft weui-dialog__ft__attach weui-dialog__ft__flex">
       <like-button ideaId="{{ideaId}}"></like-button>
