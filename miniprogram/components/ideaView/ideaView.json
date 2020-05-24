@@ -2,6 +2,7 @@
   "component": true,
   "usingComponents": {
     "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
-    "like-button": "../likeButton/likeButton"
+    "like-button": "../likeButton/likeButton",
+    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon"
   }
 }
