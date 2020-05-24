@@ -1,0 +1,22 @@
+<!--components/AuthorizeDialog/AuthorizeDialog.wxml-->
+<view class="fadeIn">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+      <view class="weui-dialog__hd">
+        <strong class="weui-dialog__title">删除想法</strong>
+      </view>
+      <view class="weui-dialog__bd">
+        确认删除这个想法吗?
+      </view>
+      <view class="weui-dialog__ft">
+        <button class="weui-dialog__btn weui-dialog__btn_default"
+          bindtap="cancel">
+          取消
+        </button>
+        <button class="weui-dialog__btn weui-dialog__btn_primary"
+          bindtap="delete">
+          删除
+        </button>
+      </view>
+    </view>
+</view>

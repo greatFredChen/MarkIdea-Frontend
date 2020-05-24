@@ -27,7 +27,8 @@ Component({
       // }
     ],
     ideaId: String(-1),
-    OPENID: -1
+    OPENID: -1,
+    deleteDialogHidden: true
   },
 
   /**
@@ -76,6 +77,49 @@ Component({
       this.setData({
         show: false
       })
+    },
+    tapDeleteIdea () {
+      // 点击了删除Idea按钮, 显示确认删除对话框
+      this.setData({ deleteDialogHidden: false })
+    },
+    deleteCancel () {
+      // 删除对话框点击了取消事件
+      this.setData({ deleteDialogHidden: true })
+    },
+    async deleteConfirm () {
+      // 删除对话框点击了确认删除事件
+      // 隐藏ideaView和确认删除对话框
+      this.setData({
+        deleteDialogHidden: true,
+        show: false
+      })
+      wx.showLoading({ title: '请稍后' })
+      try {
+        const res = await wx.cloud.callFunction({
+          name: 'deleteIdea',
+          data: {
+            idea_id: this.data.ideaId,
+            user_id: app.globalData.openid,
+            key: app.globalData.backendKey,
+            backend_host: app.globalData.backendHost
+          }
+        })
+        console.log('res')
+        console.log(res)
+        if (res.result.code !== 204) {
+          throw res
+        }
+        app.event.emit('deleteMarker', this.data.ideaId)
+      } catch (e) {
+        wx.showToast({
+          title: '删除失败',
+          icon: 'none',
+          duration: 2000
+        })
+        console.log('删除失败')
+        console.log(e)
+      }
+      wx.hideLoading()
     }
   },
   lifetimes: {

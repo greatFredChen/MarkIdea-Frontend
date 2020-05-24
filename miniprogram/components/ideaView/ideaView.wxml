@@ -13,6 +13,8 @@
     </view>
     <view class="weui-dialog__ft weui-dialog__ft__attach weui-dialog__ft__flex">
       <like-button ideaId="{{ideaId}}"></like-button>
+      <button class="weui-btn weui-btn_warn" bindtap="tapDeleteIdea">删除</button>
     </view>
+    <delete-dialog wx:if="{{!deleteDialogHidden}}" binddeletecancel="deleteCancel"                binddeleteconfirm="deleteConfirm"></delete-dialog>
   </view>
 </view>
