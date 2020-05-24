@@ -1,0 +1,25 @@
+<view class="weui-form">
+  <view class="weui-form__control-area">
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__title">标题</view>
+      <view class="weui-cell weui-cell_active">
+        <view class="weui-cell__bd">
+          <input class="weui-input" id="title" placeholder="请输入标题" bindinput="bindinput" maxlength="200" value="{{title}}"/>
+        </view>
+      </view>
+      <view class="weui-cells__title">想法描述</view>
+      <view class="weui-cells weui-cells_form">
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" id="description" placeholder="请描述你的想法" maxlength="200" bindinput="bindinput" value="{{description}}"></textarea>
+            <view class="weui-textarea-counter">
+              <text>{{wordsCount}}</text>/200</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-form__opr-area">
+    <button class="weui-btn weui-btn_primary" bindtap="enter">确定</button>
+  </view>
+</view>
