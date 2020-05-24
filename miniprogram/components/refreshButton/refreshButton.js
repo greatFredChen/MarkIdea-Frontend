@@ -41,6 +41,9 @@ Component({
     refreshMap: async function () {
       // 先获取经度和纬度
       app.event.emit('getCenterRequest', {})
+      wx.showLoading({
+        title: '刷新中'
+      })
       // 刷新
       try {
         // 获取当前中心对应的domain_id
@@ -55,12 +58,13 @@ Component({
             backend_key: app.globalData.backendKey
           }
         }).then(res => {
-          if (res.result.code === 0) {
+          if (res.result.code === 201 || res.result.code === 200) {
             this.setData({
               domain_id: res.result.domainId
             })
           } else {
-            throw new Error()
+            console.log(res.result.code, res.result.error)
+            throw new Error(res.result.msg)
           }
         }).catch(err => {
           wx.showToast({
@@ -79,12 +83,13 @@ Component({
             backend_host: app.globalData.backendHost
           }
         }).then(res => {
-          if (res.result.code === 0) {
+          if (res.result.code === 200) {
             let markers = res.result.idea
             markers = app.ideaMng.addMarkerAttr(markers, this.data.scale)
             app.event.emit('setMarkers', markers)
           } else {
-            throw new Error()
+            console.log(res.result.code, res.result.error)
+            throw new Error(res.result.msg)
           }
         }).catch(err => {
           wx.showToast({
@@ -104,6 +109,7 @@ Component({
         })
         app.event.emit('setMarkers', [])
       }
+      wx.hideLoading()
     }
   }
 })
