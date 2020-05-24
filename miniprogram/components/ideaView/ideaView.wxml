@@ -3,6 +3,9 @@
 <view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
+    <a class="close-topright" bindtap="close">
+    <mp-icon icon="close" size="{{25}}"></mp-icon>
+    </a>
     <view class="weui-dialog__hd">
       <strong class="weui-dialog__title">{{title}}</strong>
     </view>
@@ -23,7 +26,6 @@
       </view>
     </view>
     <view class="weui-dialog__ft weui-dialog__ft__attach weui-dialog__ft__flex">
-      <a class="weui-dialog__ft__button" bindtap="close">返回</a>
       <like-button ideaId="{{ideaId}}"></like-button>
     </view>
   </view>
