@@ -21,5 +21,6 @@
   </view>
   <view class="weui-form__opr-area">
     <button class="weui-btn weui-btn_primary" bindtap="enter" disabled="{{titleCount === 0}}">确定</button>
+    <navigator class="weui-btn weui-btn_default" open-type="navigateBack">取消</navigator>
   </view>
 </view>
