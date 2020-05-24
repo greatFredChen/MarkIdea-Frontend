@@ -16,6 +16,8 @@ Component({
    * 组件的初始数据
    */
   data: {
+    // 是否展示删除想法按钮, 如果用户查看的idea不属于自己则不显示
+    showDeleteButton: false,
     show: false,
     title: '想法示例',
     description: '最近我去了一次海南看火箭发射，看的时候一脸懵逼，白烟是啥，黑线是啥，喷火的颜色又代表啥...为了下次看的时候不要再懵圈，我决定好好补一课！',
@@ -60,7 +62,8 @@ Component({
         this.setData({
           ...res.result,
           show: true,
-          ideaId: String(ideaId)
+          ideaId: String(ideaId),
+          showDeleteButton: app.globalData.openid === res.result.author_id
         })
       } catch (e) {
         console.log(e)
@@ -104,8 +107,8 @@ Component({
             backend_host: app.globalData.backendHost
           }
         })
-        console.log('res')
-        console.log(res)
+        // console.log('res')
+        // console.log(res)
         if (res.result.code !== 204) {
           throw res
         }
@@ -116,8 +119,8 @@ Component({
           icon: 'none',
           duration: 2000
         })
-        console.log('删除失败')
-        console.log(e)
+        // console.log('删除失败')
+        // console.log(e)
       }
       wx.hideLoading()
     }
