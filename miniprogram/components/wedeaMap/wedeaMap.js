@@ -73,6 +73,23 @@ Component({
         })
       })
 
+      app.event.on('deleteMarker', (ideaId) => {
+        // 删除marker中某个指定id的marker
+        ideaId = Number(ideaId)
+        const markers = this.data.markers
+        // console.log('before')
+        // console.log(markers)
+        for (let i = 0; i < markers.length; i++) {
+          if (markers[i].id === ideaId) {
+            markers.splice(i, 1)
+            break
+          }
+        }
+        // console.log('after')
+        // console.log(markers)
+        this.setData({ markers })
+      })
+
       app.event.on('getCenterRequest', (res) => {
         app.event.emit('getCenter', {
           latitude: this.data.latitude,
