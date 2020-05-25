@@ -82,10 +82,10 @@ Component({
             domain_id: this.data.domain_id,
             backend_host: app.globalData.backendHost
           }
-        }).then(res => {
+        }).then(async res => {
           if (res.result.code === 200) {
             let markers = res.result.idea
-            markers = app.ideaMng.addMarkerAttr(markers, this.data.scale)
+            markers = await app.ideaMng.addMarkerAttr(markers, this.data.scale)
             app.event.emit('setMarkers', markers)
           } else {
             console.log(res.result.code, res.result.error)

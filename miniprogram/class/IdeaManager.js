@@ -1,7 +1,10 @@
+import { MarkerManager } from './MarkerManager'
+
 class IdeaManager {
   constructor (app, map) {
     this.app = app
     this.map = map
+    this.markerManager = new MarkerManager()
   }
 
   async createIdea (e) {
@@ -100,13 +103,13 @@ class IdeaManager {
     })
 
     // 成功完成整个插入过程
-    return this.addMarkerAttr(markers, scale)
+    return await this.addMarkerAttr(markers, scale)
   }
 
   // 为marker增加属性
-  addMarkerAttr (markers, scale) {
+  async addMarkerAttr (markers, scale) {
     for (let i = 0; i < markers.length; i++) {
-      markers[i].iconPath = '/images/marker.png'
+      markers[i].iconPath = await this.markerManager.getMarkerImage(markers[i].markerIcon)
       markers[i].width = this.suitWH(markers[i].likes, scale)
       markers[i].height = this.suitWH(markers[i].likes, scale)
     }
