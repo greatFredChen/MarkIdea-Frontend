@@ -94,10 +94,10 @@ Component({
           enable: true // 组件重新变得可用
         })
         // 触发idea点赞数事件
-        this.triggerEvent('idealikeschange', {
-          idea_id: this.properties.ideaId,
+        app.event.emit('ideaLikesChange', {
+          ideaId: this.properties.ideaId,
           likes: this.data.likes
-        }, {})
+        })
       }).catch(err => {
         wx.showToast({
           title: '更新Idea点赞信息失败' + err.msg,
