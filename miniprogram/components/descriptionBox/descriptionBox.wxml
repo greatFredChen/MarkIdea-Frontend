@@ -1,7 +1,7 @@
-<view class="weui-dialog__hd">
+<view class="weui-dialog__hd weui-flex weui-flex__attach">
   <strong class="weui-dialog__title">{{title}}</strong>
+  <slot></slot>
 </view>
-<slot></slot>
 <view class="weui-dialog__bd weui-dialog__hd__attach">
   <include src="../../comi/comi.wxml" />
   <view class="page">
