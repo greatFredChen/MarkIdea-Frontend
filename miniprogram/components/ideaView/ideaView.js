@@ -58,6 +58,7 @@ Component({
         }
         delete res.result.code
         delete res.result.Msg
+        console.log(app.globalData.openid === res.result.author_id)
         this.setData({
           ...res.result,
           show: true,

@@ -5,10 +5,10 @@
   <view class="weui-dialog weui-dialog__attach">
     <description-box title="{{title}}" description="{{description}}" attach="{{attach}}">
       <view class="weui-flex weui-flex__attach">
-        <navigator class="icon__attach" wx:if="showPrivateBtns" url="/pages/ideaEdit/ideaEdit?type=Edit&_id={{ideaId}}&title={{title}}&description={{description}}">
+        <navigator class="icon__attach" wx:if="{{showPrivateBtns}}" url="/pages/ideaEdit/ideaEdit?type=Edit&_id={{ideaId}}&title={{title}}&description={{description}}">
           <mp-icon type="field" icon="pencil" size="{{25}}"></mp-icon>
         </navigator>
-        <view class="icon__attach" wx:if="showPrivateBtns" bindtap="tapDeleteIdea">
+        <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapDeleteIdea">
           <mp-icon type="field" icon="delete" size="{{25}}"></mp-icon>
         </view>
         <a class="icon__attach" bindtap="close">

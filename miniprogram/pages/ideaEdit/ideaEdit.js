@@ -34,7 +34,11 @@ Page({
       wx.showLoading({
         title: '发送电波中...'
       })
-      await app.ideaMng.ideaEdit(this.data._id, this.data.title, this.data.description)
+      const res = await app.ideaMng.ideaEdit(this.data._id, this.data.title, this.data.description)
+      console.log(res)
+      if (res.result.code !== 0) {
+        throw res
+      }
       app.event.emit('SingleIdeaUpdate', {
         _id: this.data._id,
         title: this.data.title,
