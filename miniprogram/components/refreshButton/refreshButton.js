@@ -75,7 +75,7 @@ Component({
           console.log(err)
         })
 
-        // 获取当前domain_id对应的所有marker
+        // 获取当前domain_id对应的所有结构
         await wx.cloud.callFunction({
           name: 'getDomainContains',
           data: {
@@ -84,30 +84,29 @@ Component({
           }
         }).then(async res => {
           if (res.result.code === 200) {
-            let markers = res.result.idea
-            markers = await app.ideaMng.addMarkerAttr(markers, this.data.scale)
-            app.event.emit('setMarkers', markers)
+            app.event.emit('setIdeas',
+              await app.ideaMng.addIdeasAttr(res.result.idea, this.data.scale))
           } else {
             console.log(res.result.code, res.result.error)
             throw new Error(res.result.msg)
           }
         }).catch(err => {
           wx.showToast({
-            title: '获取markers失败',
+            title: '获取想法失败',
             icon: 'none',
             duration: 2000
           })
-          app.event.emit('setMarkers', [])
+          app.event.emit('setIdeas', [])
           console.log(err)
         })
       } catch (e) {
         console.log(e)
         wx.showToast({
-          title: '获取markers失败',
+          title: '获取想法失败',
           icon: 'none',
           duration: 2000
         })
-        app.event.emit('setMarkers', [])
+        app.event.emit('setIdeas', [])
       }
       wx.hideLoading()
     }

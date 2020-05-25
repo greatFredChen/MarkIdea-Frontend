@@ -19,10 +19,10 @@ Component({
     latitude: 22.0,
     scale: 15,
     setting: {
-      subkey: '',
+      subkey: ''
     },
     polyline: [],
-    markers: [],
+    ideas: [],
     showCrossImage: false,
     region: {
       sw: '',
@@ -39,7 +39,7 @@ Component({
       // 设置地图key
       this.setData({
         setting: {
-          subkey: app.globalData.qqmapKey,
+          subkey: app.globalData.qqmapKey
         }
       })
 
@@ -68,33 +68,34 @@ Component({
         })
       })
 
-      app.event.on('setMarkers', (markers) => {
-        // marker 点击事件回调会返回此 id。建议为每个 marker 设置上 number 类型 id，保证更新 marker 时有更好的性能。
-        // 人话：如果没有 id，bindmarkertap 就不会被触发
-        markers.map((marker) => {
-          marker.id = Number(marker._id)
-          return marker
-        })
-        this.setData({
-          markers
-        })
+      app.event.on('setIdeas', async (ideas) => {
+        // idea 点击事件回调会返回此 id。建议为每个 idea 设置上 number 类型 id，保证更新 idea 时有更好的性能。
+        // 人话：如果没有 id，bindideatap 就不会被触发
+        for (let i = 0; i < ideas.length; i++) {
+          ideas[i].id = Number(ideas[i]._id)
+          if (!ideas[i].iconFile) {
+            // 如果想法没有图标路径则查询
+            ideas[i].iconPath = await app.ideaMng.getIdeaImage(ideas[i].markerIcon)
+          }
+        }
+        this.setData({ ideas })
       })
 
-      app.event.on('deleteMarker', (ideaId) => {
-        // 删除marker中某个指定id的marker
+      app.event.on('deleteIdea', (ideaId) => {
+        // 删除某个指定id的想法
         ideaId = Number(ideaId)
-        const markers = this.data.markers
+        const ideas = this.data.ideas
         // console.log('before')
-        // console.log(markers)
-        for (let i = 0; i < markers.length; i++) {
-          if (markers[i].id === ideaId) {
-            markers.splice(i, 1)
+        // console.log(ideas)
+        for (let i = 0; i < ideas.length; i++) {
+          if (ideas[i].id === ideaId) {
+            ideas.splice(i, 1)
             break
           }
         }
         // console.log('after')
-        // console.log(markers)
-        this.setData({ markers })
+        // console.log(ideas)
+        this.setData({ ideas })
       })
 
       app.event.on('getCenterRequest', (res) => {
@@ -107,14 +108,12 @@ Component({
 
       app.event.on('SingleIdeaUpdate', ({ _id, title, description }) => {
         console.log(_id, title, description)
-        const markers = this.data.markers
-        const single = markers.find(i => i._id === _id)
-        console.log(single, markers)
+        const ideas = this.data.ideas
+        const single = ideas.find(i => i._id === _id)
+        console.log(single, ideas)
         single.title = title
         single.description = description
-        this.setData({
-          markers
-        })
+        this.setData({ ideas })
       })
     }
   },
@@ -147,9 +146,9 @@ Component({
       })
     },
 
-    // 点击marker触发事件 修改想法
-    markertap: function (e) {
-      // TODO: 查看marker信息以及修改marker信息
+    // 点击想法触发事件 修改想法
+    ideatap: function (e) {
+      // TODO: 查看想法信息以及修改想法信息
       app.event.emit('viewIdea', e.detail.markerId)
     },
     // 移动地图触发
@@ -157,16 +156,14 @@ Component({
       const mapInstance = wx.createMapContext('testmap', this)
       if (e.causedBy === 'scale' && e.type === 'end') {
         // 缩放完成
-        const markers = this.data.markers
+        const ideas = this.data.ideas
         mapInstance.getScale({
           success: (res) => {
             const scale = res.scale
-            for (const m of markers) {
+            for (const m of ideas) {
               m.height = m.width = app.ideaMng.suitWH(m.likes, scale)
             }
-            this.setData({
-              markers: markers
-            })
+            this.setData({ ideas })
           }
 
         })
@@ -178,7 +175,6 @@ Component({
           const latitude = res.latitude
           const longitude = res.longitude
           if (this.data.latitude !== latitude || this.data.longitude !== longitude) {
-            console.log(latitude, longitude)
             this.setData({
               latitude: latitude,
               longitude: longitude

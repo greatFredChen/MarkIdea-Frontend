@@ -112,7 +112,7 @@ Component({
         if (res.result.code !== 204) {
           throw res
         }
-        app.event.emit('deleteMarker', this.data.ideaId)
+        app.event.emit('deleteIdea', this.data.ideaId)
       } catch (e) {
         wx.showToast({
           title: '删除失败',

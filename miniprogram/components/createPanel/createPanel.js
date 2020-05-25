@@ -38,22 +38,22 @@ Component({
       app.globalData.avatarUrl = e.detail.avatarUrl
       app.globalData.userInfo = e.detail.userInfo
     },
-    // 点击选定(创建marker位置)触发
-    settleMarker: function (e) {
-      // 放置 marker label
+    // 点击选定(创建想法位置)触发
+    settleIdea: function (e) {
+      // 放置 想法 label
       this.setData({
         addTellHidden: false
       })
     },
-    // 点击取消(创建marker位置)触发
-    cancelMarker: function () {
+    // 点击取消(创建创建位置)触发
+    cancelIdea: function () {
       app.event.emit('setcreating', false)
     },
     // 点击发布想法
-    createMarker: function () {
+    createIdea: function () {
       app.event.emit('setcreating', true)
     },
-    // 新建marker模态窗
+    // 新建想法模态窗
     async tapDialogButton (e) {
       const touch = e.detail.index
       if (touch === 1 && e.detail.title_input !== '') {
@@ -68,7 +68,7 @@ Component({
         })
         // 终止创建状态
         app.event.emit('setcreating', false)
-        app.event.emit('setMarkers', res)
+        app.event.emit('setIdeas', res)
       } else if (touch === 1) {
         // 标题为空
         wx.showToast({
