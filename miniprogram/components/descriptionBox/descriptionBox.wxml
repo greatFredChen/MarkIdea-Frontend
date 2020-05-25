@@ -1,6 +1,7 @@
 <view class="weui-dialog__hd">
   <strong class="weui-dialog__title">{{title}}</strong>
 </view>
+<slot></slot>
 <view class="weui-dialog__bd weui-dialog__hd__attach">
   <include src="../../comi/comi.wxml" />
   <view class="page">

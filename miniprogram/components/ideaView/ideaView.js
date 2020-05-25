@@ -16,9 +16,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    // 是否展示删除想法按钮, 如果用户查看的idea不属于自己则不显示
-    showDeleteButton: false,
-    show: false,
+    show: false, // 展示 ideaView
+    showPrivateBtns: false,
     title: '想法示例',
     description: '最近我去了一次海南看火箭发射，看的时候一脸懵逼，白烟是啥，黑线是啥，喷火的颜色又代表啥...为了下次看的时候不要再懵圈，我决定好好补一课！',
     author_id: -1,
@@ -29,8 +28,8 @@ Component({
       // }
     ],
     ideaId: String(-1),
-    OPENID: -1,
-    deleteDialogHidden: true
+    deleteDialogHidden: true,
+    buttons: [{ text: '取消' }, { text: '确认' }]
   },
 
   /**
@@ -63,7 +62,7 @@ Component({
           ...res.result,
           show: true,
           ideaId: String(ideaId),
-          showDeleteButton: app.globalData.openid === res.result.author_id
+          showPrivateBtns: app.globalData.openid === res.result.author_id
         })
       } catch (e) {
         console.log(e)
@@ -85,9 +84,13 @@ Component({
       // 点击了删除Idea按钮, 显示确认删除对话框
       this.setData({ deleteDialogHidden: false })
     },
-    deleteCancel () {
-      // 删除对话框点击了取消事件
-      this.setData({ deleteDialogHidden: true })
+    bindbuttontap (e) {
+      if (e.detail.index === 0) {
+        // 删除对话框点击了取消事件
+        this.setData({ deleteDialogHidden: true })
+      } else if (e.detail.index === 1) {
+        this.deleteConfirm()
+      }
     },
     async deleteConfirm () {
       // 删除对话框点击了确认删除事件
@@ -107,8 +110,6 @@ Component({
             backend_host: app.globalData.backendHost
           }
         })
-        // console.log('res')
-        // console.log(res)
         if (res.result.code !== 204) {
           throw res
         }
@@ -128,11 +129,6 @@ Component({
   lifetimes: {
     attached () {
       app.event.on('viewIdea', (ideaId) => {
-        // 为什么在此处 set OPENID？
-        // attached 中globalData 未初始化
-        this.setData({
-          OPENID: app.globalData.openid
-        })
         this.fetchIdea(ideaId)
       })
       app.event.on('viewIdeaLocalUpdate', ({ title, description }) => {

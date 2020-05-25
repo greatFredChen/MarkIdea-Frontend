@@ -32,6 +32,10 @@ Component({
         })
         console.log('likeButton:获取Idea点赞信息失败')
         console.log(err)
+      }).finally(() => {
+        this.setData({
+          loading: false
+        })
       })
     }
   },
@@ -50,7 +54,8 @@ Component({
   data: {
     liked: false,
     likes: 0,
-    enable: true // 是否有效, 防止用户短时间内多次操作出现bug
+    enable: true, // 是否有效, 防止用户短时间内多次操作出现bug
+    loading: true
   },
 
   /**

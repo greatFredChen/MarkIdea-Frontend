@@ -1,2 +1,5 @@
 /* components/AuthorizeDialog/AuthorizeDialog.wxss */
 @import "../../style/weui.wxss";
+.no-margin {
+  margin: 0;
+}

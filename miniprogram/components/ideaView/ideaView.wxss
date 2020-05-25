@@ -55,3 +55,15 @@
   right: 10px;
   top: 10px;
 }
+
+.weui-btn__attach {
+  line-height: 1.4;
+  height: 40px;
+  width: 100px !important;
+  margin-top: unset !important;
+}
+.weui-flex__attach {
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px 16px;
+}

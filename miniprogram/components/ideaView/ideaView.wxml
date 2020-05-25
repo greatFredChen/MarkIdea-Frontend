@@ -6,15 +6,13 @@
     <a class="close-topright" bindtap="close">
       <mp-icon icon="close" size="{{25}}"></mp-icon>
     </a>
-    {{app.globalData.openid}}
-    <description-box title="{{title}}" description="{{description}}" attach="{{attach}}"></description-box>
-    <view slot="btns" wx:if="{{author_id === OPENID}}">
-      <navigator class="weui-btn weui-btn_primary" url="/pages/ideaEdit/ideaEdit?type=Edit&_id={{ideaId}}&title={{title}}&description={{description}}">编辑</navigator>
-    </view>
-    <view class="weui-dialog__ft weui-dialog__ft__attach weui-dialog__ft__flex">
-      <like-button ideaId="{{ideaId}}"></like-button>
-      <button class="weui-btn weui-btn_warn" wx:if="{{showDeleteButton}}" bindtap="tapDeleteIdea">删除</button>
-    </view>
-    <delete-dialog wx:if="{{!deleteDialogHidden}}" binddeletecancel="deleteCancel" binddeleteconfirm="deleteConfirm"></delete-dialog>
+    <description-box title="{{title}}" description="{{description}}" attach="{{attach}}">
+      <view class="weui-flex weui-flex__attach">
+        <navigator wx:if="showPrivateBtns" class="weui-btn weui-btn_primary weui-btn__attach" url="/pages/ideaEdit/ideaEdit?type=Edit&_id={{ideaId}}&title={{title}}&description={{description}}">编辑</navigator>
+        <button wx:if="showPrivateBtns" class="weui-btn weui-btn_warn weui-btn__attach" bindtap="tapDeleteIdea">删除</button>
+        <like-button ideaId="{{ideaId}}"></like-button>
+      </view>
+    </description-box>
   </view>
 </view>
+<mp-dialog show="{{!deleteDialogHidden}}" title="删除想法" bindbuttontap="bindbuttontap" buttons="{{buttons}}">确认删除这个想法吗?</mp-dialog>
