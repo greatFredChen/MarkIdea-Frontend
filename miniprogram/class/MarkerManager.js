@@ -22,13 +22,14 @@ class MarkerManager {
       this.markerImgPath[fileId] = res.tempFilePath
       return res.tempFilePath
     } catch (e) {
-      // console.log('err')
-      // console.log(e)
+      console.log('err')
+      console.log(e)
       wx.showToast({
         title: '获取marker图标失败',
         icon: 'none',
         duration: 2000
       })
+      return 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
     }
   }
 }
