@@ -19,7 +19,7 @@ Component({
     latitude: 22.0,
     scale: 15,
     setting: {
-      subkey: 'EEGBZ-6NYWW-6YNR5-OMCQX-H3MJH-ATFFG'
+      subkey: '',
     },
     polyline: [],
     markers: [],
@@ -36,6 +36,13 @@ Component({
    */
   lifetimes: {
     async attached () {
+      // 设置地图key
+      this.setData({
+        setting: {
+          subkey: app.globalData.qqmapKey,
+        }
+      })
+
       // 获取用户坐标
       await this.getUserLocation()
 
