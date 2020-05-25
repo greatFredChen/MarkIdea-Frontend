@@ -1,5 +1,6 @@
 // components/wedeaMap/wedeaMap.js
 import { IdeaManager } from '../../class/IdeaManager'
+import { IdeaRankCalculator } from '../../class/IdeaRankCalculator'
 
 const app = getApp()
 
@@ -35,6 +36,13 @@ Component({
    * s生命周期
    */
   lifetimes: {
+    created () {
+      // 想法rank计算器
+      this.rankCalculator = new IdeaRankCalculator({
+        likes: 1
+      }, 0.5)
+    },
+
     async attached () {
       // 设置地图key
       this.setData({
@@ -69,13 +77,14 @@ Component({
       })
 
       app.event.on('setIdeas', async (ideas) => {
-        console.log('setIdeas')
-        console.log(ideas)
+        // console.log('setIdeas')
+        // console.log(ideas)
         // idea 点击事件回调会返回此 id。建议为每个 idea 设置上 number 类型 id，保证更新 idea 时有更好的性能。
         // 人话：如果没有 id，bindideatap 就不会被触发
+        const rank = this.rankCalculator.getIdeasRank(ideas)
         for (let i = 0; i < ideas.length; i++) {
           ideas[i].id = Number(ideas[i]._id)
-          ideas[i].height = ideas[i].width = this.suitWH(ideas[i].likes, this.data.scale)
+          ideas[i].height = ideas[i].width = this.suitWH(rank[i], this.data.scale)
           if (!ideas[i].iconFile) {
             // 如果想法没有图标路径则查询
             ideas[i].iconPath = await app.ideaMng.getIdeaImage(ideas[i].markerIcon)
@@ -115,6 +124,20 @@ Component({
         console.log(single, ideas)
         single.title = title
         single.description = description
+        this.setData({ ideas })
+      })
+
+      app.event.on('ideaLikesChange', ({ ideaId, likes }) => {
+        // 用户点赞想法事件相应
+        const ideas = this.data.ideas
+        const index = this.data.ideas.findIndex(i => i.id === Number(ideaId))
+        // console.log(ideaId, likes, index)
+        ideas[index].likes = likes
+        const rank = this.rankCalculator.getIdeasRank(ideas)
+        // console.log(rank)
+        for (let i = 0; i < ideas.length; i++) {
+          ideas[i].height = ideas[i].width = this.suitWH(rank[i], this.data.scale)
+        }
         this.setData({ ideas })
       })
     }
@@ -163,8 +186,9 @@ Component({
         mapInstance.getScale({
           success: (res) => {
             const scale = res.scale
-            for (const m of ideas) {
-              m.height = m.width = that.suitWH(m.likes, scale)
+            const rank = that.rankCalculator.getIdeasRank(ideas)
+            for (let i = 0; i < ideas.length; i++) {
+              ideas[i].height = ideas[i].width = that.suitWH(rank[i], scale)
             }
             that.setData({ ideas })
           }
@@ -186,13 +210,11 @@ Component({
       })
     },
 
-    // 根据缩放计算长宽
-    suitWH (cnt, scale) {
-      const base = 40.0
+    // 根据缩放和rank值计算长宽
+    suitWH (rank, scale) {
+      const base = 60.0
       const scaleBase = 20.0
-      // const iter = Math.log10;
-      const iter = (i) => Math.max(1, i)
-      return iter(cnt) * base * scale * scale / scaleBase / scaleBase
+      return rank * base * scale * scale / scaleBase / scaleBase
     }
   }
 })
