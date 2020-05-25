@@ -15,8 +15,7 @@ Component({
   data: {
     latitude: '',
     longitude: '',
-    domain_id: -1,
-    scale: -1
+    domain_id: -1
   },
 
   /**
@@ -27,8 +26,7 @@ Component({
       app.event.on('getCenter', (res) => {
         this.setData({
           latitude: res.latitude,
-          longitude: res.longitude,
-          scale: res.scale
+          longitude: res.longitude
         })
       })
     }
@@ -84,8 +82,7 @@ Component({
           }
         }).then(async res => {
           if (res.result.code === 200) {
-            app.event.emit('setIdeas',
-              await app.ideaMng.addIdeasAttr(res.result.idea, this.data.scale))
+            app.event.emit('setIdeas', res.result.idea)
           } else {
             console.log(res.result.code, res.result.error)
             throw new Error(res.result.msg)

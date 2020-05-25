@@ -69,10 +69,13 @@ Component({
       })
 
       app.event.on('setIdeas', async (ideas) => {
+        console.log('setIdeas')
+        console.log(ideas)
         // idea 点击事件回调会返回此 id。建议为每个 idea 设置上 number 类型 id，保证更新 idea 时有更好的性能。
         // 人话：如果没有 id，bindideatap 就不会被触发
         for (let i = 0; i < ideas.length; i++) {
           ideas[i].id = Number(ideas[i]._id)
+          ideas[i].height = ideas[i].width = this.suitWH(ideas[i].likes, this.data.scale)
           if (!ideas[i].iconFile) {
             // 如果想法没有图标路径则查询
             ideas[i].iconPath = await app.ideaMng.getIdeaImage(ideas[i].markerIcon)
@@ -101,8 +104,7 @@ Component({
       app.event.on('getCenterRequest', (res) => {
         app.event.emit('getCenter', {
           latitude: this.data.latitude,
-          longitude: this.data.longitude,
-          scale: this.data.scale
+          longitude: this.data.longitude
         })
       })
 
@@ -153,6 +155,7 @@ Component({
     },
     // 移动地图触发
     regionchange: function (e) {
+      const that = this
       const mapInstance = wx.createMapContext('testmap', this)
       if (e.causedBy === 'scale' && e.type === 'end') {
         // 缩放完成
@@ -161,11 +164,10 @@ Component({
           success: (res) => {
             const scale = res.scale
             for (const m of ideas) {
-              m.height = m.width = app.ideaMng.suitWH(m.likes, scale)
+              m.height = m.width = that.suitWH(m.likes, scale)
             }
-            this.setData({ ideas })
+            that.setData({ ideas })
           }
-
         })
       }
       // 获取地图中心坐标
@@ -182,6 +184,15 @@ Component({
           }
         }
       })
+    },
+
+    // 根据缩放计算长宽
+    suitWH (cnt, scale) {
+      const base = 40.0
+      const scaleBase = 20.0
+      // const iter = Math.log10;
+      const iter = (i) => Math.max(1, i)
+      return iter(cnt) * base * scale * scale / scaleBase / scaleBase
     }
   }
 })
