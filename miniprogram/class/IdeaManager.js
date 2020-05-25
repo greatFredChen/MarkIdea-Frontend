@@ -7,7 +7,7 @@ class IdeaManager {
     this.ideaImgPath = {}
   }
 
-  async createIdea (e) {
+  async createIdea (title, description) {
     let res = []
     let scale = 15
     let domainId = -1
@@ -53,10 +53,10 @@ class IdeaManager {
             latitude: latitude,
             longitude: longitude,
             author_id: this.app.globalData.openid,
-            title: e.detail.title_input,
+            title: title,
             created_at: currentTime,
             likes: 0,
-            description: e.detail.description_input,
+            description: description,
             width: this.suitWH(0, scale),
             height: this.suitWH(0, scale),
             // 云存储中的fileId
@@ -103,7 +103,11 @@ class IdeaManager {
     })
 
     // 成功完成整个插入过程
-    return await this.addIdeasAttr(ideas, scale)
+    // 更新到管理者持有的 idea 中
+    this.idea = await this.addIdeasAttr(ideas, scale)
+    // 此处为防止在类的外部修改 idea，进行了深拷贝，可能对性能有影响
+    // 如果能够保证传出的数据仅用于 setData，则可以免去深拷贝g'i
+    return JSON.parse(JSON.stringify(this.idea))
   }
 
   // 为ideas增加属性
@@ -145,6 +149,27 @@ class IdeaManager {
       console.log(e)
       return 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
     }
+  }
+
+  ideaEdit (_id, title, description) {
+    return wx.cloud.callFunction({
+      name: 'ideaEdit',
+      data: {
+        $url: 'ideaEdit',
+        title,
+        description,
+        _id
+      }
+    })
+  }
+
+  singleIdeaUpdate ({ _id, title, description }) {
+    console.log(_id, title, description)
+    const single = this.idea.find(i => i._id === _id)
+    console.log(single)
+    single.title = title
+    single.description = description
+    this.app.event.emit('setIdeas', this.idea)
   }
 }
 

@@ -105,16 +105,6 @@ Component({
           scale: this.data.scale
         })
       })
-
-      app.event.on('SingleIdeaUpdate', ({ _id, title, description }) => {
-        console.log(_id, title, description)
-        const ideas = this.data.ideas
-        const single = ideas.find(i => i._id === _id)
-        console.log(single, ideas)
-        single.title = title
-        single.description = description
-        this.setData({ ideas })
-      })
     }
   },
 

@@ -13,8 +13,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    switchButtonGroup: false,
-    addTellHidden: true
+    switchButtonGroup: false
   },
 
   lifetimes: {
@@ -23,6 +22,9 @@ Component({
         this.setData({
           switchButtonGroup
         })
+      })
+      app.event.on('createIdeaMiddleman', (payload) => {
+        this.createIdeaMiddleman(payload)
       })
     }
   },
@@ -41,8 +43,8 @@ Component({
     // 点击选定(创建想法位置)触发
     settleIdea: function (e) {
       // 放置 想法 label
-      this.setData({
-        addTellHidden: false
+      wx.navigateTo({
+        url: '/pages/ideaEdit/ideaEdit?type=Create'
       })
     },
     // 点击取消(创建创建位置)触发
@@ -53,36 +55,29 @@ Component({
     createIdea: function () {
       app.event.emit('setcreating', true)
     },
-    // 新建想法模态窗
-    async tapDialogButton (e) {
-      const touch = e.detail.index
-      if (touch === 1 && e.detail.title_input !== '') {
-        // 确认
-        // this.place_marker(e)
+    // 新建页面与管理者之间的中间人
+    async createIdeaMiddleman ({ title, description }) {
+      if (title !== '') {
         wx.showLoading({
           title: '创建中'
         })
-        const res = await app.ideaMng.createIdea(e)
-        this.setData({
-          addTellHidden: true
-        })
+        console.log(title, description)
+        const res = await app.ideaMng.createIdea(title, description)
         // 终止创建状态
         app.event.emit('setcreating', false)
         app.event.emit('setIdeas', res)
-      } else if (touch === 1) {
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建成功'
+        })
+      } else {
         // 标题为空
         wx.showToast({
           title: '标题不能为空',
           icon: 'none',
           duration: 1000
         })
-      } else {
-        // 取消按钮
-        this.setData({
-          addTellHidden: true
-        })
       }
-      wx.hideLoading()
     }
   }
 })

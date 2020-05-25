@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    type: '',
     title: '',
     description: '',
     inEditPreview: 0,
@@ -19,20 +20,21 @@ Page({
   bindEditUpdate (pck) {
     this.setData(pck.detail)
   },
-  async enter () {
+  enter () {
+    this[`enter${this.data.type}`]()
+  },
+  enterCreate () {
+    app.event.emit('createIdeaMiddleman', {
+      title: this.data.title,
+      description: this.data.description
+    })
+  },
+  async enterEdit () {
     try {
       wx.showLoading({
         title: '发送电波中...'
       })
-      await wx.cloud.callFunction({
-        name: 'ideaEdit',
-        data: {
-          $url: 'ideaEdit',
-          title: this.data.title,
-          description: this.data.description,
-          _id: this.data._id
-        }
-      })
+      await app.ideaMng.ideaEdit(this.data._id, this.data.title, this.data.description)
       app.event.emit('SingleIdeaUpdate', {
         _id: this.data._id,
         title: this.data.title,
@@ -53,15 +55,47 @@ Page({
       })
     }
   },
+  /**
+   * 在 onLoad 中调用
+   * @param {构造函数的和确认函数名字后缀 ['Create', 'Edit', 'Discuss']} type
+   * @param {负载} payload
+   */
+  async constructor (type, payload) {
+    const funcName = `load${type}`
+    if (Object.prototype.hasOwnProperty.call(this, funcName)) {
+      this[funcName](type, payload)
+    } else {
+      console.log(`构造函数[${funcName}]不存在`)
+      wx.showToast({
+        title: '喂！再往前就是地狱啊',
+        icon: 'none'
+      })
+      wx.navigateBack()
+    }
+  },
+  loadEdit (type, { _id, title, description }) {
+    this.setData({
+      type,
+      _id,
+      title,
+      description
+    })
+  },
+  loadCreate (type, payload) {
+    this.setData({
+      type
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function ({ _id, title, description }) {
-    this.setData({
-      _id,
-      title,
-      description
+  onLoad: function (querys) {
+    const type = querys.type
+    delete querys.type
+    this.constructor(type, querys)
+    app.event.on('closeEdit', () => {
+      wx.navigateBack()
     })
   },
 

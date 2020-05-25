@@ -9,12 +9,12 @@
     {{app.globalData.openid}}
     <description-box title="{{title}}" description="{{description}}" attach="{{attach}}"></description-box>
     <view slot="btns" wx:if="{{author_id === OPENID}}">
-      <navigator class="weui-btn weui-btn_primary" url="/pages/ideaEdit/ideaEdit?_id={{ideaId}}&title={{title}}&description={{description}}">编辑</navigator>
+      <navigator class="weui-btn weui-btn_primary" url="/pages/ideaEdit/ideaEdit?type=Edit&_id={{ideaId}}&title={{title}}&description={{description}}">编辑</navigator>
     </view>
     <view class="weui-dialog__ft weui-dialog__ft__attach weui-dialog__ft__flex">
       <like-button ideaId="{{ideaId}}"></like-button>
       <button class="weui-btn weui-btn_warn" wx:if="{{showDeleteButton}}" bindtap="tapDeleteIdea">删除</button>
     </view>
-    <delete-dialog wx:if="{{!deleteDialogHidden}}" binddeletecancel="deleteCancel"                binddeleteconfirm="deleteConfirm"></delete-dialog>
+    <delete-dialog wx:if="{{!deleteDialogHidden}}" binddeletecancel="deleteCancel" binddeleteconfirm="deleteConfirm"></delete-dialog>
   </view>
 </view>
