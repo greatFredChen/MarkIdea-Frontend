@@ -23,7 +23,7 @@ exports.main = async (event, context) => {
   // 并返回失败回调
   // 传入参数: event
   // {
-  //  marker 必要 Object 新创建Idea
+  //  idea 必要 Object 新创建Idea
   //  key 必要 String 后端密钥
   //  backendHost 必要 String 后端地址
   //  domain_id 必要 Idea所在domain的id
@@ -60,11 +60,11 @@ exports.main = async (event, context) => {
   }
 
   // Neo4j Insert Ok
-  // add a marker to the database
+  // add a idea to the database
   try {
     const res = await db.collection('Idea').add({
       data: {
-        ...event.marker,
+        ...event.idea,
         _id: String(ideaId)
       }
     })

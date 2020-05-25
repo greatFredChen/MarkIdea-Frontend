@@ -5,6 +5,7 @@ class IdeaManager {
     this.app = app
     this.map = map
     this.markerManager = new MarkerManager()
+    this.idea = []
   }
 
   async createIdea (e) {
@@ -19,18 +20,6 @@ class IdeaManager {
         latitude,
         longitude
       } = await this.map.getCenterLocation()
-      const marker = {
-        latitude: latitude,
-        longitude: longitude,
-        iconPath: '/images/marker.png', // 默认的图标不能放大
-        author_id: this.app.globalData.openid,
-        title: e.detail.title_input,
-        created_at: currentTime,
-        likes: 0,
-        description: e.detail.description_input,
-        width: this.suitWH(0, scale),
-        height: this.suitWH(0, scale)
-      }
 
       // 获取当前位置的domain_id
       await wx.cloud.callFunction({
@@ -61,14 +50,26 @@ class IdeaManager {
       res = await wx.cloud.callFunction({
         name: 'createIdea',
         data: {
-          marker: marker,
+          idea: {
+            latitude: latitude,
+            longitude: longitude,
+            author_id: this.app.globalData.openid,
+            title: e.detail.title_input,
+            created_at: currentTime,
+            likes: 0,
+            description: e.detail.description_input,
+            width: this.suitWH(0, scale),
+            height: this.suitWH(0, scale),
+            // 云存储中的fileId
+            markerIcon: 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
+          },
           key: this.app.globalData.backendKey,
           backendHost: this.app.globalData.backendHost,
           domain_id: domainId
         }
       })
-      if (res.result.code === -1) {
-        throw new Error()
+      if (res.result.code !== 201) {
+        throw res
       }
     } catch (e) {
       wx.showToast({
