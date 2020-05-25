@@ -1,11 +1,10 @@
-import { MarkerManager } from './MarkerManager'
 
 class IdeaManager {
   constructor (app, map) {
     this.app = app
     this.map = map
-    this.markerManager = new MarkerManager()
     this.idea = []
+    this.ideaImgPath = {}
   }
 
   async createIdea (e) {
@@ -81,7 +80,7 @@ class IdeaManager {
     }
 
     // 创建动作完成后，无论成不成功，都要获取当前地区的所有Idea
-    let markers = []
+    let ideas = []
     await wx.cloud.callFunction({
       name: 'getDomainContains',
       data: {
@@ -90,13 +89,13 @@ class IdeaManager {
       }
     }).then(res => {
       if (res.result.code === 200) {
-        markers = res.result.idea
+        ideas = res.result.idea
       } else {
         throw new Error()
       }
     }).catch(err => {
       wx.showToast({
-        title: '获取markers失败',
+        title: '获取想法失败',
         icon: 'none',
         duration: 2000
       })
@@ -104,17 +103,16 @@ class IdeaManager {
     })
 
     // 成功完成整个插入过程
-    return await this.addMarkerAttr(markers, scale)
+    return await this.addIdeasAttr(ideas, scale)
   }
 
-  // 为marker增加属性
-  async addMarkerAttr (markers, scale) {
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].iconPath = await this.markerManager.getMarkerImage(markers[i].markerIcon)
-      markers[i].width = this.suitWH(markers[i].likes, scale)
-      markers[i].height = this.suitWH(markers[i].likes, scale)
+  // 为ideas增加属性
+  async addIdeasAttr (ideas, scale) {
+    for (let i = 0; i < ideas.length; i++) {
+      ideas[i].width = this.suitWH(ideas[i].likes, scale)
+      ideas[i].height = this.suitWH(ideas[i].likes, scale)
     }
-    return markers
+    return ideas
   }
 
   suitWH (cnt, scale) {
@@ -123,6 +121,30 @@ class IdeaManager {
     // const iter = Math.log10;
     const iter = (i) => Math.max(1, i)
     return iter(cnt) * base * scale * scale / scaleBase / scaleBase
+  }
+
+  async getIdeaImage (fileId) {
+    // 获取图片路径, 不存在则请求云存储
+    // console.log('fileId')
+    // console.log(fileId)
+    if (this.ideaImgPath[fileId]) {
+      // console.log('idea img cache hit')
+      return this.ideaImgPath[fileId]
+    }
+    try {
+      const res = await wx.cloud.downloadFile({ fileID: fileId })
+      // console.log('res')
+      // console.log(res)
+      if (res.statusCode !== 200) {
+        throw res
+      }
+      this.ideaImgPath[fileId] = res.tempFilePath
+      return res.tempFilePath
+    } catch (e) {
+      console.log('获取想法图标失败')
+      console.log(e)
+      return 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
+    }
   }
 }
 
