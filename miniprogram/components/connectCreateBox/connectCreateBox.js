@@ -14,7 +14,7 @@ Component({
     directional: 0,
     directionalArray: ['无向边', '有向边'],
     desCount: 0,
-    inputValue: '',
+    inputValue: ''
   },
 
   /**

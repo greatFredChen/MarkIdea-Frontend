@@ -14,7 +14,7 @@ class IdeaConnectManager {
    *  type 关系类型
    * }
    */
-  async createConnect(event) {
+  async createConnect (event) {
     if (event.type === '') {
       wx.showToast({
         title: '关联关系类型不能为空!',
@@ -25,10 +25,10 @@ class IdeaConnectManager {
     }
     // 若输入框不为空，则进行连接
     wx.showLoading({
-      title: '正在连接中....',
+      title: '正在连接中....'
     })
     try {
-      let res = await wx.cloud.callFunction({
+      const res = await wx.cloud.callFunction({
         name: 'createRelationship',
         data: {
           backendHost: this.app.globalData.backendHost,
@@ -36,10 +36,10 @@ class IdeaConnectManager {
           from: event.from,
           to: event.to,
           directional: event.directional,
-          type: event.type,
+          type: event.type
         }
       })
-      if (res.result.code != 201) {
+      if (res.result.code !== 201) {
         throw new Error(res.result.error)
       }
     } catch (err) {
@@ -55,8 +55,31 @@ class IdeaConnectManager {
   }
 
   // 画出连接
-  async drawConnect (relationship) {
-    
+  drawConnect (relationship) {
+    const ret = []
+    // 获取引用
+    const mp = this.app.ideaMng.ideaMap
+    for (const r of relationship) {
+      const from = mp.get(Number(r.from))
+      const to = mp.get(Number(r.to))
+      ret.push({
+        points: [
+          {
+            latitude: from.latitude,
+            longitude: from.longitude
+          },
+          {
+            latitude: to.latitude,
+            longitude: to.longitude
+          }
+        ],
+        arrowLine: r.directional === 1, // 开发者工具暂时不支持箭头
+        color: '#607D8B',
+        width: 4
+        // color, width, dottedLine, arrowIconPath, borderColor, borderWidth
+      })
+    }
+    return ret
   }
 }
 

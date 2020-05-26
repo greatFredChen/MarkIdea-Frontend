@@ -1,5 +1,5 @@
 class DomainManager {
-  constructor(app, map) {
+  constructor (app, map) {
     this.app = app
     this.map = map
   }
@@ -48,7 +48,7 @@ class DomainManager {
    * {
    *  domain_id
    * }
-   */ 
+   */
   async getDomainContains (event) {
     return new Promise((resolve, reject) => {
       wx.cloud.callFunction({
@@ -59,8 +59,7 @@ class DomainManager {
         }
       }).then(async res => {
         if (res.result.code === 200) {
-          this.app.event.emit('setIdeas', res.result.idea)
-          this.app.event.emit('setRelationship', res.result.relationship)
+          this.app.event.emit('setIdeas', { ideas: res.result.idea, relationship: res.result.relationship })
           resolve(res.result)
         } else {
           throw new Error(res.result.msg)
@@ -71,8 +70,7 @@ class DomainManager {
           icon: 'none',
           duration: 2000
         })
-        this.app.event.emit('setIdeas', [])
-        this.app.event.emit('setRelationship', [])
+        this.app.event.emit('setIdeas', { ideas: [], relationship: [] })
         reject(err)
       })
     })

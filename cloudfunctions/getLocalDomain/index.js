@@ -142,8 +142,8 @@ async function _createRegionDomainTransaction (params) {
     }
     throw err
   }
-  return { 
-    code: 201, 
+  return {
+    code: 201,
     domain: {
       domainId: domainId
     }

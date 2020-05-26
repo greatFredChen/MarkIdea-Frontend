@@ -4,6 +4,11 @@ class IdeaManager {
     this.app = app
     this.map = map
     this.ideaImgPath = {}
+    // ideaMap 里存放着映射 id => idea，这个映射的构建在 event setIdeas 时完成
+    // 绘制 polyline 想法关联需要使用这个映射，因此绘制动作可以发生在 ideaMap 更新之后
+    this.ideaMap = new Map()
+    // debug
+    // wx.ideaMng = this
   }
 
   async createIdea (title, description) {

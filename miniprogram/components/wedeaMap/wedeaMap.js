@@ -11,7 +11,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    linkMode: Boolean,
+    linkMode: Boolean
   },
 
   /**
@@ -33,20 +33,11 @@ Component({
     },
     domain_id: -1
   },
-
-  /**
-   * s生命周期
-   */
-  lifetimes: {
-    created () {
-      // 想法rank计算器
-      this.rankCalculator = new IdeaRankCalculator({
-        likes: 1
-      }, 0.5)
-    },
-
-    async attached () {
+  pageLifetimes: {
+    async show () {
+      // 当页面被展示
       // 设置地图key
+      console.log('wedeaMap 正在重新初始化')
       this.setData({
         setting: {
           subkey: app.globalData.qqmapKey
@@ -74,18 +65,25 @@ Component({
         }
       })
 
+      // 想法rank计算器
+      this.rankCalculator = new IdeaRankCalculator({
+        likes: 1
+      }, 0.5)
+
       app.event.on('setCrossImage', (showCrossImage) => {
         this.setData({
           showCrossImage
         })
       })
 
-      app.event.on('setIdeas', async (ideas) => {
+      app.event.on('setIdeas', async ({ ideas, relationship }) => {
         // console.log('setIdeas')
         // console.log(ideas)
         // idea 点击事件回调会返回此 id。建议为每个 idea 设置上 number 类型 id，保证更新 idea 时有更好的性能。
         // 人话：如果没有 id，bindideatap 就不会被触发
         const rank = this.rankCalculator.getIdeasRank(ideas)
+        // 充值 idea 的哈希表
+        app.ideaMng.ideaMap.clear()
         for (let i = 0; i < ideas.length; i++) {
           ideas[i].id = Number(ideas[i]._id)
           ideas[i].height = ideas[i].width = this.suitWH(rank[i], this.data.scale)
@@ -93,13 +91,18 @@ Component({
             // 如果想法没有图标路径则查询
             ideas[i].iconPath = await app.ideaMng.getIdeaImage(ideas[i].markerIcon)
           }
+          // 设置到 ideaManager map, 加快处理速度
+          app.ideaMng.ideaMap.set(ideas[i].id, ideas[i])
         }
         this.setData({ ideas })
+        // ideaMap 已经生成
+        // 进行 polyline 绘制
+        app.event.emit('setRelationship', relationship)
       })
 
-      app.event.on('setRelationship', async (relationships) => {
+      app.event.on('setRelationship', (relationships) => {
         // 事件转发，绘图
-        let polyline = await app.ideaConnectMng.drawConnect(relationships)
+        const polyline = app.ideaConnectMng.drawConnect(relationships)
         this.setData({
           polyline
         })
@@ -129,7 +132,7 @@ Component({
         })
       })
 
-      app.event.on('SingleIdeaUpdate', ({ _id, title, description }) => {
+      app.event.on('singleIdeaUpdate', ({ _id, title, description }) => {
         // console.log(_id, title, description)
         const ideas = this.data.ideas
         const single = ideas.find(i => i._id === _id)
@@ -137,6 +140,7 @@ Component({
         single.title = title
         single.description = description
         this.setData({ ideas })
+        app.ideaMap.ideaMap.set(_id, single)
       })
 
       app.event.on('ideaLikesChange', ({ ideaId, likes }) => {
@@ -152,6 +156,16 @@ Component({
         }
         this.setData({ ideas })
       })
+    },
+    hide () {
+      console.log('wedeaMap 隐藏')
+      // app.event.off('ideaLikesChange')
+      // app.event.off('singleIdeaUpdate')
+      // app.event.off('getCenterRequest')
+      // app.event.off('deleteIdea')
+      // app.event.off('setRelationship')
+      // app.event.off('setIdeas')
+      // app.event.off('setCrossImage')
     }
   },
 

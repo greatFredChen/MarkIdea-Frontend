@@ -15,7 +15,7 @@ Component({
   data: {
     latitude: '',
     longitude: '',
-    domain: {},
+    domain: {}
   },
 
   /**
@@ -58,7 +58,7 @@ Component({
         const e = {
           domain_id: domain.domainId
         }
-        const res = await app.domainMng.getDomainContains(e)
+        await app.domainMng.getDomainContains(e)
       } catch (e) {
         console.log(e)
         wx.showToast({
@@ -66,7 +66,7 @@ Component({
           icon: 'none',
           duration: 2000
         })
-        app.event.emit('setIdeas', [])
+        app.event.emit('setIdeas', { ideas: [], relationShip: [] })
       }
       wx.hideLoading()
     }

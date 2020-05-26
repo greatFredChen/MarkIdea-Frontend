@@ -51,8 +51,8 @@ exports.main = async (event, context) => {
     }
   }
 
-  let ideaList = []
-  for(let each in idea) {
+  const ideaList = []
+  for (const each in idea) {
     // console.log(String(each))
     ideaList.push(String(each))
   }
@@ -71,14 +71,14 @@ exports.main = async (event, context) => {
   const result = await db.collection('Idea')
     .where({ _id: cmd.in(ideaList) }).get()
   // console.log(result)
-  let res = result.data
-  for(let i = 0; i < res.length; i++) {
-    let eachIdea = res[i]
+  const res = result.data
+  for (let i = 0; i < res.length; i++) {
+    const eachIdea = res[i]
     // console.log('eachIdea')
     // console.log(eachIdea)
-    let id = Number(eachIdea._id)
+    const id = Number(eachIdea._id)
     eachIdea.id = id
-    let labels = idea[id].labels
+    const labels = idea[id].labels
     if (labels) {
       eachIdea.labels = labels
     }

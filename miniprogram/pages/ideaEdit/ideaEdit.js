@@ -39,7 +39,7 @@ Page({
       if (res.result.code !== 0) {
         throw res
       }
-      app.event.emit('SingleIdeaUpdate', {
+      app.event.emit('singleIdeaUpdate', {
         _id: this.data._id,
         title: this.data.title,
         description: this.data.description

@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "UI组件库",
+  "navigationBarTitleText": "关联想法",
   "usingComponents": {
     "mp-navigation-bar": "../weui-miniprogram/miniprogram_dist/navigation-bar/navigation-bar",
     "wedea-map": "../components/wedeaMap/wedeaMap",

@@ -30,5 +30,5 @@ App({
   event: new Event(),
   ideaMng: [],
   ideaConnectMng: [],
-  domainMng: [],
+  domainMng: []
 })

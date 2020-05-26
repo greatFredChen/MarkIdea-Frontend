@@ -14,10 +14,3 @@
   text-align: center;
   border-radius: 10px;
 }
-
-.weui-dialog__ft__flex {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}

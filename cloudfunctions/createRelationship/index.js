@@ -34,9 +34,9 @@ exports.main = async (event, context) => {
    * }
    */
   const BASEURL = event.backendHost // 后端ip地址
-  let relation_id = -1
+  let relationId = -1
   try {
-    let res = await axios.post(`${BASEURL}/idea/create_relationship`, qs.stringify({
+    const res = await axios.post(`${BASEURL}/idea/create_relationship`, qs.stringify({
       key: event.key,
       from: event.from,
       to: event.to,
@@ -47,7 +47,7 @@ exports.main = async (event, context) => {
     if (res.data.relation_id === undefined) {
       throw new Error()
     }
-    relation_id = res.data.relation_id
+    relationId = res.data.relation_id
   } catch (error) {
     console.log(error)
     return {
@@ -59,6 +59,6 @@ exports.main = async (event, context) => {
 
   return {
     code: 201,
-    relation_id: relation_id
+    relation_id: relationId
   }
 }

@@ -16,14 +16,14 @@ Component({
     fromId: -1,
     directional: 0,
     relationType: '',
-    toId: -1,
+    toId: -1
   },
 
   /**
    * 组件的生命周期
    */
   lifetimes: {
-    attached() {
+    attached () {
       // 连接窗口显示
       app.event.on('hideConnectDialog', (connectDialogHidden) => {
         this.setData({
@@ -57,11 +57,11 @@ Component({
    */
   methods: {
     async confirmLink () {
-      let event = {
+      const event = {
         from: this.data.fromId,
         to: this.data.toId,
         directional: this.data.directional,
-        type: this.data.relationType,
+        type: this.data.relationType
       }
       await app.ideaConnectMng.createConnect(event)
     },
