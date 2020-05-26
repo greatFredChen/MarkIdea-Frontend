@@ -74,7 +74,7 @@ Page({
         title: '喂！再往前就是地狱啊',
         icon: 'none'
       })
-      wx.navigateBack()
+      // wx.navigateBack()
     }
   },
   loadEdit (type, { _id, title, description }) {

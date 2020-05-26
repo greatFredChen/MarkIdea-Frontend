@@ -28,5 +28,7 @@ App({
     }
   },
   event: new Event(),
-  ideaMng: []
+  ideaMng: [],
+  ideaConnectMng: [],
+  domainMng: [],
 })

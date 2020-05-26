@@ -1,0 +1,8 @@
+<!--miniprogram/pages/ideaLink/ideaLink.wxml-->
+<mp-navigation-bar title="想法连接" back="{{true}}">
+</mp-navigation-bar>
+<view class="container map-view page__bd page__bd_spacing">
+  <wedea-map class="map_size" linkMode="{{true}}"></wedea-map>
+  <connect-dialog></connect-dialog>
+  <refresh></refresh>
+</view>

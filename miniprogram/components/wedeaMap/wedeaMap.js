@@ -1,6 +1,8 @@
 // components/wedeaMap/wedeaMap.js
 import { IdeaManager } from '../../class/IdeaManager'
 import { IdeaRankCalculator } from '../../class/IdeaRankCalculator'
+import { IdeaConnectManager } from '../../class/IdeaConnectManager'
+import { DomainManager } from '../../class/DomainManager'
 
 const app = getApp()
 
@@ -9,7 +11,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    linkMode: Boolean,
   },
 
   /**
@@ -58,6 +60,8 @@ Component({
       const mapInstance = wx.createMapContext('testmap', this)
 
       app.ideaMng = new IdeaManager(app, mapInstance)
+      app.ideaConnectMng = new IdeaConnectManager(app, mapInstance)
+      app.domainMng = new DomainManager(app, mapInstance)
 
       mapInstance.getRegion({
         success: (res) => {
@@ -91,6 +95,14 @@ Component({
           }
         }
         this.setData({ ideas })
+      })
+
+      app.event.on('setRelationship', async (relationships) => {
+        // 事件转发，绘图
+        let polyline = await app.ideaConnectMng.drawConnect(relationships)
+        this.setData({
+          polyline
+        })
       })
 
       app.event.on('deleteIdea', (ideaId) => {
@@ -174,7 +186,12 @@ Component({
     // 点击想法触发事件 修改想法
     ideatap: function (e) {
       // TODO: 查看想法信息以及修改想法信息
-      app.event.emit('viewIdea', e.detail.markerId)
+      if (!this.properties.linkMode) {
+        app.event.emit('viewIdea', e.detail.markerId)
+      } else { // 连接Idea模式
+        app.event.emit('hideConnectDialog', false)
+        app.event.emit('getToId', e.detail.markerId)
+      }
     },
     // 移动地图触发
     regionchange: function (e) {

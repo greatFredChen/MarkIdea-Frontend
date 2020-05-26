@@ -1,0 +1,15 @@
+<!--components/connectIdeaDialog/connectIdeaDialog.wxml-->
+<view class="fadeIn" wx:if="{{!connectDialogHidden}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+      <strong class="weui-dialog__title mt20">连接窗口</strong>
+      <connect-box bind:directChange="directChange" bind:inputChange="inputChange">
+      </connect-box>
+      <view class="weui-dialog__ft weui-dialog__ft__flex">
+        <button class="weui-dialog__btn weui-dialog__btn_primary"
+        bindtap="confirmLink">确定</button>
+        <button class="weui-dialog__btn weui-dialog__btn_primary"
+        bindtap="cancelLink">取消</button>
+      </view>
+    </view>
+</view>

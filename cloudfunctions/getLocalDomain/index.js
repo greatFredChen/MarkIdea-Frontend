@@ -142,7 +142,12 @@ async function _createRegionDomainTransaction (params) {
     }
     throw err
   }
-  return { code: 201, domain_id: domainId }
+  return { 
+    code: 201, 
+    domain: {
+      domainId: domainId
+    }
+  }
 }
 
 // 云函数入口函数
@@ -220,7 +225,9 @@ exports.main = async (event, context) => {
     // 找到对应的domain
     return {
       code: 200,
-      domainId: domainId
+      domain: {
+        domainId: domainId
+      }
     }
   }
 
@@ -245,6 +252,8 @@ exports.main = async (event, context) => {
   // 不创建新的domain
   return {
     code: 200,
-    domainId: -1
+    domain: {
+      domainId: -1
+    }
   }
 }
