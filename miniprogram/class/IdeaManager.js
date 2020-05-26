@@ -18,12 +18,12 @@ class IdeaManager {
     db.collection('StaticResource').where({
       type: 'ideaIcon'
     }).get().then(res => {
-      let ideaIconList = res.data
+      const ideaIconList = res.data
       if (ideaIconList.length <= 0) {
         return
       }
       this.defaultIconId = ideaIconList[1]._id
-      for(let i = 0; i < ideaIconList.length; i++) {
+      for (let i = 0; i < ideaIconList.length; i++) {
         const fileId = ideaIconList[i].fileId
         this.iconFileRecord[Number(ideaIconList[i]._id)] = ideaIconList[i]
         wx.cloud.downloadFile({ fileID: fileId }).then(res => {
@@ -36,7 +36,7 @@ class IdeaManager {
     }).catch()
   }
 
-  async createIdea (title, description) {
+  async createIdea (title, description, markerIcon) {
     let res = []
     let domainId = -1
     try {
@@ -84,7 +84,7 @@ class IdeaManager {
             likes: 0,
             description: description,
             // 云存储中的fileId
-            markerIcon: this.defaultIconId  // 目前先选择默认, 这个是id
+            markerIcon // 传入的 markerIcon
           },
           key: this.app.globalData.backendKey,
           backendHost: this.app.globalData.backendHost,
@@ -139,13 +139,13 @@ class IdeaManager {
       // 没有查到图标id, 查询云数据库是否有这个图标id对应的文件记录
       try {
         let res = await db.collection('StaticResource').doc(String(markerIconId)).get()
-        let resIcon = res.data
+        const resIcon = res.data
         this.iconFileRecord[Number(resIcon._id)] = resIcon
         const fileId = resIcon.fileId
         res = await wx.cloud.downloadFile({ fileID: fileId })
         if (res.statusCode === 200) {
           this.ideaImgPath[fileId] = res.tempFilePath
-          return res.tempFilePath 
+          return res.tempFilePath
         }
         throw Error('下载图标文件失败')
       } catch (err) {
@@ -160,7 +160,7 @@ class IdeaManager {
     }
 
     fileId = this.iconFileRecord[markerIconId].fileId
-    
+
     if (this.ideaImgPath[fileId]) {
       // console.log('idea img cache hit')
       return this.ideaImgPath[fileId]

@@ -51,7 +51,7 @@ Component({
             latitude: this.data.latitude,
             longitude: this.data.longitude,
             key: app.globalData.qqmapKey,
-            create_domain: false,
+            create_domain: false
           }
         }).then(res => {
           if (res.result.code === 201 || res.result.code === 200) {

@@ -56,13 +56,13 @@ Component({
       app.event.emit('setcreating', true)
     },
     // 新建页面与管理者之间的中间人
-    async createIdeaMiddleman ({ title, description }) {
+    async createIdeaMiddleman ({ title, description, markerIcon }) {
       if (title !== '') {
         wx.showLoading({
           title: '创建中'
         })
         // console.log(title, description)
-        const res = await app.ideaMng.createIdea(title, description)
+        const res = await app.ideaMng.createIdea(title, description, markerIcon)
         // 终止创建状态
         app.event.emit('setcreating', false)
         app.event.emit('setIdeas', res)

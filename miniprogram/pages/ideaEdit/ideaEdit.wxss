@@ -18,6 +18,11 @@
   border-radius: 0 4px 4px 0;
 }
 
+page {
+  background: unset;
+}
+
+.view-flex,
 .flex-wrp__attach {
   width: 100%;
   display: flex;
@@ -26,7 +31,13 @@
   justify-content: center;
 }
 
-page {
-  background: unset;
+.view-flex {
+  text-align: center;
+  color: var(--weui-FG-1);
 }
 
+.bg150px {
+  width: 150px;
+  height: 150px;
+  background-color: #eeeeee;
+}
