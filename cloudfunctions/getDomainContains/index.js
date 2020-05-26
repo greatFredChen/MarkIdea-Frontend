@@ -40,6 +40,7 @@ exports.main = async (event, context) => {
       method: 'GET',
       responseType: 'json'
     })
+    // console.log(res)
     idea = res.data.idea
     relationship = res.data.relationship
   } catch (error) {
@@ -49,7 +50,15 @@ exports.main = async (event, context) => {
       code: error.response.status ? error.response.status : 500
     }
   }
-  if (idea.length === 0) {
+
+  let ideaList = []
+  for(let each in idea) {
+    // console.log(String(each))
+    ideaList.push(String(each))
+  }
+  // console.log('ideaList')
+  // console.log(ideaList)
+  if (ideaList.length === 0) {
     // 如果没有id, 则直接返回
     return {
       code: 200,
@@ -59,11 +68,21 @@ exports.main = async (event, context) => {
   }
 
   // 查询云数据库补全idea信息
-  const ideaIdList = idea.map(String)
-  console.log(ideaIdList)
   const result = await db.collection('Idea')
-    .where({ _id: cmd.in(ideaIdList) }).get()
-  console.log(result)
+    .where({ _id: cmd.in(ideaList) }).get()
+  // console.log(result)
+  let res = result.data
+  for(let i = 0; i < res.length; i++) {
+    let eachIdea = res[i]
+    // console.log('eachIdea')
+    // console.log(eachIdea)
+    let id = Number(eachIdea._id)
+    eachIdea.id = id
+    let labels = idea[id].labels
+    if (labels) {
+      eachIdea.labels = labels
+    }
+  }
   return {
     code: 200,
     idea: result.data,
