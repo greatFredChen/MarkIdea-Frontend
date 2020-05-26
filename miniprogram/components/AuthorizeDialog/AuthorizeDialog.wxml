@@ -1,18 +1,17 @@
 <!--components/AuthorizeDialog/AuthorizeDialog.wxml-->
 <view class="fadeIn" wx:if="{{!authorizeHidden}}">
-    <view class="weui-mask"></view>
-    <view class="weui-dialog">
-      <view class="weui-dialog__hd">
-        <strong class="weui-dialog__title">授权</strong>
-      </view>
-      <view class="weui-dialog__bd">
-        Wedea将获得你的用户个人信息(昵称，头像等)
-      </view>
-      <view class="weui-dialog__ft">
-        <button class="weui-dialog__btn weui-dialog__btn_primary"
-        open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
-          授权
-        </button>
-      </view>
+  <view class="weui-mask"></view>
+  <view class="weui-dialog">
+    <view class="weui-dialog__hd">
+      <strong class="weui-dialog__title">授权</strong>
     </view>
+    <view class="weui-dialog__bd">
+      Wedea将获得你的用户个人信息(昵称，头像等)
+    </view>
+    <view class="weui-dialog__ft">
+      <button class="weui-dialog__btn weui-dialog__btn_primary no-margin" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
+        授权
+      </button>
+    </view>
+  </view>
 </view>

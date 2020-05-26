@@ -21,7 +21,7 @@
 .weui-dialog__ft__attach {
   display: block;
   position: absolute;
-  bottom: 0;
+  bottom: 16px;
   width: 100%;
 }
 
@@ -31,6 +31,7 @@
 
 .weui-article__p__attach {
   color: var(--weui-FG-1);
+  height: 50px;
 }
 
 .weui-dialog__ft__flex {
@@ -50,8 +51,10 @@
   border-radius: 10px;
 }
 
-.close-topright {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+.icon__attach {
+  margin-left: 14px;
+}
+
+.weui-flex__attach {
+  justify-content: flex-end;
 }

@@ -6,7 +6,7 @@ class IdeaManager {
     this.ideaImgPath = {}
   }
 
-  async createIdea (e) {
+  async createIdea (title, description) {
     let res = []
     let domainId = -1
     try {
@@ -49,10 +49,10 @@ class IdeaManager {
             latitude: latitude,
             longitude: longitude,
             author_id: this.app.globalData.openid,
-            title: e.detail.title_input,
+            title: title,
             created_at: currentTime,
             likes: 0,
-            description: e.detail.description_input,
+            description: description,
             // 云存储中的fileId
             markerIcon: 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
           },
@@ -122,6 +122,18 @@ class IdeaManager {
       console.log(e)
       return 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
     }
+  }
+
+  ideaEdit (_id, title, description) {
+    return wx.cloud.callFunction({
+      name: 'ideaEdit',
+      data: {
+        $url: 'ideaEdit',
+        title,
+        description,
+        _id
+      }
+    })
   }
 }
 

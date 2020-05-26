@@ -7,5 +7,4 @@
     <button class="weui-btn weui-btn_primary" bindtap="settleIdea">选定</button>
     <button class="weui-btn weui-btn_primary" bindtap="cancelIdea">取消</button>
   </view>
-  <idea-dialog addTellHidden="{{addTellHidden}}" bind:dialogButton="tapDialogButton"></idea-dialog>
 </view>

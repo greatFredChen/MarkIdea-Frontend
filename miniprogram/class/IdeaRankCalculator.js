@@ -25,7 +25,7 @@ class IdeaRankCalculator {
       let std = 0
       let data = new Array(ideas.length)
       for (let i = 0; i < data.length; i++) {
-        const num = Number(ideas[i][metricType])
+        const num = ideas[i][metricType] ? Number(ideas[i][metricType]) : 0
         data[i] = num
         mean += num
       }
@@ -33,7 +33,7 @@ class IdeaRankCalculator {
       mean /= data.length
       for (let i = 0; i < data.length; i++) {
         const num = data[i] - mean
-        std += num * num
+        std += Math.sqrt(num * num)
       }
       if (std === 0) {
         data = (new Array(data.length)).fill(0.5)
