@@ -13,8 +13,7 @@ Page({
     _id: -1,
     markerIcon: -1,
     icons: [],
-    iconFileRecord: {},
-    ideaImgPath: {},
+    ideaIconRecordList: [],
     latitude: -1, // 地图中心纬度
     longitude: -1 // 地图中心经度
   },
@@ -38,7 +37,7 @@ Page({
     app.event.emit('createIdeaMiddleman', {
       title: this.data.title,
       description: this.data.description,
-      markerIcon: this.data.markerIcon
+      markerIcon: this.data.ideaIconRecordList[this.data.markerIcon].id
     })
   },
   async enterEdit () {
@@ -46,22 +45,22 @@ Page({
       wx.showLoading({
         title: '发送电波中...'
       })
-      const res = await app.ideaMng.ideaEdit(this.data._id, this.data.title, this.data.description)
-      // console.log(res)
-      if (res.result.code !== 0) {
-        throw res
-      }
-      app.event.emit('singleIdeaUpdate', {
-        _id: this.data._id,
+      const idea = app.ideaManager.ideas.get(Number(this.data._id))
+      // 获得icon的资源id
+      const markerIcon = this.data.ideaIconRecordList[this.data.markerIcon].id
+      await idea.edit({
         title: this.data.title,
-        description: this.data.description
+        description: this.data.description,
+        markerIcon: markerIcon
       })
       app.event.emit('viewIdeaLocalUpdate', {
         title: this.data.title,
         description: this.data.description
       })
       wx.hideLoading()
-      wx.showToast()
+      wx.showToast({
+        title: '修改成功'
+      })
     } catch (err) {
       console.log(err)
       wx.hideLoading()
@@ -81,7 +80,7 @@ Page({
     if (Object.prototype.hasOwnProperty.call(this, funcName)) {
       // 公共构造
       const icons = []
-      for (const [id, value] of Object.entries(app.ideaMng.iconFileRecord)) {
+      for (const [id, value] of Object.entries(app.resourceManager.ideaIconRecordList)) {
         icons.push({
           id,
           name: value.name
@@ -89,8 +88,7 @@ Page({
       }
       this.setData({
         icons,
-        ideaImgPath: app.ideaMng.ideaImgPath,
-        iconFileRecord: app.ideaMng.iconFileRecord
+        ideaIconRecordList: app.resourceManager.ideaIconRecordList
       })
       // 各自的构造
       this[funcName](type, payload)

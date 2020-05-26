@@ -70,10 +70,21 @@ Component({
           title: '创建中'
         })
         // console.log(title, description)
-        await app.ideaMng.createIdea(title, description, markerIcon,
-          this.data.latitude, this.data.longitude)
+        try {
+          await app.ideaManager.createIdea(title, description, markerIcon,
+            this.data.latitude, this.data.longitude)
+        } catch (err) {
+          wx.showToast({
+            title: '创建失败',
+            icon: 'none',
+            duration: 2000
+          })
+          console.log('创建想法失败')
+          console.log(err)
+        }
         // 终止创建状态
         app.event.emit('setcreating', false)
+        app.event.emit('refreshLocalDomain')
         wx.hideLoading()
         wx.showToast({
           title: '创建成功'

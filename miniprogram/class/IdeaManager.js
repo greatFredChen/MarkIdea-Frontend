@@ -1,180 +1,160 @@
-const db = wx.cloud.database()
+import { IdeaRankCalculator } from './IdeaRankCalculator'
+import { Idea } from './Idea'
+
+const app = getApp()
 
 class IdeaManager {
-  constructor (app) {
-    this.app = app
-    this.ideaImgPath = {}
-    // ideaMap 里存放着映射 id => idea，这个映射的构建在 event setIdeas 时完成
+  constructor () {
+    this._rankCalculator = new IdeaRankCalculator({
+      likes: 1
+    }, {}, 0.5)
+    // ideas 里存放着映射 id => idea，这个映射的构建在 event setIdeas 里完成
     // 绘制 polyline 想法关联需要使用这个映射，因此绘制动作可以发生在 ideaMap 更新之后
-    this.ideaMap = new Map()
-    // debug
-    // wx.ideaMng = this
-    // 图标id到云存储file记录的映射
-    this.iconFileRecord = {}
-    // 默认图标id
-    this.defaultIconId = null
-    this.getIdeaImageList()
+    this.ideas = new Map()
+    // idea对象之间关联关系
+    this.relationships = new Map()
   }
 
-  getIdeaImageList () {
-    // 查询云数据库中存在多少可选的Idea的图像, 并逐个下载缓存
-    db.collection('StaticResource').where({
-      type: 'ideaIcon'
-    }).get().then(res => {
-      const ideaIconList = res.data
-      if (ideaIconList.length <= 0) {
-        return
-      }
-      this.defaultIconId = ideaIconList[1]._id
-      for (let i = 0; i < ideaIconList.length; i++) {
-        const fileId = ideaIconList[i].fileId
-        this.iconFileRecord[Number(ideaIconList[i]._id)] = ideaIconList[i]
-        wx.cloud.downloadFile({ fileID: fileId }).then(res => {
-          if (res.statusCode === 200) {
-            this.ideaImgPath[fileId] = res.tempFilePath
-          }
-        }).catch()
-      }
-      console.log(this.iconFileRecord)
-    }).catch()
+  /**
+   * 覆盖更新该对象的ideas map,
+   * @param {List} ideaList 列表, 每个列表是一个对象, 会将其中的信息包装成Idea对象, 放在ideas里,
+   * 注意: 列表中的对象有_id字段
+   * @param {Boolean} clear 是否清空之前的数据
+   */
+  setGraph (ideaList, relationshipList, clear = false) {
+    if (clear) {
+      this.ideas.clear()
+      this.relationships.clear()
+    }
+    for (let i = 0; i < ideaList.length; i++) {
+      const idea = ideaList[i]
+      this.ideas.set(Number(idea._id),
+        new Idea(idea)
+      )
+    }
+    for (let i = 0; i < relationshipList.length; i++) {
+      this.relationships.set(Number(relationshipList[i].id), relationshipList[i])
+    }
   }
 
-  getIdeaImageList () {
-    // 查询云数据库中存在多少可选的Idea的图像, 并逐个下载缓存
-    db.collection('StaticResource').where({
-      type: 'ideaIcon'
-    }).get().then(res => {
-      const ideaIconList = res.data
-      if (ideaIconList.length <= 0) {
-        return
-      }
-      this.defaultIconId = ideaIconList[1]._id
-      for (let i = 0; i < ideaIconList.length; i++) {
-        const fileId = ideaIconList[i].fileId
-        this.iconFileRecord[Number(ideaIconList[i]._id)] = ideaIconList[i]
-        wx.cloud.downloadFile({ fileID: fileId }).then(res => {
-          if (res.statusCode === 200) {
-            this.ideaImgPath[fileId] = res.tempFilePath
-          }
-        }).catch()
-      }
-      console.log(this.iconFileRecord)
-    }).catch()
+  /**
+   * 根据Idea管理器的rank计算规则计算输入的idea对象引用列表的每一个idea对象的rank值
+   * @param {*} ideaList 需要计算的idea引用列表
+   */
+  getRank (ideaList) {
+    return this._rankCalculator.getIdeasRank(ideaList)
   }
 
+  /**
+   * 请求创建Idea云函数, 返回创建好的idea对象, 不会加入ideas中, 返回Idea对象
+   * @param {*} title
+   * @param {*} description
+   * @param {*} markerIcon
+   * @param {*} latitude
+   * @param {*} longitude
+   */
   async createIdea (title, description, markerIcon, latitude, longitude) {
     let res = []
-    let domainId = -1
-    try {
-      const currentTime = new Date().getTime() // 单位为ms
-
-      // 获取当前位置的domain
-      const domain = await this.app.domainMng.getLocalDomain({
-        latitude,
-        longitude
-      })
-      domainId = domain.domainId
-
-      // 创建新的想法
-      res = await wx.cloud.callFunction({
-        name: 'createIdea',
-        data: {
-          idea: {
-            latitude: latitude,
-            longitude: longitude,
-            author_id: this.app.globalData.openid,
-            title: title,
-            created_at: currentTime,
-            likes: 0,
-            description: description,
-            // 云存储中的fileId
-            markerIcon // 传入的 markerIcon
-          },
-          key: this.app.globalData.backendKey,
-          backendHost: this.app.globalData.backendHost,
-          domain_id: domainId
-        }
-      })
-      console.log(res)
-      if (res.result.code !== 201) {
-        throw res
-      }
-    } catch (e) {
-      wx.showToast({
-        title: '创建失败',
-        icon: 'none',
-        duration: 2000
-      })
-      console.log(e)
-    }
-
-    // 创建动作完成后，无论成不成功，都要获取当前地区的所有Idea
-    res = await this.app.domainMng.getDomainContains({
-      domain_id: domainId
+    const currentTime = new Date().getTime() // 单位为ms
+    // 获取当前位置的domain
+    const domain = await app.domainManager.getLocalDomain({
+      latitude,
+      longitude
     })
-  }
 
-  async getIdeaImage (markerIconId) {
-    // 输入的参数是 图标id
-    // 通过图标id 找到 对应的文件id, 然后看是否有对应文件id的缓存, 如果有, 直接返回
-    // 没有下载文件, 再更新缓存
-    let fileId = null
-    if (!this.iconFileRecord[markerIconId]) {
-      // 没有查到图标id, 查询云数据库是否有这个图标id对应的文件记录
-      try {
-        let res = await db.collection('StaticResource').doc(String(markerIconId)).get()
-        const resIcon = res.data
-        this.iconFileRecord[Number(resIcon._id)] = resIcon
-        const fileId = resIcon.fileId
-        res = await wx.cloud.downloadFile({ fileID: fileId })
-        if (res.statusCode === 200) {
-          this.ideaImgPath[fileId] = res.tempFilePath
-          return res.tempFilePath
-        }
-        throw Error('下载图标文件失败')
-      } catch (err) {
-        wx.showToast({
-          title: '获取图标文件失败',
-          icon: 'none',
-          duration: 2000
-        })
-        console.log(err)
-        return this.ideaImgPath[this.iconFileRecord[this.defaultIconId].fileId]
-      }
-    }
-
-    fileId = this.iconFileRecord[markerIconId].fileId
-
-    if (this.ideaImgPath[fileId]) {
-      // console.log('idea img cache hit')
-      return this.ideaImgPath[fileId]
-    }
-    try {
-      const res = await wx.cloud.downloadFile({ fileID: fileId })
-      // console.log('res')
-      // console.log(res)
-      if (res.statusCode !== 200) {
-        throw res
-      }
-      this.ideaImgPath[fileId] = res.tempFilePath
-      return res.tempFilePath
-    } catch (e) {
-      console.log('获取想法图标失败')
-      console.log(e)
-      return 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
-    }
-  }
-
-  ideaEdit (_id, title, description) {
-    return wx.cloud.callFunction({
-      name: 'ideaEdit',
+    // 创建新的想法
+    res = await wx.cloud.callFunction({
+      name: 'createIdea',
       data: {
-        $url: 'ideaEdit',
-        title,
-        description,
-        _id
+        idea: {
+          latitude: latitude,
+          longitude: longitude,
+          author_id: app.globalData.openid,
+          title: title,
+          created_at: currentTime,
+          likes: 0,
+          description: description,
+          // 云存储中的fileId
+          markerIcon // 传入的 markerIcon
+        },
+        key: app.globalData.backendKey,
+        backendHost: app.globalData.backendHost,
+        domain_id: domain.id
       }
     })
+    // console.log(res)
+    if (res.result.code !== 201) {
+      throw res
+    }
+    return new Idea(res.data)
+  }
+
+  /**
+   * 请求创建想法关联云函数, 返回空
+   * 参数: param
+   * {
+   *  from 连接起始想法id
+   *  to  连接终点想法id
+   *  directional 无向边0 有向边1
+   *  type 关系类型
+   * }
+   */
+  async createRelationship (param) {
+    const res = await wx.cloud.callFunction({
+      name: 'createRelationship',
+      data: {
+        backendHost: app.globalData.backendHost,
+        key: app.globalData.backendKey,
+        from: param.from,
+        to: param.to,
+        directional: param.directional,
+        type: param.type
+      }
+    })
+    if (res.result.code !== 201) {
+      throw new Error(res)
+    }
+  }
+
+  /**
+   * 通知云端和map组件删除一个Idea对象, 会清除ideas里的引用
+   * @param {*} ideaId idea对象的id , 既可以是Number也可以是字符串
+   */
+  async deleteIdea (ideaId) {
+    try {
+      ideaId = Number(ideaId)
+      const res = await wx.cloud.callFunction({
+        name: 'deleteIdea',
+        data: {
+          idea_id: ideaId,
+          user_id: app.globalData.openid,
+          key: app.globalData.backendKey,
+          backend_host: app.globalData.backendHost
+        }
+      })
+      if (res.result.code !== 204) {
+        throw res
+      }
+      // 删除成功, 删除本地的信息
+      this.ideas.delete(ideaId)
+      // 删除关联关系
+      const toDeleteRelationshipId = []
+      this.relationships.forEach((value, key, mapObj) => {
+        if (Number(value.from) === ideaId || Number(value.to) === ideaId) {
+          toDeleteRelationshipId.push(key)
+        }
+      })
+      for (let i = 0; i < toDeleteRelationshipId.length; i++) {
+        this.relationships.delete(toDeleteRelationshipId[i])
+      }
+      // 删除完毕, 刷新
+      app.event.emit('refreshLocalDomain')
+    } catch (err) {
+      throw Error({
+        msg: '删除想法对象失败',
+        error: err
+      })
+    }
   }
 }
 

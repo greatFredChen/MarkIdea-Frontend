@@ -101,27 +101,17 @@ Component({
       })
       wx.showLoading({ title: '请稍后' })
       try {
-        const res = await wx.cloud.callFunction({
-          name: 'deleteIdea',
-          data: {
-            idea_id: this.data.ideaId,
-            user_id: app.globalData.openid,
-            key: app.globalData.backendKey,
-            backend_host: app.globalData.backendHost
-          }
-        })
-        if (res.result.code !== 204) {
-          throw res
-        }
-        app.event.emit('deleteIdea', this.data.ideaId)
+        // 调用了delete成功之后, 该对象就已经无效, 不要再有其引用
+        await app.ideaManager.deleteIdea(this.data.ideaId)
+        wx.showToast({ title: '删除成功' })
       } catch (e) {
         wx.showToast({
           title: '删除失败',
           icon: 'none',
           duration: 2000
         })
-        // console.log('删除失败')
-        // console.log(e)
+        console.log('删除失败')
+        console.log(e)
       }
       wx.hideLoading()
     }

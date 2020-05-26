@@ -14,7 +14,7 @@
         <picker bindchange="bindPickerChange" range="{{icons}}" range-key="name" value="{{0}}">
           <view class="view-flex" wx:if="{{markerIcon === -1}}">未选择</view>
           <view class="view-flex" wx:else>
-            <image class="bg150px" mode="widthFix" src="{{ideaImgPath[iconFileRecord[markerIcon].fileId]}}"></image>
+            <image class="bg150px" mode="widthFix" src="{{ideaIconRecordList[markerIcon].tempFilePath}}"></image>
           </view>
         </picker>
       </edit-box>

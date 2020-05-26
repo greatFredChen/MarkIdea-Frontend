@@ -49,16 +49,10 @@ Component({
           latitude: this.data.latitude,
           longitude: this.data.longitude
         }
-        const domain = await app.domainMng.getLocalDomain(position)
-        this.setData({
-          domain
-        })
-
-        // 获取当前domain对应的所有结构
-        const e = {
-          domain_id: domain.domainId
-        }
-        await app.domainMng.getDomainContains(e)
+        const domain = await app.domainManager.getLocalDomain(position)
+        this.setData({ domain }) // 尚且未知这个domain用来干啥...
+        const res = await domain.getContains()
+        app.event.emit('setGraph', { ideas: res.ideas, relationships: res.relationships, clear: false })
       } catch (e) {
         console.log(e)
         wx.showToast({
@@ -66,7 +60,7 @@ Component({
           icon: 'none',
           duration: 2000
         })
-        app.event.emit('setIdeas', { ideas: [], relationShip: [] })
+        app.event.emit('setGraph', { ideas: [], relationship: [], clear: true })
       }
       wx.hideLoading()
     }
