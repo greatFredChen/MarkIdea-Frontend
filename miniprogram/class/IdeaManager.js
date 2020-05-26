@@ -3,18 +3,14 @@ class IdeaManager {
   constructor (app, map) {
     this.app = app
     this.map = map
-    this.idea = []
     this.ideaImgPath = {}
   }
 
   async createIdea (title, description) {
     let res = []
-    let scale = 15
     let domainId = -1
     try {
       const currentTime = new Date().getTime() // 单位为ms
-      const pck = await this.map.getScale()
-      scale = pck.scale
       const {
         latitude,
         longitude
@@ -57,8 +53,6 @@ class IdeaManager {
             created_at: currentTime,
             likes: 0,
             description: description,
-            width: this.suitWH(0, scale),
-            height: this.suitWH(0, scale),
             // 云存储中的fileId
             markerIcon: 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
           },
@@ -103,28 +97,7 @@ class IdeaManager {
     })
 
     // 成功完成整个插入过程
-    // 更新到管理者持有的 idea 中
-    this.idea = await this.addIdeasAttr(ideas, scale)
-    // 此处为防止在类的外部修改 idea，进行了深拷贝，可能对性能有影响
-    // 如果能够保证传出的数据仅用于 setData，则可以免去深拷贝g'i
-    return JSON.parse(JSON.stringify(this.idea))
-  }
-
-  // 为ideas增加属性
-  async addIdeasAttr (ideas, scale) {
-    for (let i = 0; i < ideas.length; i++) {
-      ideas[i].width = this.suitWH(ideas[i].likes, scale)
-      ideas[i].height = this.suitWH(ideas[i].likes, scale)
-    }
     return ideas
-  }
-
-  suitWH (cnt, scale) {
-    const base = 40.0
-    const scaleBase = 20.0
-    // const iter = Math.log10;
-    const iter = (i) => Math.max(1, i)
-    return iter(cnt) * base * scale * scale / scaleBase / scaleBase
   }
 
   async getIdeaImage (fileId) {
