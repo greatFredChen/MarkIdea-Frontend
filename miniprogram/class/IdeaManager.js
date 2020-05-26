@@ -1,9 +1,39 @@
+const db = wx.cloud.database()
 
 class IdeaManager {
   constructor (app, map) {
     this.app = app
     this.map = map
+    // fileId 到本地临时路径的映射
     this.ideaImgPath = {}
+    // 图标id到云存储file记录的映射
+    this.iconFileRecord = {}
+    // 默认图标id
+    this.defaultIconId = null
+    this.getIdeaImageList()
+  }
+
+  getIdeaImageList () {
+    // 查询云数据库中存在多少可选的Idea的图像, 并逐个下载缓存
+    db.collection('StaticResource').where({
+      type: 'ideaIcon'
+    }).get().then(res => {
+      let ideaIconList = res.data
+      if (ideaIconList.length <= 0) {
+        return
+      }
+      this.defaultIconId = ideaIconList[1]._id
+      for(let i = 0; i < ideaIconList.length; i++) {
+        const fileId = ideaIconList[i].fileId
+        this.iconFileRecord[Number(ideaIconList[i]._id)] = ideaIconList[i]
+        wx.cloud.downloadFile({ fileID: fileId }).then(res => {
+          if (res.statusCode === 200) {
+            this.ideaImgPath[fileId] = res.tempFilePath
+          }
+        }).catch()
+      }
+      console.log(this.iconFileRecord)
+    }).catch()
   }
 
   async createIdea (title, description) {
@@ -29,7 +59,7 @@ class IdeaManager {
         }
       }).then(res => {
         if (res.result.code === 201 || res.result.code === 200) {
-          domainId = res.result.domainId
+          domainId = res.result.domain.domainId
         } else {
           throw new Error()
         }
@@ -54,7 +84,7 @@ class IdeaManager {
             likes: 0,
             description: description,
             // 云存储中的fileId
-            markerIcon: 'cloud://map-test-859my.6d61-map-test-859my-1302041669/marker.png'
+            markerIcon: this.defaultIconId  // 目前先选择默认, 这个是id
           },
           key: this.app.globalData.backendKey,
           backendHost: this.app.globalData.backendHost,
@@ -85,7 +115,7 @@ class IdeaManager {
       if (res.result.code === 200) {
         ideas = res.result.idea
       } else {
-        throw new Error()
+        throw res
       }
     }).catch(err => {
       wx.showToast({
@@ -100,10 +130,37 @@ class IdeaManager {
     return ideas
   }
 
-  async getIdeaImage (fileId) {
-    // 获取图片路径, 不存在则请求云存储
-    // console.log('fileId')
-    // console.log(fileId)
+  async getIdeaImage (markerIconId) {
+    // 输入的参数是 图标id
+    // 通过图标id 找到 对应的文件id, 然后看是否有对应文件id的缓存, 如果有, 直接返回
+    // 没有下载文件, 再更新缓存
+    let fileId = null
+    if (!this.iconFileRecord[markerIconId]) {
+      // 没有查到图标id, 查询云数据库是否有这个图标id对应的文件记录
+      try {
+        let res = await db.collection('StaticResource').doc(String(markerIconId)).get()
+        let resIcon = res.data
+        this.iconFileRecord[Number(resIcon._id)] = resIcon
+        const fileId = resIcon.fileId
+        res = await wx.cloud.downloadFile({ fileID: fileId })
+        if (res.statusCode === 200) {
+          this.ideaImgPath[fileId] = res.tempFilePath
+          return res.tempFilePath 
+        }
+        throw Error('下载图标文件失败')
+      } catch (err) {
+        wx.showToast({
+          title: '获取图标文件失败',
+          icon: 'none',
+          duration: 2000
+        })
+        console.log(err)
+        return this.ideaImgPath[this.iconFileRecord[this.defaultIconId].fileId]
+      }
+    }
+
+    fileId = this.iconFileRecord[markerIconId].fileId
+    
     if (this.ideaImgPath[fileId]) {
       // console.log('idea img cache hit')
       return this.ideaImgPath[fileId]
