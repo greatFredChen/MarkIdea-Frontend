@@ -135,15 +135,6 @@ class IdeaManager {
       }
     })
   }
-
-  singleIdeaUpdate ({ _id, title, description }) {
-    console.log(_id, title, description)
-    const single = this.idea.find(i => i._id === _id)
-    console.log(single)
-    single.title = title
-    single.description = description
-    this.app.event.emit('setIdeas', this.idea)
-  }
 }
 
 export { IdeaManager }

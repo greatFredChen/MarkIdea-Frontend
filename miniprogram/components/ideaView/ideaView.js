@@ -52,13 +52,12 @@ Component({
             ideaId
           }
         })
-        console.log(res)
+        // console.log(res)
         if (res.result.code !== 0) {
           throw new Error(res)
         }
         delete res.result.code
         delete res.result.Msg
-        console.log(app.globalData.openid === res.result.author_id)
         this.setData({
           ...res.result,
           show: true,
@@ -133,7 +132,6 @@ Component({
         this.fetchIdea(ideaId)
       })
       app.event.on('viewIdeaLocalUpdate', ({ title, description }) => {
-        console.log(title, description)
         this.setData({
           title,
           description

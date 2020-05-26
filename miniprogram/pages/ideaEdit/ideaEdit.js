@@ -35,7 +35,7 @@ Page({
         title: '发送电波中...'
       })
       const res = await app.ideaMng.ideaEdit(this.data._id, this.data.title, this.data.description)
-      console.log(res)
+      // console.log(res)
       if (res.result.code !== 0) {
         throw res
       }

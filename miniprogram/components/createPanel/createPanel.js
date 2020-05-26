@@ -61,7 +61,7 @@ Component({
         wx.showLoading({
           title: '创建中'
         })
-        console.log(title, description)
+        // console.log(title, description)
         const res = await app.ideaMng.createIdea(title, description)
         // 终止创建状态
         app.event.emit('setcreating', false)
