@@ -42,6 +42,12 @@ class IdeaConnectManager {
       if (res.result.code !== 201) {
         throw new Error(res.result.error)
       }
+      // 创建relationship后刷新地图
+      const position = await this.map.getCenterLocation()
+      const domain = await this.app.domainMng.getLocalDomain(position)
+      await this.app.domainMng.getDomainContains({
+        domain_id: domain.domainId
+      })
     } catch (err) {
       wx.showToast({
         title: '连接失败',
