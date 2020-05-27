@@ -1,0 +1,13 @@
+/* components/connectPanel/connectPanel.wxss */
+.connect-panel {
+  width: 100%;
+  height: auto;
+  left: 0;
+  bottom: 0;
+  padding: 20rpx 0;
+  position: fixed;
+  background: var(--weui-BG-2);
+  border-radius: 50rpx 50rpx 0 0;
+  box-shadow: 0 0 15rpx 1px #999;
+  transform: translate3d(0, 100%, 0);
+}

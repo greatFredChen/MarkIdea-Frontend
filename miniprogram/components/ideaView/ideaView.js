@@ -84,6 +84,10 @@ Component({
       // 点击了删除Idea按钮, 显示确认删除对话框
       this.setData({ deleteDialogHidden: false })
     },
+    tapLinkIdea () {
+      // 点击了连接Idea按钮 让menu-button强制回到初始状态
+      app.event.emit('menuButtonStatus', false)
+    },
     bindbuttontap (e) {
       if (e.detail.index === 0) {
         // 删除对话框点击了取消事件

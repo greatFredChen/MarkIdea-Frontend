@@ -1,4 +1,6 @@
 {
+  "navigationBarTitleText": "Wedea",
+  "navigationBarBackgroundColor": "#ffffff",
   "usingComponents": {
     "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
     "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
