@@ -1,0 +1,3 @@
+<a class="menu-a {{status ? 'rotate135' : ''}} z-index__200" bindtap="bindtap">
+  <image class="cross" src="../../images/cross-white.png"></image>
+</a>
