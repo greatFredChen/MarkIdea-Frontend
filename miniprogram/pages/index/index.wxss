@@ -24,6 +24,10 @@ page {
   width: 100%;
 }
 
+.map-view-zindex {
+  z-index: 0;
+}
+
 .map_size {
   height: 60%;
   width: 100%;

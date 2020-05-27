@@ -1,8 +1,8 @@
 <!-- index.wxml -->
-<view class="container map-view-height page__bd page__bd_spacing">
+<view class="container map-view-height page__bd page__bd_spacing map-view-zindex">
   <wedea-map class="map_size" linkMode="{{false}}"></wedea-map>
   <create-panel></create-panel>
   <refresh></refresh>
   <auth-dialog authorizeHidden="{{authorizeHidden}}"></auth-dialog>
-  <idea-view></idea-view>
 </view>
+<idea-view></idea-view>

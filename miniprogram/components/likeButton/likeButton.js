@@ -32,10 +32,9 @@ Component({
         })
         console.log('likeButton:获取Idea点赞信息失败')
         console.log(err)
-      }).finally(() => {
-        this.setData({
-          loading: false
-        })
+      })
+      this.setData({
+        loading: false
       })
     }
   },

@@ -18,8 +18,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    longitude: 113.0,
-    latitude: 22.0,
+    longitude: 113.0, // 初始latiude
+    latitude: 22.0, // 初始longitude
     scale: 15,
     setting: {
       subkey: ''
@@ -31,7 +31,9 @@ Component({
       sw: '',
       ne: ''
     },
-    domain_id: -1
+    domain_id: -1,
+    centerLatitude: -1,
+    centerLongitude: -1
   },
 
   /**
@@ -139,8 +141,8 @@ Component({
 
       app.event.on('getCenterRequest', (res) => {
         app.event.emit('getCenter', {
-          latitude: this.data.latitude,
-          longitude: this.data.longitude
+          latitude: this.data.centerLatitude,
+          longitude: this.data.centerLongitude
         })
       })
 
@@ -152,7 +154,7 @@ Component({
         single.title = title
         single.description = description
         this.setData({ ideas })
-        app.ideaMap.ideaMap.set(_id, single)
+        app.ideaMng.ideaMap.set(_id, single)
       })
 
       app.event.on('ideaLikesChange', ({ ideaId, likes }) => {
@@ -220,7 +222,7 @@ Component({
       }
     },
     // 移动地图触发
-    regionchange: function (e) {
+    regionchange: async function (e) {
       const that = this
       const mapInstance = wx.createMapContext('testmap', this)
       if (e.causedBy === 'scale' && e.type === 'end') {
@@ -239,18 +241,15 @@ Component({
       }
       // 获取地图中心坐标
       // console.log(mapInstance)
-      mapInstance.getCenterLocation({
-        success: (res) => {
-          const latitude = res.latitude
-          const longitude = res.longitude
-          if (this.data.latitude !== latitude || this.data.longitude !== longitude) {
-            this.setData({
-              latitude: latitude,
-              longitude: longitude
-            })
-          }
-        }
-      })
+      try{
+        let res = await mapInstance.getCenterLocation()
+        this.setData({
+          centerLatitude: res.latitude,
+          centerLongitude: res.longitude
+        })
+      } catch (e) {
+        console.log('获取地图中心点失败！', e)
+      }
     },
 
     // 根据缩放和rank值计算长宽
@@ -261,10 +260,10 @@ Component({
     }
   },
   observers: {
-    'latitude, longitude': function(latitude, longitude) {
+    'centerLatitude, centerLongitude': function(centerLatitude, centerLongitude) {
       app.event.emit('getPosition', {
-        latitude: latitude,
-        longitude: longitude
+        latitude: centerLatitude,
+        longitude: centerLongitude
       })
     }
   }
