@@ -86,7 +86,6 @@ Page({
     app.event.on('setcreating', (status) => {
       app.event.emit('setButtonGroup', status)
       app.event.emit('setCrossImage', status)
-      app.event.emit('closeEdit')
     })
   }
 })
