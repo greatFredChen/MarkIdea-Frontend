@@ -1,5 +1,5 @@
 <!--components/createPanel/createPanel.wxml-->
-<view class="create-panel">
+<view class="create-panel" wx:if="{{showMe}}">
   <view class="two-button-flex mt20" hidden="{{switchButtonGroup}}">
     <button class="weui-btn weui-btn_primary" bindtap="createIdea" open-type="getUserInfo" bindgetuserinfo="getUserInfo">发布想法</button>
   </view>
@@ -7,4 +7,5 @@
     <button class="weui-btn weui-btn_primary" bindtap="settleIdea">选定</button>
     <button class="weui-btn weui-btn_primary" bindtap="cancelIdea">取消</button>
   </view>
+  <refresh></refresh>
 </view>

@@ -15,7 +15,8 @@ Component({
   data: {
     switchButtonGroup: false,
     latitude: -1,
-    longitude: -1
+    longitude: -1,
+    showMe: false // 是否显示面板
   },
 
   lifetimes: {
@@ -34,6 +35,14 @@ Component({
           longitude: position.longitude
         })
       })
+      app.event.on('menuStatus', (status) => {
+        if (status) {
+          this.slideUp()
+        } else {
+          this.slideDown()
+          app.event.emit('setcreating', false)
+        }
+      })
     }
   },
 
@@ -41,6 +50,34 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    slideUp () {
+      this.setData({
+        showMe: true
+      })
+      this.animate('.create-panel', [
+        {
+          translate3d: [0, 200, 0]
+        },
+        {
+          translate3d: [0, 0, 0]
+        }
+      ], 500, () => {
+      })
+    },
+    slideDown () {
+      this.animate('.create-panel', [
+        {
+          translate3d: [0, 0, 0]
+        },
+        {
+          translate3d: [0, 200, 0]
+        }
+      ], 500, () => {
+        this.setData({
+          showMe: false
+        })
+      })
+    },
     // 授权
     getUserInfo: function (e) {
       app.event.emit('authorizeHidden', true)
@@ -86,9 +123,6 @@ Component({
         app.event.emit('setcreating', false)
         app.event.emit('refreshLocalDomain')
         wx.hideLoading()
-        wx.showToast({
-          title: '创建成功'
-        })
       } else {
         // 标题为空
         wx.showToast({

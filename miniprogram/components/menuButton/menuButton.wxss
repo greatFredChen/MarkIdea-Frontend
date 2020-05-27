@@ -1,0 +1,28 @@
+@import "../../style/weui.wxss";
+@import "../../style/z-index.wxss";
+
+.menu-a {
+  position: fixed;
+  top: 50rpx;
+  right: 50rpx;
+  opacity: 0.8;
+  box-shadow: 0 0 10rpx 0rpx #000;
+  transition: transform .3s;
+}
+
+.menu-a, .cross {
+  width: 80rpx !important;
+  height: 80rpx !important;
+  text-align: center;
+  display: block;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: var(--weui-BRAND);
+  border-radius: 50%;
+}
+
+.menu-a.rotate135 {
+  transform: rotate(135deg);
+}
+

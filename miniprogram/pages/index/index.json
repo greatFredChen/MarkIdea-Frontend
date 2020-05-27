@@ -4,7 +4,7 @@
     "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
     "wedea-map": "../components/wedeaMap/wedeaMap",
     "create-panel": "../components/createPanel/createPanel",
-    "refresh": "../components/refreshButton/refreshButton",
-    "idea-view": "../components/ideaView/ideaView"
+    "idea-view": "../components/ideaView/ideaView",
+    "menu-button": "../components/menuButton/menuButton"
   }
 }

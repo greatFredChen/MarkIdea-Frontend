@@ -6,8 +6,10 @@
 
 .cross-image {
   position: absolute;
-  top: 42%;
-  left: 46%;
-  height: 8%;
-  width: 8%;
+  top: 50%;
+  left: 50%;
+  margin-left: -25rpx;
+  margin-top: -25rpx;
+  height: 50rpx;
+  width: 50rpx;
 }

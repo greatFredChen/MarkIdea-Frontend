@@ -1,5 +1,5 @@
 /**index.wxss**/
-
+@import "../../style/z-index.wxss";
 page {
   background: #f6f6f6;
   display: flex;
@@ -29,11 +29,16 @@ page {
 }
 
 .map_size {
-  height: 60%;
+  height: 100%;
   width: 100%;
 }
 
 .pressedbutton {
   color: #fff;
   background-color: #000;
+}
+
+.container {
+  padding: 0;
+  margin: 0;
 }
