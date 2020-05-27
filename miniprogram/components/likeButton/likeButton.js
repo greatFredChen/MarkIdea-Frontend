@@ -22,7 +22,8 @@ Component({
         }
         this.setData({
           liked: res.result.liked,
-          likes: res.result.likes
+          likes: res.result.likes,
+          loading: false
         })
       }).catch(err => {
         wx.showToast({
@@ -32,9 +33,6 @@ Component({
         })
         console.log('likeButton:获取Idea点赞信息失败')
         console.log(err)
-      })
-      this.setData({
-        loading: false
       })
     }
   },
