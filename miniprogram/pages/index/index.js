@@ -8,7 +8,6 @@ Page({
     sdk_version: '',
     authorizeHidden: true
   },
-
   // 加载
   onLoad: async function () {
     const that = this
