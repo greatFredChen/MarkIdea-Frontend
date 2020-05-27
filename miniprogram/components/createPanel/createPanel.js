@@ -126,6 +126,8 @@ Component({
         // 终止创建状态
         app.event.emit('setcreating', false)
         app.event.emit('refreshLocalDomain')
+        // 关闭编辑页
+        app.event.emit('closeEdit')
         wx.hideLoading()
       } else {
         // 标题为空
