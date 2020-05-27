@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "UI组件库",
+  "navigationBarTitleText": "想法编辑",
   "usingComponents": {
     "edit-box": "../components/editBox/editBox",
     "description-box": "../components/descriptionBox/descriptionBox",

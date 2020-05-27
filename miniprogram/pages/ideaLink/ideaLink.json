@@ -1,6 +1,6 @@
 {
   "navigationStyle": "custom",
-  "navigationBarTitleText": "关联想法",
+  "navigationBarTitleText": "想法连接",
   "usingComponents": {
     "mp-navigation-bar": "../weui-miniprogram/miniprogram_dist/navigation-bar/navigation-bar",
     "wedea-map": "../components/wedeaMap/wedeaMap",
