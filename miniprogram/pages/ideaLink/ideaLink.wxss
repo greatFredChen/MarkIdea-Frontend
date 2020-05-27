@@ -1,5 +1,6 @@
 /* miniprogram/pages/ideaLink/ideaLink.wxss */
 @import "../../style/weui.wxss";
+@import "../../style/z-index.wxss";
 
 page {
   height: 100%;
@@ -12,5 +13,5 @@ page {
 
 .map_size {
   width: 100%;
-  height: 80%;
+  height: 100%;
 }

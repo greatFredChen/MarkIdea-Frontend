@@ -1,9 +1,8 @@
 {
-  "navigationStyle": "custom",
   "navigationBarTitleText": "想法编辑",
+  "navigationBarBackgroundColor": "#ffffff",
   "usingComponents": {
     "edit-box": "../components/editBox/editBox",
-    "description-box": "../components/descriptionBox/descriptionBox",
-    "mp-navigation-bar": "../weui-miniprogram/miniprogram_dist/navigation-bar/navigation-bar"
+    "description-box": "../components/descriptionBox/descriptionBox"
   }
 }

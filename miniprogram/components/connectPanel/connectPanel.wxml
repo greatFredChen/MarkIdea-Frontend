@@ -1,0 +1,4 @@
+<!--components/connectPanel/connectPanel.wxml-->
+<view class="connect-panel" wx:if="{{showMe}}">
+  <refresh></refresh>
+</view>

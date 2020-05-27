@@ -1,4 +1,3 @@
-<mp-navigation-bar title="想法编辑" back="{{true}}"></mp-navigation-bar>
 <view class="page">
   <view class="page__hd flex-wrp flex-wrp__attach">
     <button id="0" class="inline-btn plain-border" type="primary" plain="{{inEditPreview !== 0}}" bindtap="bindtap">
