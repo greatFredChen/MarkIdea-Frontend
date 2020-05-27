@@ -1,7 +1,6 @@
 class DomainManager {
-  constructor (app, map) {
+  constructor (app) {
     this.app = app
-    this.map = map
   }
 
   // 获取当前地图中心的domain

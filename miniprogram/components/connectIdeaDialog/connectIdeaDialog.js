@@ -16,7 +16,9 @@ Component({
     fromId: -1,
     directional: 0,
     relationType: '',
-    toId: -1
+    toId: -1,
+    latitude: -1, // 地图中心纬度
+    longitude: -1 // 地图中心经度
   },
 
   /**
@@ -44,6 +46,14 @@ Component({
           toId
         })
       })
+
+      // 获取地图中心经纬度
+      app.event.on('getPosition', (position) => {
+        this.setData({
+          latitude: position.latitude,
+          longitude: position.longitude
+        })
+      })
     },
     detached () {
       app.event.off('hideConnectDialog')
@@ -61,7 +71,9 @@ Component({
         from: this.data.fromId,
         to: this.data.toId,
         directional: this.data.directional,
-        type: this.data.relationType
+        type: this.data.relationType,
+        latitude: this.data.latitude,
+        longitude: this.data.longitude
       }
       await app.ideaConnectMng.createConnect(event)
     },

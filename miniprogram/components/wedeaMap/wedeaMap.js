@@ -33,9 +33,21 @@ Component({
     },
     domain_id: -1
   },
-  pageLifetimes: {
-    async show () {
-      // 当页面被展示
+
+  /**
+   * s生命周期
+   */
+  lifetimes: {
+    created () {
+      // 想法rank计算器
+      this.rankCalculator = new IdeaRankCalculator({
+        likes: 1
+      }, {
+      },
+      0.5)
+    },
+
+    async attached () {
       // 设置地图key
       console.log('wedeaMap 正在重新初始化')
       this.setData({
@@ -50,9 +62,9 @@ Component({
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
 
-      app.ideaMng = new IdeaManager(app, mapInstance)
-      app.ideaConnectMng = new IdeaConnectManager(app, mapInstance)
-      app.domainMng = new DomainManager(app, mapInstance)
+      app.ideaMng = new IdeaManager(app)
+      app.ideaConnectMng = new IdeaConnectManager(app)
+      app.domainMng = new DomainManager(app)
 
       mapInstance.getRegion({
         success: (res) => {
@@ -246,6 +258,14 @@ Component({
       const base = 60.0
       const scaleBase = 20.0
       return rank * base * scale * scale / scaleBase / scaleBase
+    }
+  },
+  observers: {
+    'latitude, longitude': function(latitude, longitude) {
+      app.event.emit('getPosition', {
+        latitude: latitude,
+        longitude: longitude
+      })
     }
   }
 })

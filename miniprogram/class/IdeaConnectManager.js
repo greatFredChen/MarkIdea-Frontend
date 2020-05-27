@@ -1,7 +1,6 @@
 class IdeaConnectManager {
-  constructor (app, map) {
+  constructor (app) {
     this.app = app
-    this.map = map
   }
 
   // 创建连接
@@ -12,6 +11,8 @@ class IdeaConnectManager {
    *  to  连接终点想法id
    *  directional 无向边0 有向边1
    *  type 关系类型
+   *  latitude: 地图中心纬度
+   *  longitude: 地图中心经度
    * }
    */
   async createConnect (event) {
@@ -43,7 +44,10 @@ class IdeaConnectManager {
         throw new Error(res.result.error)
       }
       // 创建relationship后刷新地图
-      const position = await this.map.getCenterLocation()
+      const position = {
+        latitude: event.latitude,
+        longitude: event.longitude
+      }
       const domain = await this.app.domainMng.getLocalDomain(position)
       await this.app.domainMng.getDomainContains({
         domain_id: domain.domainId
