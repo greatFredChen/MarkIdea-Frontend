@@ -36,6 +36,10 @@ Component({
         })
       })
       app.event.on('menuStatus', (status) => {
+        if (status === this.data.showMe) {
+          // 如果要求的状态与当前状态一致，不做变更
+          return
+        }
         if (status) {
           this.slideUp()
         } else {

@@ -25,5 +25,16 @@ Component({
       })
       app.event.emit('menuStatus', this.data.status)
     }
+  },
+  lifetimes: {
+    attached () {
+      app.event.on('menuButtonStatus', (status) => {
+        // 如果状态未变更不做动作
+        if (this.data.status === status) {
+          return
+        }
+        this.bindtap()
+      })
+    }
   }
 })

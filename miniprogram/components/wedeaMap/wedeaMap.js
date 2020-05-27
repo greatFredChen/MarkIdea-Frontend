@@ -321,6 +321,13 @@ Component({
       })
       this.setMarkers(markers)
       this.setData({ polyline })
+    },
+    maptab () {
+      if (this.data.showCrossImage === false) {
+        // 在非创建想法时点击地图
+        // 模拟点击面板控制按钮
+        app.event.emit('menuButtonStatus', false)
+      }
     }
   },
 
