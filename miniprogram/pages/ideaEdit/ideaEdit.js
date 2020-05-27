@@ -33,30 +33,26 @@ Page({
   enter () {
     this[`enter${this.data.type}`]()
   },
-  enterCreate () {
-    app.event.emit('createIdeaMiddleman', {
-      title: this.data.title,
-      description: this.data.description,
-      markerIcon: this.data.ideaIconRecordList[this.data.markerIcon].id
-    })
+  enterCreate () { // 创建页面中按下确定按钮
+    const pck = this.getPackage()
+    app.event.emit('createIdeaMiddleman', pck)
   },
-  async enterEdit () {
+  async enterEdit () { // 编辑页面按下按钮
     try {
       wx.showLoading({
         title: '发送电波中...'
       })
+      const pck = this.getPackage()
       const idea = app.ideaManager.ideas.get(Number(this.data._id))
       // 获得icon的资源id
-      const markerIcon = this.data.ideaIconRecordList[this.data.markerIcon].id
+      const markerIcon = this.data.markerIcon
       await idea.edit({
         title: this.data.title,
         description: this.data.description,
         markerIcon: markerIcon
       })
-      app.event.emit('viewIdeaLocalUpdate', {
-        title: this.data.title,
-        description: this.data.description
-      })
+      // 更新查看详情页
+      app.event.emit('viewIdeaLocalUpdate', pck)
       wx.hideLoading()
       wx.showToast({
         title: '修改成功'
@@ -69,6 +65,31 @@ Page({
         title: '编辑失败',
         icon: 'none'
       })
+    }
+  },
+  getPackage () {
+    // 当修改可编辑或者可提交的内容，需要连带修改的有
+    // 后期可以用一个类来统一管理
+    // a. getPackage()                      [args    in package out]           [f, g]     [edit]    [_]
+    // b. loadEdit()                        [package in args    set]           [o]        [edit]    [_]
+    // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]        [noedit]
+    // d. event singleIdeaUpdate            [package in args    set]           [n]        [edit]    [_]
+    // _. event createIdeaMiddleman         [package in package out]           [j]        [noedit]
+    // e. ideaManager::ideaEdit             [package in package net] [warning] [h]        [noedit]
+    // f. enterCreate                       [package in package out]           [_]        [noedit]
+    // g. enterEdit                         [package in package out]           [c, d, e]  [noedit]
+    // h. cloudFunction ideaEdit            [net     in args    out]                      [edit]    [_]
+    // j. createPanel::createIdeaMiddleman  [package in args    out]           [k]        [edit]    [_]
+    // k. ideaManager::createIdea           [args    in args    net]           [l]        [edit]    [_]
+    // l. cloudFunction createIdea          [net     in package set] [warning]            [noedit]
+    // m. ideaView.wxml/js                                                                [edit]    [_]
+    // n. wedeaMap.wxml/js                                                                [noedit]
+    // o. ideaEdit.wxml/js                                                                [edit]    [_]
+    return {
+      // 修改的项
+      title: this.data.title,
+      description: this.data.description,
+      markerIcon: this.data.markerIcon
     }
   },
   /**
@@ -102,12 +123,13 @@ Page({
       // wx.navigateBack()
     }
   },
-  loadEdit (type, { _id, title, description }) {
+  loadEdit (type, { _id, title, description, markerIcon }) {
     this.setData({
       type,
       _id,
       title,
-      description
+      description,
+      markerIcon
     })
   },
   loadCreate (type, payload) {

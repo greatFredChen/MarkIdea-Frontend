@@ -16,7 +16,8 @@ const failPck = {
 const kvSetForWxdb = {
   title: 'title',
   description: 'description',
-  author_id: 'author_id'
+  author_id: 'author_id',
+  markerIcon: 'markerIcon'
 }
 
 /**
