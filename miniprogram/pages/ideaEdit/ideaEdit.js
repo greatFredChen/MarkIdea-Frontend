@@ -14,7 +14,9 @@ Page({
     markerIcon: -1,
     icons: [],
     iconFileRecord: {},
-    ideaImgPath: {}
+    ideaImgPath: {},
+    latitude: -1, // 地图中心纬度
+    longitude: -1 // 地图中心经度
   },
   bindPickerChange (e) {
     this.setData({
@@ -49,7 +51,7 @@ Page({
       if (res.result.code !== 0) {
         throw res
       }
-      app.event.emit('SingleIdeaUpdate', {
+      app.event.emit('singleIdeaUpdate', {
         _id: this.data._id,
         title: this.data.title,
         description: this.data.description
@@ -98,7 +100,7 @@ Page({
         title: '喂！再往前就是地狱啊',
         icon: 'none'
       })
-      wx.navigateBack()
+      // wx.navigateBack()
     }
   },
   loadEdit (type, { _id, title, description }) {

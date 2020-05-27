@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "关联想法",
+  "usingComponents": {
+    "mp-navigation-bar": "../weui-miniprogram/miniprogram_dist/navigation-bar/navigation-bar",
+    "wedea-map": "../components/wedeaMap/wedeaMap",
+    "refresh": "../components/refreshButton/refreshButton",
+    "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog"
+  }
+}

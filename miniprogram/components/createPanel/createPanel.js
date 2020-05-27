@@ -13,7 +13,9 @@ Component({
    * 组件的初始数据
    */
   data: {
-    switchButtonGroup: false
+    switchButtonGroup: false,
+    latitude: -1,
+    longitude: -1
   },
 
   lifetimes: {
@@ -25,6 +27,12 @@ Component({
       })
       app.event.on('createIdeaMiddleman', (payload) => {
         this.createIdeaMiddleman(payload)
+      })
+      app.event.on('getPosition', (position) => {
+        this.setData({
+          latitude: position.latitude,
+          longitude: position.longitude
+        })
       })
     }
   },
@@ -62,10 +70,10 @@ Component({
           title: '创建中'
         })
         // console.log(title, description)
-        const res = await app.ideaMng.createIdea(title, description, markerIcon)
+        await app.ideaMng.createIdea(title, description, markerIcon,
+          this.data.latitude, this.data.longitude)
         // 终止创建状态
         app.event.emit('setcreating', false)
-        app.event.emit('setIdeas', res)
         wx.hideLoading()
         wx.showToast({
           title: '创建成功'

@@ -1,11 +1,14 @@
 const db = wx.cloud.database()
 
 class IdeaManager {
-  constructor (app, map) {
+  constructor (app) {
     this.app = app
-    this.map = map
-    // fileId 到本地临时路径的映射
     this.ideaImgPath = {}
+    // ideaMap 里存放着映射 id => idea，这个映射的构建在 event setIdeas 时完成
+    // 绘制 polyline 想法关联需要使用这个映射，因此绘制动作可以发生在 ideaMap 更新之后
+    this.ideaMap = new Map()
+    // debug
+    // wx.ideaMng = this
     // 图标id到云存储file记录的映射
     this.iconFileRecord = {}
     // 默认图标id
@@ -36,42 +39,20 @@ class IdeaManager {
     }).catch()
   }
 
-  async createIdea (title, description, markerIcon) {
+  async createIdea (title, description, markerIcon, latitude, longitude) {
     let res = []
     let domainId = -1
     try {
       const currentTime = new Date().getTime() // 单位为ms
-      const {
+
+      // 获取当前位置的domain
+      const domain = await this.app.domainMng.getLocalDomain({
         latitude,
         longitude
-      } = await this.map.getCenterLocation()
-
-      // 获取当前位置的domain_id
-      await wx.cloud.callFunction({
-        name: 'getLocalDomain',
-        data: {
-          latitude: latitude,
-          longitude: longitude,
-          key: this.app.globalData.qqmapKey,
-          create_domain: true,
-          backend_host: this.app.globalData.backendHost,
-          backend_key: this.app.globalData.backendKey
-        }
-      }).then(res => {
-        if (res.result.code === 201 || res.result.code === 200) {
-          domainId = res.result.domain.domainId
-        } else {
-          throw new Error()
-        }
-      }).catch(err => {
-        wx.showToast({
-          title: '获取domain_id失败',
-          icon: 'none',
-          duration: 2000
-        })
-        console.log(err)
       })
+      domainId = domain.domainId
 
+      // 创建新的想法
       res = await wx.cloud.callFunction({
         name: 'createIdea',
         data: {
@@ -91,6 +72,7 @@ class IdeaManager {
           domain_id: domainId
         }
       })
+      console.log(res)
       if (res.result.code !== 201) {
         throw res
       }
@@ -104,30 +86,9 @@ class IdeaManager {
     }
 
     // 创建动作完成后，无论成不成功，都要获取当前地区的所有Idea
-    let ideas = []
-    await wx.cloud.callFunction({
-      name: 'getDomainContains',
-      data: {
-        domain_id: domainId,
-        backend_host: this.app.globalData.backendHost
-      }
-    }).then(res => {
-      if (res.result.code === 200) {
-        ideas = res.result.idea
-      } else {
-        throw res
-      }
-    }).catch(err => {
-      wx.showToast({
-        title: '获取想法失败',
-        icon: 'none',
-        duration: 2000
-      })
-      console.log(err)
+    res = await this.app.domainMng.getDomainContains({
+      domain_id: domainId
     })
-
-    // 成功完成整个插入过程
-    return ideas
   }
 
   async getIdeaImage (markerIconId) {

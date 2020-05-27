@@ -1,0 +1,16 @@
+/* components/connectIdeaDialog/connectIdeaDialog.wxss */
+@import '../../style/weui.wxss';
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.weui-dialog__ft__button {
+  background-color: var(--weui-BRAND);
+  color: #FFF;
+  height: 40px;
+  line-height: 40px;
+  width: 40%;
+  text-align: center;
+  border-radius: 10px;
+}
