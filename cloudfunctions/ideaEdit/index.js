@@ -31,10 +31,10 @@ exports.main = async (event, context) => {
   /**
    * 路由 ideaEdit，修改想法标题和描述
    *
-   * @param {ideaId} 想法 id
-   * @param {title} 修改后的标题
-   * @param {description} 修改后的描述
-   * @param {markerIcon} 修改后的图标 id
+   * @param {String} _id 想法 id
+   * @param {String} title 修改后的标题
+   * @param {String} description 修改后的描述
+   * @param {String} markerIcon 修改后的图标 id
    * @returns
    * 成功
    * {

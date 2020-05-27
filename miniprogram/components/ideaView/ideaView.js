@@ -21,6 +21,7 @@ Component({
     title: '想法示例',
     description: '最近我去了一次海南看火箭发射，看的时候一脸懵逼，白烟是啥，黑线是啥，喷火的颜色又代表啥...为了下次看的时候不要再懵圈，我决定好好补一课！',
     author_id: -1,
+    markerIcon: -1,
     attach: [
       // {
       //   title: '一去二三里',
@@ -125,11 +126,8 @@ Component({
       app.event.on('viewIdea', (ideaId) => {
         this.fetchIdea(ideaId)
       })
-      app.event.on('viewIdeaLocalUpdate', ({ title, description }) => {
-        this.setData({
-          title,
-          description
-        })
+      app.event.on('viewIdeaLocalUpdate', (pck) => {
+        this.setData(pck)
       })
     },
     detached () {
