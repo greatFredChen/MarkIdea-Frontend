@@ -10,7 +10,16 @@ Page({
     title: '',
     description: '',
     inEditPreview: 0,
-    _id: -1
+    _id: -1,
+    markerIcon: -1,
+    icons: [],
+    iconFileRecord: {},
+    ideaImgPath: {}
+  },
+  bindPickerChange (e) {
+    this.setData({
+      markerIcon: this.data.icons[Number(e.detail.value)].id
+    })
   },
   bindtap (e) {
     this.setData({
@@ -26,7 +35,8 @@ Page({
   enterCreate () {
     app.event.emit('createIdeaMiddleman', {
       title: this.data.title,
-      description: this.data.description
+      description: this.data.description,
+      markerIcon: this.data.markerIcon
     })
   },
   async enterEdit () {
@@ -67,6 +77,20 @@ Page({
   async constructor (type, payload) {
     const funcName = `load${type}`
     if (Object.prototype.hasOwnProperty.call(this, funcName)) {
+      // 公共构造
+      const icons = []
+      for (const [id, value] of Object.entries(app.ideaMng.iconFileRecord)) {
+        icons.push({
+          id,
+          name: value.name
+        })
+      }
+      this.setData({
+        icons,
+        ideaImgPath: app.ideaMng.ideaImgPath,
+        iconFileRecord: app.ideaMng.iconFileRecord
+      })
+      // 各自的构造
       this[funcName](type, payload)
     } else {
       console.log(`构造函数[${funcName}]不存在`)

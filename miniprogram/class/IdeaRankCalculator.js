@@ -1,10 +1,12 @@
 class IdeaRankCalculator {
   // 计算对象rank类
-  constructor (weights, rate = 1) {
+  constructor (weights, map, rate = 1) {
     // 各个指标的权重, 求和为1
     this.weights = weights
     // 不同值最终大小的差异, rate越大, 同样的差距, rank差距越大
     this.rate = rate
+    // 计算前简单的数据处理, 比如取负数, 乘以一个数等
+    this.map = map
   }
 
   _logistic (x) {
@@ -24,8 +26,10 @@ class IdeaRankCalculator {
       // 标准差
       let std = 0
       let data = new Array(ideas.length)
+      const mapFunc = this.map[metricType]
       for (let i = 0; i < data.length; i++) {
-        const num = ideas[i][metricType] ? Number(ideas[i][metricType]) : 0
+        let num = ideas[i][metricType] ? Number(ideas[i][metricType]) : 0
+        num = mapFunc ? mapFunc(num) : num
         data[i] = num
         mean += num
       }

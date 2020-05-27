@@ -1,1 +1,4 @@
 @import "../../style/weui.wxss";
+.padding-top__16px {
+  padding: 16px 32px 0 32px !important;
+}

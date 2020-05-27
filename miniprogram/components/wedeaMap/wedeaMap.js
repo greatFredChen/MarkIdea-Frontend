@@ -40,7 +40,9 @@ Component({
       // 想法rank计算器
       this.rankCalculator = new IdeaRankCalculator({
         likes: 1
-      }, 0.5)
+      }, {
+      },
+      0.5)
     },
 
     async attached () {

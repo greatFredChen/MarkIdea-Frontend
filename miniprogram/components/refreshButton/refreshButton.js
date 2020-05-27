@@ -51,14 +51,12 @@ Component({
             latitude: this.data.latitude,
             longitude: this.data.longitude,
             key: app.globalData.qqmapKey,
-            create_domain: true,
-            backend_host: app.globalData.backendHost,
-            backend_key: app.globalData.backendKey
+            create_domain: false
           }
         }).then(res => {
           if (res.result.code === 201 || res.result.code === 200) {
             this.setData({
-              domain_id: res.result.domainId
+              domain_id: res.result.domain.domainId
             })
           } else {
             console.log(res.result.code, res.result.error)
