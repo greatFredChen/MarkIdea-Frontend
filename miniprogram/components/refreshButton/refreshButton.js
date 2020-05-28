@@ -24,6 +24,7 @@ Component({
   lifetimes: {
     async attached () {
       app.event.on('getPosition', (position) => {
+        console.log('getPosition of refresh button')
         this.setData({
           latitude: position.latitude,
           longitude: position.longitude
@@ -59,7 +60,7 @@ Component({
           icon: 'none',
           duration: 2000
         })
-        app.event.emit('setGraph', { ideas: [], relationship: [], clear: true })
+        app.event.emit('setGraph', { ideas: [], relationships: [], clear: true })
       }
       wx.hideLoading()
     }

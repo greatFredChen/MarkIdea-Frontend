@@ -49,7 +49,8 @@ Component({
       })
 
       // 获取用户坐标
-      await this.getUserLocation()
+      // await this.getUserLocation()
+      this.regionchange()
 
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
@@ -111,7 +112,7 @@ Component({
         })
       })
 
-      app.event.on('SingleIdeaUpdate', async ({ _id, title, iconPath }) => {
+      app.event.on('singleIdeaUpdate', async ({ _id, title, iconPath }) => {
         // 单独更新一个Idea的信息
         // console.log(_id, title, description)
         const id = Number(_id)
@@ -130,12 +131,16 @@ Component({
       app.event.on('refreshLocalDomain', async () => {
         // 刷新地图所属地区
         const domain = await app.domainManager.getLocalDomain({
-          latitude: this.data.latitude,
-          longitude: this.data.longitude
+          latitude: this.data.centerLatitude,
+          longitude: this.data.centerLongitude
         })
-        const res = await domain.getContains()
-        app.ideaManager.setGraph(res.ideas, res.relationships, true)
-        this.updateGraph()
+        try {
+          const res = await domain.getContains()
+          app.ideaManager.setGraph(res.ideas, res.relationships, true)
+          this.updateGraph()
+        } catch (err) {
+          console.log(err)
+        }
       })
 
       app.event.on('setGraph', async (event) => {
@@ -173,28 +178,28 @@ Component({
    */
   methods: {
     // 获取用户本地地址，异步
-    getUserLocation: async function () {
-      // 获取用户坐标
-      return new Promise((resolve, reject) => {
-        wx.getLocation({
-          type: 'gcj02'
-        }).then(res => {
-          this.setData({
-            longitude: res.longitude,
-            latitude: res.latitude
-          })
-          resolve(true)
-        }).catch(err => {
-          wx.showToast({
-            title: '获取用户位置失败',
-            icon: 'none',
-            duration: 2000
-          })
-          console.log(err)
-          reject(err)
-        })
-      })
-    },
+    // getUserLocation: async function () {
+    //   // 获取用户坐标
+    //   return new Promise((resolve, reject) => {
+    //     wx.getLocation({
+    //       type: 'gcj02'
+    //     }).then(res => {
+    //       this.setData({
+    //         longitude: res.longitude,
+    //         latitude: res.latitude
+    //       })
+    //       resolve(true)
+    //     }).catch(err => {
+    //       wx.showToast({
+    //         title: '获取用户位置失败',
+    //         icon: 'none',
+    //         duration: 2000
+    //       })
+    //       console.log(err)
+    //       reject(err)
+    //     })
+    //   })
+    // },
 
     // 点击想法触发事件 修改想法
     ideatap: function (e) {
@@ -211,7 +216,7 @@ Component({
     regionchange: async function (e) {
       const that = this
       const mapInstance = wx.createMapContext('testmap', this)
-      if (e.causedBy === 'scale' && e.type === 'end') {
+      if (e && e.causedBy === 'scale' && e.type === 'end') {
         // 缩放完成
         mapInstance.getScale({
           success: (res) => {
@@ -225,6 +230,7 @@ Component({
       // console.log(mapInstance)
       try {
         const res = await mapInstance.getCenterLocation()
+        console.log(res)
         this.setData({
           centerLatitude: res.latitude,
           centerLongitude: res.longitude
@@ -333,6 +339,7 @@ Component({
 
   observers: {
     'centerLatitude, centerLongitude': function (centerLatitude, centerLongitude) {
+      console.log('emit getPosition')
       app.event.emit('getPosition', {
         latitude: centerLatitude,
         longitude: centerLongitude

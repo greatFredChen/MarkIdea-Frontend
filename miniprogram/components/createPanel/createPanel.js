@@ -30,6 +30,7 @@ Component({
         this.createIdeaMiddleman(payload)
       })
       app.event.on('getPosition', (position) => {
+        console.log('getPosition of createPanel')
         this.setData({
           latitude: position.latitude,
           longitude: position.longitude
@@ -114,7 +115,11 @@ Component({
         try {
           await app.ideaManager.createIdea(title, description, markerIcon,
             this.data.latitude, this.data.longitude)
+          console.log('创建想法成功')
+          wx.hideLoading()
+          wx.showToast({title: '创建想法成功'})
         } catch (err) {
+          wx.hideLoading()
           wx.showToast({
             title: '创建失败',
             icon: 'none',
@@ -128,7 +133,7 @@ Component({
         app.event.emit('refreshLocalDomain')
         // 关闭编辑页
         app.event.emit('closeEdit')
-        wx.hideLoading()
+
       } else {
         // 标题为空
         wx.showToast({
