@@ -1,4 +1,5 @@
 // components/createPanel/createPanel.js
+import { wxsleep } from '../../utils/util'
 const app = getApp()
 
 Component({
@@ -116,10 +117,18 @@ Component({
             this.data.latitude, this.data.longitude)
           console.log('创建想法成功')
           wx.hideLoading()
-          wx.showToast({title: '创建想法成功'})
-        } catch (err) {
-          wx.hideLoading()
           wx.showToast({
+            title: '修改成功'
+          })
+          await wxsleep(1000)
+          // 终止创建状态
+          app.event.emit('setcreating', false)
+          app.event.emit('refreshLocalDomain')
+          // 关闭编辑页
+          app.event.emit('closeEdit')
+        } catch (err) {
+          await wx.hideLoading()
+          await wx.showToast({
             title: '创建失败',
             icon: 'none',
             duration: 2000
@@ -127,12 +136,6 @@ Component({
           console.log('创建想法失败')
           console.log(err)
         }
-        // 终止创建状态
-        app.event.emit('setcreating', false)
-        app.event.emit('refreshLocalDomain')
-        // 关闭编辑页
-        app.event.emit('closeEdit')
-
       } else {
         // 标题为空
         wx.showToast({

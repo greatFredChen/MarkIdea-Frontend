@@ -38,7 +38,12 @@ const compareVersion = (version1, version2) => {
   return true // version1 == version2
 }
 
+const wxsleep = async (time) => {
+  return new Promise(resolve => setTimeout(resolve, time))
+}
+
 module.exports = {
   formatTime: formatTime,
-  compareVersion: compareVersion
+  compareVersion: compareVersion,
+  wxsleep
 }

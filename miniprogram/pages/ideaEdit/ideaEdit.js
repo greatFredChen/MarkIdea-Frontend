@@ -1,4 +1,5 @@
 // miniprogram/pages/ideaEdit/ideaEdit.js
+import { wxsleep } from '../../utils/util'
 const app = getApp()
 Page({
 
@@ -57,12 +58,13 @@ Page({
       wx.showToast({
         title: '修改成功'
       })
+      await wxsleep(1000)
       wx.navigateBack()
     } catch (err) {
       console.log(err)
       wx.hideLoading()
       wx.showToast({
-        title: '编辑失败',
+        title: '修改失败',
         icon: 'none'
       })
     }
