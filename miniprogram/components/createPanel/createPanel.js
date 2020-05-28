@@ -30,7 +30,6 @@ Component({
         this.createIdeaMiddleman(payload)
       })
       app.event.on('getPosition', (position) => {
-        console.log('getPosition of createPanel')
         this.setData({
           latitude: position.latitude,
           longitude: position.longitude

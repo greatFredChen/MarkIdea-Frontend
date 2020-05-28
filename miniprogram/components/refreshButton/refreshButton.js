@@ -22,9 +22,8 @@ Component({
   * s生命周期
   */
   lifetimes: {
-    async attached () {
-      app.event.on('getPosition', (position) => {
-        console.log('getPosition of refresh button')
+    attached () {
+      app.event.on('getCenter', (position) => {
         this.setData({
           latitude: position.latitude,
           longitude: position.longitude
@@ -39,6 +38,7 @@ Component({
   methods: {
     refreshMap: async function () {
       // 先获取经度和纬度
+      app.event.emit('getCenterRequest')
       wx.showLoading({
         title: '刷新中'
       })
