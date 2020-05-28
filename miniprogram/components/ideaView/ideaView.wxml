@@ -11,9 +11,9 @@
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapDeleteIdea">
           <mp-icon type="field" icon="delete" size="{{25}}"></mp-icon>
         </view>
-        <navigator class="icon__attach" wx:if="{{showPrivateBtns}}" url="/pages/ideaLink/ideaLink?_id={{ideaId}}" bindtap="tapLinkIdea">
+        <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapLinkIdea">
           <mp-icon type="field" icon="link" size="{{25}}"></mp-icon>
-        </navigator>
+        </view>
         <a class="icon__attach" bindtap="close">
           <mp-icon icon="close" size="{{25}}"></mp-icon>
         </a>

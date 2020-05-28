@@ -10,7 +10,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    linkMode: Boolean
+
   },
 
   /**
@@ -32,7 +32,8 @@ Component({
     },
     domain_id: -1,
     centerLatitude: -1,
-    centerLongitude: -1
+    centerLongitude: -1,
+    linkMode: false
   },
 
   /**
@@ -159,6 +160,13 @@ Component({
         app.ideaManager.setGraph(event.ideas, event.relationships, event.clear)
         this.updateGraph()
       })
+
+      // 设置连接模式
+      app.event.on('linkStatus', (status) => {
+        this.setData({
+          linkMode: status
+        })
+      })
     },
 
     hide () {
@@ -204,7 +212,7 @@ Component({
     // 点击想法触发事件 修改想法
     ideatap: function (e) {
       // TODO: 查看想法信息以及修改想法信息
-      if (!this.properties.linkMode) {
+      if (!this.data.linkMode) {
         app.event.emit('viewIdea', e.detail.markerId)
       } else { // 连接Idea模式
         app.event.emit('hideConnectDialog', false)

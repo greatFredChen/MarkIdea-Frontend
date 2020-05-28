@@ -86,8 +86,21 @@ Component({
       this.setData({ deleteDialogHidden: false })
     },
     tapLinkIdea () {
-      // 点击了连接Idea按钮 让menu-button强制回到初始状态
+      // 传递fromId给connectDialog
+      app.event.emit('getFromId', Number(this.data.ideaId))
+      // 先关掉create-panel
       app.event.emit('menuButtonStatus', false)
+      // 通知menuButton和map组件现在处于连接状态
+      app.event.emit('linkStatus', true)
+      // 隐藏idea详情页面
+      this.setData({
+        show: false
+      })
+      wx.showToast({
+        title: '进入关联模式..',
+        icon: 'loading',
+        duration: 1000
+      })
     },
     bindbuttontap (e) {
       if (e.detail.index === 0) {

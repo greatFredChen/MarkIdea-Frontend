@@ -6,7 +6,9 @@
     "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
     "wedea-map": "../components/wedeaMap/wedeaMap",
     "create-panel": "../components/createPanel/createPanel",
+    "connect-panel": "../components/connectPanel/connectPanel",
     "idea-view": "../components/ideaView/ideaView",
+    "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog",
     "menu-button": "../components/menuButton/menuButton"
   }
 }

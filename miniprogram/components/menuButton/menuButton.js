@@ -12,7 +12,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    status: false
+    status: false,
+    linkMode: false
   },
 
   /**
@@ -23,7 +24,11 @@ Component({
       this.setData({
         status: !this.data.status
       })
-      app.event.emit('menuStatus', this.data.status)
+      if (!this.data.linkMode) {
+        app.event.emit('menuStatus', this.data.status)
+      } else {
+        app.event.emit('menuConnectStatus', this.data.status)
+      }
     }
   },
   lifetimes: {
@@ -34,6 +39,11 @@ Component({
           return
         }
         this.bindtap()
+      })
+      app.event.on('linkStatus', (status) => {
+        this.setData({
+          linkMode: status
+        })
       })
     }
   }

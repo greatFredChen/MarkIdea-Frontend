@@ -1,4 +1,6 @@
 /* components/connectPanel/connectPanel.wxss */
+@import "../../style/weui.wxss";
+
 .connect-panel {
   width: 100%;
   height: auto;
@@ -10,4 +12,15 @@
   border-radius: 50rpx 50rpx 0 0;
   box-shadow: 0 0 15rpx 1px #999;
   transform: translate3d(0, 100%, 0);
+}
+
+.two-button-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mt20 {
+  margin-top: 20rpx;
 }
