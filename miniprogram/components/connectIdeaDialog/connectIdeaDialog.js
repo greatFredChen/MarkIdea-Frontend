@@ -81,7 +81,7 @@ Component({
         wx.hideLoading()
         // 提示创建成功
         wx.showToast({
-          title: '创建想法关联成功',
+          title: '想法关联成功',
           icon: 'success',
           duration: 1500
         })
