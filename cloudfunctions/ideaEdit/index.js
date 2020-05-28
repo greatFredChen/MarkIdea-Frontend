@@ -21,6 +21,7 @@ cloud.init()
 const db = cloud.database()
 
 exports.main = async (event, context) => {
+  console.log('last 05280155')
   console.log(event)
   const app = new TcbRouter({
     event
@@ -33,6 +34,7 @@ exports.main = async (event, context) => {
    * @param {ideaId} 想法 id
    * @param {title} 修改后的标题
    * @param {description} 修改后的描述
+   * @param {markerIcon} 修改后的图标 id
    * @returns
    * 成功
    * {
@@ -46,7 +48,7 @@ exports.main = async (event, context) => {
    * }
    */
   app.router('ideaEdit', async (ctx, next) => {
-    const resKey = ['_id', 'title', 'description']
+    const resKey = ['_id', 'title', 'description', 'markerIcon']
     console.log(ctx)
     try {
       // 检查负载是否缺少
@@ -77,7 +79,8 @@ exports.main = async (event, context) => {
       await doc.update({
         data: {
           title: event.title,
-          description: event.description
+          description: event.description,
+          markerIcon: event.markerIcon
         }
       })
       ctx.body = {

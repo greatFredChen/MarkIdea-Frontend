@@ -16,9 +16,7 @@ Component({
     fromId: -1,
     directional: 0,
     relationType: '',
-    toId: -1,
-    latitude: -1, // 地图中心纬度
-    longitude: -1 // 地图中心经度
+    toId: -1
   },
 
   /**
@@ -46,14 +44,6 @@ Component({
           toId
         })
       })
-
-      // 获取地图中心经纬度
-      app.event.on('getPosition', (position) => {
-        this.setData({
-          latitude: position.latitude,
-          longitude: position.longitude
-        })
-      })
     },
     detached () {
       app.event.off('hideConnectDialog')
@@ -67,15 +57,50 @@ Component({
    */
   methods: {
     async confirmLink () {
-      const event = {
-        from: this.data.fromId,
-        to: this.data.toId,
-        directional: this.data.directional,
-        type: this.data.relationType,
-        latitude: this.data.latitude,
-        longitude: this.data.longitude
+      // 创建想法关联确认
+      const type = this.data.relationType
+      if (!type || type === '') {
+        wx.showToast({
+          title: '关联关系类型不能为空!',
+          icon: 'none',
+          duration: 1500
+        })
+        return
       }
-      await app.ideaConnectMng.createConnect(event)
+      // 若输入框不为空，则进行连接
+      wx.showLoading({
+        title: '正在创建....'
+      })
+      try {
+        await app.ideaManager.createRelationship({
+          from: this.data.fromId,
+          to: this.data.toId,
+          directional: this.data.directional,
+          type: type
+        })
+        wx.hideLoading()
+        // 提示创建成功
+        wx.showToast({
+          title: '创建想法关联成功',
+          icon: 'success',
+          duration: 1500
+        })
+        // 创建relationship后刷新地图
+        app.event.emit('refreshLocalDomain')
+        // 关掉关联窗口
+        this.setData({
+          connectDialogHidden: true
+        })
+      } catch (err) {
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建想法关联失败',
+          icon: 'none',
+          duration: 1500
+        })
+        console.log('创建想法关联失败')
+        console.log(err)
+      }
     },
     cancelLink () {
       this.setData({
