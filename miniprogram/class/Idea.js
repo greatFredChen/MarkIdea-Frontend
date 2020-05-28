@@ -73,7 +73,7 @@ class Idea {
     this.iconPath = iconPath
     // 通知map组件更新单个Idea信息
     // TODO: 以后不仅传title, 还会传其他参数
-    app.event.emit('SingleIdeaUpdate', {
+    app.event.emit('singleIdeaUpdate', {
       _id: this._id,
       title: this.title,
       iconPath: iconPath

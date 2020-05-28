@@ -155,21 +155,6 @@ class IdeaManager {
         error: err
       })
     }
-  },
-  /**
-   * 将编辑想法的内容包裹转发给云函数
-   * @param {String} _id ideaId
-   * @param {Object} pck 可修改的内容包裹
-   */
-  ideaEdit (_id, pck) {
-    return wx.cloud.callFunction({
-      name: 'ideaEdit',
-      data: {
-        $url: 'ideaEdit',
-        ...pck,
-        _id
-      }
-    })
   }
 }
 

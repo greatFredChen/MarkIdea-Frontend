@@ -11,15 +11,15 @@ Page({
     description: '',
     inEditPreview: 0,
     _id: -1,
-    markerIcon: -1,
-    icons: [],
-    ideaIconRecordList: [],
+    markerIconIndex: -1,
+    icons: [], // for view list
+    ideaIconRecordList: [], // for view getter
     latitude: -1, // 地图中心纬度
     longitude: -1 // 地图中心经度
   },
   bindPickerChange (e) {
     this.setData({
-      markerIcon: this.data.icons[Number(e.detail.value)].id
+      markerIconIndex: Number(e.detail.value)
     })
   },
   bindtap (e) {
@@ -45,11 +45,11 @@ Page({
       const pck = this.getPackage()
       const idea = app.ideaManager.ideas.get(Number(this.data._id))
       // 获得icon的资源id
-      const markerIcon = this.data.markerIcon
+      const markerIcon = app.resourceManager.ideaIconRecordList[this.data.markerIconIndex].id
       await idea.edit({
         title: this.data.title,
         description: this.data.description,
-        markerIcon: markerIcon
+        markerIcon
       })
       // 更新查看详情页
       app.event.emit('viewIdeaLocalUpdate', pck)
@@ -70,26 +70,27 @@ Page({
   getPackage () {
     // 当修改可编辑或者可提交的内容，需要连带修改的有
     // 后期可以用一个类来统一管理
-    // a. getPackage()                      [args    in package out]           [f, g]     [edit]    [_]
-    // b. loadEdit()                        [package in args    set]           [o]        [edit]    [_]
-    // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]        [noedit]
-    // d. event singleIdeaUpdate            [package in args    set]           [n]        [edit]    [_]
-    // _. event createIdeaMiddleman         [package in package out]           [j]        [noedit]
-    // e. ideaManager::ideaEdit             [package in package net] [warning] [h]        [noedit]
-    // f. enterCreate                       [package in package out]           [_]        [noedit]
-    // g. enterEdit                         [package in package out]           [c, d, e]  [noedit]
-    // h. cloudFunction ideaEdit            [net     in args    out]                      [edit]    [_]
-    // j. createPanel::createIdeaMiddleman  [package in args    out]           [k]        [edit]    [_]
-    // k. ideaManager::createIdea           [args    in args    net]           [l]        [edit]    [_]
-    // l. cloudFunction createIdea          [net     in package set] [warning]            [noedit]
-    // m. ideaView.wxml/js                                                                [edit]    [_]
-    // n. wedeaMap.wxml/js                                                                [noedit]
-    // o. ideaEdit.wxml/js                                                                [edit]    [_]
+    // a. getPackage()                      [args    in package out]           [f, g]             [edit]
+    // b. loadEdit()                        [package in args    set]           [o]                [edit]
+    // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]                [noedit]
+    // d. event singleIdeaUpdate            [package in args    set]           [n]                [edit]
+    // _. event createIdeaMiddleman         [package in package out]           [j]                [noedit]
+    // e. ideaManager::ideaEdit             [package in package net] [warning] [h]                [noedit]  [delete]
+    // f. enterCreate                       [package in package out]           [_]                [noedit]
+    // g. enterEdit                         [package in package out]           [c, d, **e**, p]   [noedit]
+    // h. cloudFunction ideaEdit            [net     in args    out]                              [edit]
+    // j. createPanel::createIdeaMiddleman  [package in args    out]           [k]                [edit]
+    // k. ideaManager::createIdea           [args    in args    net]           [l]                [edit]
+    // l. cloudFunction createIdea          [net     in package set] [warning]                    [noedit]
+    // m. ideaView.wxml/js                                                                        [edit]
+    // n. wedeaMap.wxml/js                                                                        [noedit]
+    // o. ideaEdit.wxml/js                                                                        [edit]
+    // p. Idea::edit                        [args    in net     out]           [h, d]             [edit]
     return {
       // 修改的项
       title: this.data.title,
       description: this.data.description,
-      markerIcon: this.data.markerIcon
+      markerIcon: app.resourceManager.ideaIconRecordList[this.data.markerIconIndex].id
     }
   },
   /**
@@ -102,10 +103,10 @@ Page({
     if (Object.prototype.hasOwnProperty.call(this, funcName)) {
       // 公共构造
       const icons = []
-      for (const [id, value] of Object.entries(app.resourceManager.ideaIconRecordList)) {
+      for (const index in app.resourceManager.ideaIconRecordList) {
         icons.push({
-          id,
-          name: value.name
+          id: index,
+          name: app.resourceManager.ideaIconRecordList[index].name
         })
       }
       this.setData({
@@ -124,12 +125,14 @@ Page({
     }
   },
   loadEdit (type, { _id, title, description, markerIcon }) {
+    markerIcon = Number(markerIcon)
+    const markerIconIndex = app.resourceManager.ideaIconRecordList.findIndex(it => it.id === markerIcon)
     this.setData({
       type,
       _id,
       title,
       description,
-      markerIcon
+      markerIconIndex
     })
   },
   loadCreate (type, payload) {
