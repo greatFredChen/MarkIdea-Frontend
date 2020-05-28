@@ -1,5 +1,6 @@
 import { IdeaRankCalculator } from './IdeaRankCalculator'
 import { Idea } from './Idea'
+import { Filter } from './Filter'
 
 const app = getApp()
 
@@ -13,6 +14,28 @@ class IdeaManager {
     this.ideas = new Map()
     // idea对象之间关联关系
     this.relationships = new Map()
+    // 过滤器
+    this.filter = new Filter(new Map([
+      // 点赞数过滤器
+      ['likes', {
+        type: 'Number',
+        fieldName: '点赞数',
+        min: null,
+        max: null
+      }]
+      // ['clicks', {
+      //   type: 'Number',
+      //   fieldName: '点击数',
+      //   min: null,
+      //   max: null
+      // }],
+      // ['created_at', {
+      //   type: 'Number',
+      //   fieldName: '时间',
+      //   min: null,
+      //   max: null
+      // }]
+    ]))
   }
 
   /**

@@ -7,4 +7,5 @@
 </view>
 <idea-view class="z-index__300"></idea-view>
 <connect-dialog class="z-index__300"></connect-dialog>
+<filter-view class="z-index__300"></filter-view>
 <auth-dialog authorizeHidden="{{authorizeHidden}}" class="z-index__400"></auth-dialog>

@@ -16,6 +16,7 @@ class ResourceManager {
    * @param {String or Number} resourceId  想法图标id, 可以是数字也可以是string
    */
   async getResource (resourceId) {
+    resourceId = Number(resourceId)
     if (this.resourceRecord.has(resourceId)) {
       // console.log('idea img cache hit')
       return this.resourceRecord.get(resourceId).tempFilePath

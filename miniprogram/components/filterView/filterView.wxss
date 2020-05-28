@@ -1,0 +1,24 @@
+/* components/filterView/filterView.wxss */
+@import "../../style/weui.wxss";
+@import "../../comi/comi.wxss";
+
+.weui-dialog__attach {
+  left: 16px;
+  right: 16px;
+  top: 32px;
+  bottom: 32px;
+  -webkit-transform: unset;
+  transform: unset;
+  width: unset;
+  max-height: unset;
+  overflow: auto;
+  text-align: left;
+}
+
+.weui-flex__attach {
+  justify-content: flex-end;
+}
+
+.icon__attach {
+  margin-left: 14px;
+}

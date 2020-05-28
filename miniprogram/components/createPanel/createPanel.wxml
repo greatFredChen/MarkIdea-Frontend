@@ -2,6 +2,7 @@
 <view class="create-panel" wx:if="{{showMe}}">
   <view class="two-button-flex mt20" hidden="{{switchButtonGroup}}">
     <button class="weui-btn weui-btn_primary" bindtap="createIdea" open-type="getUserInfo" bindgetuserinfo="getUserInfo">发布想法</button>
+    <button class="weui-btn weui-btn_primary" bindtap="showFilter">过滤器</button>
   </view>
   <view class="two-button-flex mt20" hidden="{{!switchButtonGroup}}">
     <button class="weui-btn weui-btn_primary" bindtap="settleIdea">选定</button>
