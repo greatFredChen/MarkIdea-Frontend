@@ -49,8 +49,8 @@ Component({
       })
 
       // 获取用户坐标
-      // await this.getUserLocation()
-      this.regionchange()
+      await this.getUserLocation()
+      // this.regionchange()
 
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
@@ -105,7 +105,7 @@ Component({
         this.updateGraph()
       })
 
-      app.event.on('getCenterRequest', (res) => {
+      app.event.on('getCenterRequest', () => {
         app.event.emit('getCenter', {
           latitude: this.data.centerLatitude,
           longitude: this.data.centerLongitude
@@ -178,28 +178,28 @@ Component({
    */
   methods: {
     // 获取用户本地地址，异步
-    // getUserLocation: async function () {
-    //   // 获取用户坐标
-    //   return new Promise((resolve, reject) => {
-    //     wx.getLocation({
-    //       type: 'gcj02'
-    //     }).then(res => {
-    //       this.setData({
-    //         longitude: res.longitude,
-    //         latitude: res.latitude
-    //       })
-    //       resolve(true)
-    //     }).catch(err => {
-    //       wx.showToast({
-    //         title: '获取用户位置失败',
-    //         icon: 'none',
-    //         duration: 2000
-    //       })
-    //       console.log(err)
-    //       reject(err)
-    //     })
-    //   })
-    // },
+    getUserLocation: async function () {
+      // 获取用户坐标
+      return new Promise((resolve, reject) => {
+        wx.getLocation({
+          type: 'gcj02'
+        }).then(res => {
+          this.setData({
+            longitude: res.longitude,
+            latitude: res.latitude
+          })
+          resolve(true)
+        }).catch(err => {
+          wx.showToast({
+            title: '获取用户位置失败',
+            icon: 'none',
+            duration: 2000
+          })
+          console.log(err)
+          reject(err)
+        })
+      })
+    },
 
     // 点击想法触发事件 修改想法
     ideatap: function (e) {
@@ -230,7 +230,6 @@ Component({
       // console.log(mapInstance)
       try {
         const res = await mapInstance.getCenterLocation()
-        console.log(res)
         this.setData({
           centerLatitude: res.latitude,
           centerLongitude: res.longitude
@@ -339,7 +338,6 @@ Component({
 
   observers: {
     'centerLatitude, centerLongitude': function (centerLatitude, centerLongitude) {
-      console.log('emit getPosition')
       app.event.emit('getPosition', {
         latitude: centerLatitude,
         longitude: centerLongitude
