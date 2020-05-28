@@ -1,5 +1,6 @@
 // components/connectPanel/connectPanel.js
 const app = getApp()
+const util = require('../../utils/util')
 
 Component({
   /**
@@ -18,7 +19,7 @@ Component({
 
   lifetimes: {
     attached () {
-      app.event.on('menuStatus', (status) => {
+      app.event.on('menuConnectStatus', (status) => {
         if (status === this.data.showMe) {
           // 如果要求的状态与当前状态一致，不做变更
           return
@@ -63,6 +64,17 @@ Component({
           showMe: false
         })
       })
+    },
+    returnMap () {
+      // 关闭想法关联的按钮面板
+      app.event.emit('menuButtonStatus', false)
+      wx.showToast({
+        title: '返回浏览模式..',
+        icon: 'loading',
+        duration: 1500
+      })
+      // 通知menuButton和map组件现在关闭连接状态
+      app.event.emit('linkStatus', false)
     }
   }
 })

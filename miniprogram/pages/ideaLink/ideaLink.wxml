@@ -1,7 +1,0 @@
-<!--miniprogram/pages/ideaLink/ideaLink.wxml-->
-<view class="container map-view page__bd page__bd_spacing">
-  <wedea-map class="map_size" linkMode="{{true}}"></wedea-map>
-  <connect-dialog></connect-dialog>
-  <connect-panel class="z-index__200"></connect-panel>
-  <menu-button class="z-index__200 menu"></menu-button>
-</view>
