@@ -23,10 +23,10 @@ Component({
   */
   lifetimes: {
     async attached () {
-      app.event.on('getCenter', (res) => {
+      app.event.on('getPosition', (position) => {
         this.setData({
-          latitude: res.latitude,
-          longitude: res.longitude
+          latitude: position.latitude,
+          longitude: position.longitude
         })
       })
     }
@@ -38,7 +38,6 @@ Component({
   methods: {
     refreshMap: async function () {
       // 先获取经度和纬度
-      app.event.emit('getCenterRequest', {})
       wx.showLoading({
         title: '刷新中'
       })

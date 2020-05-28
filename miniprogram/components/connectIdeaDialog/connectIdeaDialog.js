@@ -79,8 +79,18 @@ Component({
           type: type
         })
         wx.hideLoading()
+        // 提示创建成功
+        wx.showToast({
+          title: '创建想法关联成功',
+          icon: 'success',
+          duration: 1500
+        })
         // 创建relationship后刷新地图
         app.event.emit('refreshLocalDomain')
+        // 关掉关联窗口
+        this.setData({
+          connectDialogHidden: true
+        })
       } catch (err) {
         wx.hideLoading()
         wx.showToast({
