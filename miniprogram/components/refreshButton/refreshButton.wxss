@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--weui-BRAND);
+  background: #0099FF;
   border-radius: 50%;
 }
 

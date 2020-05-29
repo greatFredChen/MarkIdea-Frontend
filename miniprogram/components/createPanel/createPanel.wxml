@@ -1,11 +1,23 @@
 <!--components/createPanel/createPanel.wxml-->
 <view class="create-panel" wx:if="{{showMe}}">
   <view class="button-flex mt20" hidden="{{switchButtonGroup}}">
-    <button class="round-button" bindtap="createIdea">发布想法</button>
-    <button class="round-button" bindtap="showFilter">过滤器</button>
+    <button class="round-button" bindtap="createIdea">
+      <mp-icon type="field" icon="pencil" size="{{30}}" color="white"></mp-icon>
+      发布想法
+    </button>
+    <button class="round-button" bindtap="showFilter">
+      <mp-icon type="field" icon="mosaic" size="{{30}}" color="white"></mp-icon>
+      过滤
+    </button>
   </view>
   <view class="button-flex mt20" hidden="{{!switchButtonGroup}}">
-    <button class="round-button" bindtap="settleIdea">选定</button>
-    <button class="round-button" bindtap="cancelIdea">取消</button>
+    <button class="round-button" bindtap="settleIdea">
+      <mp-icon type="field" icon="done" size="{{30}}" color="white"></mp-icon>
+      选定
+    </button>
+    <button class="round-button" bindtap="cancelIdea">
+      <mp-icon type="field" icon="previous" size="{{30}}" color="white"></mp-icon>
+      取消
+    </button>
   </view>
 </view>
