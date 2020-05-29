@@ -2,11 +2,9 @@
 <view class="create-panel" wx:if="{{showMe}}">
   <view class="button-flex mt20" hidden="{{switchButtonGroup}}">
     <button class="round-button" bindtap="createIdea">发布想法</button>
-    <refresh class="width_half"></refresh>
   </view>
   <view class="button-flex mt20" hidden="{{!switchButtonGroup}}">
     <button class="round-button" bindtap="settleIdea">选定</button>
     <button class="round-button" bindtap="cancelIdea">取消</button>
-    <refresh class="width_one_third"></refresh>
   </view>
 </view>

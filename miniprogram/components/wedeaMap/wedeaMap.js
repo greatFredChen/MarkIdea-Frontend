@@ -166,14 +166,6 @@ Component({
           linkMode: status
         })
       })
-
-      // 初始化刷新地图
-      wx.showToast({
-        title: '正在加载想法..',
-        icon: 'loading',
-        duration: 1500
-      })
-      app.event.emit('refreshLocalDomain')
     },
 
     hide () {
@@ -221,6 +213,8 @@ Component({
     // 点击想法触发事件 修改想法
     ideatap: function (e) {
       // TODO: 查看想法信息以及修改想法信息
+      // 不论什么模式，先退出创建想法的面板状态
+      app.event.emit('setcreating', false)
       if (!this.data.linkMode) {
         app.event.emit('viewIdea', e.detail.markerId)
       } else { // 连接Idea模式
