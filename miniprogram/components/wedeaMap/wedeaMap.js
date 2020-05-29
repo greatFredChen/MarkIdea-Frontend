@@ -105,6 +105,11 @@ Component({
         this.updateGraph()
       })
 
+      app.event.on('updateGraph', () => {
+        // 根据ideaManager的信息和过滤器更新地图
+        this.updateGraph()
+      })
+
       app.event.on('getCenterRequest', () => {
         app.event.emit('getCenter', {
           latitude: this.data.centerLatitude,
@@ -283,16 +288,14 @@ Component({
      * 根据app.ideaManager中存有的信息更新地图结构, 会调用setMarkers和setPloyline
      */
     async updateGraph () {
-      // 根据idea管理器
-      // let ideaRemain = this.filter.filter(this.ideas)  // 过滤之后的ideas引用
-
-      // 因为filter未实现, 下面只是模拟filter的返回全集
+      // 根据idea管理器的过滤器过滤掉在地图上显示的idea
       const ideaRemain = []
-      // for(let i = 0; i < ideaRemainId.length; i++) {
-      //   ideaRemain.push(this.ideas[ideaRemainId[i]])
-      // }
+      const filter = app.ideaManager.filter
       app.ideaManager.ideas.forEach((value, key, mapObj) => {
-        ideaRemain.push(value)
+        const res = filter.check(value)
+        if (res === true) {
+          ideaRemain.push(value)
+        }
       })
 
       const filterIdeaIdSet = new Set()
@@ -301,6 +304,7 @@ Component({
       for (let i = 0; i < ideaRemain.length; i++) {
         const idea = ideaRemain[i]
         filterIdeaIdSet.add(idea.id)
+        idea.rank = rank[i]
         markers.push({
           id: idea.id,
           title: idea.title,
@@ -316,6 +320,8 @@ Component({
       app.ideaManager.relationships.forEach((value, key, mapObj) => {
         const from = ideas.get(Number(value.from))
         const to = ideas.get(Number(value.to))
+        // 线宽的缩放是两个链接点rank的调和平均
+        const widthScale = 1 / (1 / from.rank + 1 / to.rank)
         if (filterIdeaIdSet.has(from.id) && filterIdeaIdSet.has(to.id)) {
           polyline.push({
             points: [
@@ -330,7 +336,7 @@ Component({
             ],
             arrowLine: value.directional === 1, // 开发者工具暂时不支持箭头
             color: '#607D8B',
-            width: 4
+            width: 20 * widthScale
             // color, width, dottedLine, arrowIconPath, borderColor, borderWidth
           })
         }

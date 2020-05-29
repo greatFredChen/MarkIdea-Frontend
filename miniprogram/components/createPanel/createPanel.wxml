@@ -2,6 +2,7 @@
 <view class="create-panel" wx:if="{{showMe}}">
   <view class="button-flex mt20" hidden="{{switchButtonGroup}}">
     <button class="round-button" bindtap="createIdea">发布想法</button>
+    <button class="round-button" bindtap="showFilter">过滤器</button>
   </view>
   <view class="button-flex mt20" hidden="{{!switchButtonGroup}}">
     <button class="round-button" bindtap="settleIdea">选定</button>

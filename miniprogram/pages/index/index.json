@@ -10,6 +10,7 @@
     "idea-view": "../components/ideaView/ideaView",
     "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog",
     "menu-button": "../components/menuButton/menuButton",
+    "filter-view": "../components/filterView/filterView",
     "refresh-button": "../components/refreshButton/refreshButton"
   }
 }
