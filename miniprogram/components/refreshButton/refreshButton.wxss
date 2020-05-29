@@ -5,3 +5,17 @@
   margin-top: 20rpx;
   margin-bottom: 20rpx;
 }
+
+.round-button {
+  width: 180rpx !important;
+  height: 180rpx !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: var(--weui-BRAND);
+  border-radius: 50%;
+  color: #FFF;
+  font-size: 35rpx;
+}
