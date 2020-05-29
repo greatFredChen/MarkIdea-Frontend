@@ -17,8 +17,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    longitude: 113.0, // 初始latiude
-    latitude: 22.0, // 初始longitude
+    longitude: 113.0, // 初始 longitude
+    latitude: 22.0, // 初始 latiude
     scale: 15,
     setting: {
       subkey: ''
@@ -105,9 +105,10 @@ Component({
         this.updateGraph()
       })
 
-      app.event.on('updateGraph', () => {
+      app.event.on('updateGraph', (filterSkipIdSet) => {
         // 根据ideaManager的信息和过滤器更新地图
-        this.updateGraph()
+        // filterSkipIdSet 跳过过滤器检查的想法id
+        this.updateGraph(filterSkipIdSet)
       })
 
       app.event.on('getCenterRequest', () => {
@@ -169,6 +170,14 @@ Component({
       app.event.on('linkStatus', (status) => {
         this.setData({
           linkMode: status
+        })
+      })
+
+      // 设置地图的中心点
+      app.event.on('setLocation', ({longitude, latitude}) => {
+        this.setData({
+          longitude,
+          latitude
         })
       })
     },
@@ -286,18 +295,19 @@ Component({
 
     /**
      * 根据app.ideaManager中存有的信息更新地图结构, 会调用setMarkers和setPloyline
+     * @param {*} filterSkipIdSet 过滤器跳过检查的id集合
      */
-    async updateGraph () {
+    async updateGraph (filterSkipIdSet) {
       // 根据idea管理器的过滤器过滤掉在地图上显示的idea
       const ideaRemain = []
       const filter = app.ideaManager.filter
       app.ideaManager.ideas.forEach((value, key, mapObj) => {
-        const res = filter.check(value)
-        if (res === true) {
+        // 如果在跳过检查的集合里, 则直接可以显示该节点
+        if ((filterSkipIdSet && filterSkipIdSet.has(key)) || filter.check(value) === true) {
           ideaRemain.push(value)
         }
       })
-
+      
       const filterIdeaIdSet = new Set()
       const markers = []
       const rank = app.ideaManager.getRank(ideaRemain)
