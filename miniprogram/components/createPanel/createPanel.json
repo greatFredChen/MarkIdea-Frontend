@@ -1,7 +1,6 @@
 {
   "component": true,
   "usingComponents": {
-    "idea-dialog": "../ideaDialog/ideaDialog",
     "refresh": "../refreshButton/refreshButton"
   }
 }
