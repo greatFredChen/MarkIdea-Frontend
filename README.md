@@ -79,6 +79,7 @@
 - 使用：
 - 安装软件包 npm i
 - 运行规范脚本 npm run eslint
+- 更新: 新增依赖 babel-eslint，更新原因：eslint 默认引擎不支持 es6 class attribute
 
 #### qqmap-wx-jssdk
 

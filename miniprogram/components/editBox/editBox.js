@@ -1,6 +1,7 @@
 // components/editBox/editBox.js
 import { IdeaType, MediaType, ItemType } from '../../class/IdeaType'
 import { uuid, formatTime } from '../../utils/util'
+const CLOUDFILEHEAD = 'cloud://'
 Component({
   /**
    * 组件的属性列表
@@ -28,7 +29,6 @@ Component({
     bindinput (e) {
       const pck = {}
       pck[e.currentTarget.id] = e.detail.value
-      this.triggerEvent('editUpdate', pck)
       // 编辑产生的长度设置
       if (e.currentTarget.id === 'description') {
         this.setData({
@@ -43,7 +43,12 @@ Component({
         }
       }
     },
-    enter () {
+    async enter () {
+      wx.wx.showLoading({
+        title: '保存中',
+        mask: true
+      })
+      await this.uploadFile()
       this.triggerEvent('enter')
     },
     openChoseSheet () {
@@ -67,6 +72,9 @@ Component({
     },
     async uploadFile () {
       for (const i of this.properties.items) {
+        if (i.src.startWith(CLOUDFILEHEAD)) {
+          continue
+        }
         const tempFilePath = i.src
         const timestr = formatTime(new Date()).replace(/[ /:]/gi, '-')
         const cloudPath = 'picture/' + timestr + '-' + uuid() + tempFilePath.split('.').pop()
@@ -77,16 +85,19 @@ Component({
         })
         i.src = upres.fileID
       }
+      this.setData({
+        items: this.properties.items
+      })
+      console.log(this.properties.items)
     },
-    async choseFile (e) {
-      console.log(e)
+    async chooseImage (idx) {
       try {
         const res = await wx.chooseImage({
           sizeType: ['original', 'compressed'],
           sourceType: ['album', 'camera'],
           count: 1
         })
-        this.properties.items[e.currentTarget.id].src = res.tempFilePaths[0]
+        this.properties.items[idx].src = res.tempFilePaths[0]
         this.setData({
           items: this.properties.items
         })
@@ -94,7 +105,35 @@ Component({
         console.log(err)
         if (err.errMsg === 'chooseImage:fail cancel') {
           // do nothing
+        } else {
+          wx.wx.showToast({
+            title: '获取图片失败',
+            icon: 'none'
+          })
         }
+      }
+    },
+    async chooseFile (idx) {
+      // 微信仅允许获取聊天内容文件
+      try {
+        const res = await wx.chooseMessageFile({
+          count: 1,
+          type: 'file'
+        })
+        console.log(res)
+        const tempFilePath = res.tempFiles[0].path
+        this.properties.items[idx].src = tempFilePath
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async choseFile (e) {
+      console.log(e)
+      const idx = Number(e.currentTarget.id)
+      if (this.properties.items[idx].type === this.properties.MediaType.PICTURE) {
+        await this.chooseImage(idx)
+      } else {
+        await this.chooseFile(idx)
       }
     }
   },

@@ -2,7 +2,7 @@
  * 媒体类型
  */
 class MediaType {
-  MARKDOWN = 'MARKDOWM'
+  MARKDOWN = 'MARKDOWN'
   AUDIO = 'AUDIO'
   VIDEO = 'VIDEO'
   PICTURE = 'PICTURE'

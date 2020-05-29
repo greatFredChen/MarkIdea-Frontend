@@ -22,5 +22,6 @@ module.exports = {
   },
   rules: {
     'handle-callback-err': 'off'
-  }
+  },
+  parser: 'babel-eslint'
 }
