@@ -1,5 +1,4 @@
 // components/createPanel/createPanel.js
-import { wxsleep } from '../../utils/util'
 const app = getApp()
 
 Component({
@@ -27,15 +26,12 @@ Component({
           switchButtonGroup
         })
       })
-      app.event.on('createIdeaMiddleman', (payload) => {
-        this.createIdeaMiddleman(payload)
-      })
-      app.event.on('getPosition', (position) => {
-        this.setData({
-          latitude: position.latitude,
-          longitude: position.longitude
-        })
-      })
+      // app.event.on('setChosenPosition', (position) => {
+      //   this.setData({
+      //     latitude: position.latitude,
+      //     longitude: position.longitude
+      //   })
+      // })
       app.event.on('menuStatus', (status) => {
         if (status === this.data.showMe) {
           // 如果要求的状态与当前状态一致，不做变更
@@ -110,46 +106,6 @@ Component({
     },
     showSearch: () => {
       app.event.emit('showSearchView')
-    },
-    // 新建页面与管理者之间的中间人
-    async createIdeaMiddleman ({ title, description, markerIcon }) {
-      if (title !== '') {
-        wx.showLoading({
-          title: '创建中'
-        })
-        // console.log(title, description)
-        try {
-          await app.ideaManager.createIdea(title, description, markerIcon,
-            this.data.latitude, this.data.longitude)
-          console.log('创建想法成功')
-          wx.hideLoading()
-          wx.showToast({
-            title: '修改成功'
-          })
-          await wxsleep(1000)
-          // 终止创建状态
-          app.event.emit('setcreating', false)
-          app.event.emit('refreshLocalDomain')
-          // 关闭编辑页
-          app.event.emit('closeEdit')
-        } catch (err) {
-          await wx.hideLoading()
-          await wx.showToast({
-            title: '创建失败',
-            icon: 'none',
-            duration: 2000
-          })
-          console.log('创建想法失败')
-          console.log(err)
-        }
-      } else {
-        // 标题为空
-        wx.showToast({
-          title: '标题不能为空',
-          icon: 'none',
-          duration: 1000
-        })
-      }
     }
   }
 })

@@ -365,10 +365,12 @@ Component({
 
   observers: {
     'centerLatitude, centerLongitude': function (centerLatitude, centerLongitude) {
-      app.event.emit('getPosition', {
-        latitude: centerLatitude,
-        longitude: centerLongitude
-      })
+      // app.event.emit('setChosenPosition', {
+      //   latitude: centerLatitude,
+      //   longitude: centerLongitude
+      // })
+      app.globalData.latitude = centerLatitude
+      app.globalData.longitude = centerLongitude
     }
   }
 })

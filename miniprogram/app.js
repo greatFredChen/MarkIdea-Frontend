@@ -24,7 +24,9 @@ App({
       avatarUrl: './user-unlogin.png',
       backendHost: sensitiveData.backendHost,
       backendKey: sensitiveData.backendKey,
-      qqmapKey: sensitiveData.qqmapSdkKey
+      qqmapKey: sensitiveData.qqmapSdkKey,
+      latitude: 0,
+      longitude: 0
     }
   },
   event: new Event(),
