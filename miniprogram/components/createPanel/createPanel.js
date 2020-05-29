@@ -108,6 +108,9 @@ Component({
     showFilter: () => {
       app.event.emit('showFilterView')
     },
+    showSearch: () => {
+      app.event.emit('showSearchView')
+    },
     // 新建页面与管理者之间的中间人
     async createIdeaMiddleman ({ title, description, markerIcon }) {
       if (title !== '') {

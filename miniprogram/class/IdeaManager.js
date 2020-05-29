@@ -61,6 +61,30 @@ class IdeaManager {
   }
 
   /**
+   * 往管理器里放入一个idea对象, 返回这个对象在ideas的键值
+   * @param {*} obj 任意对象, 但需要有idea对象所必须的字段和 id 或_id, 详情见Idea构造函数
+   */
+  putIdea (obj) {
+    let id = null
+    if (obj.id) {
+      id = Number(obj.id)
+      if (isNaN(id) || id < 0) {
+        throw '无效的Idea id'
+      }
+    } else {
+      if (!obj._id) {
+        throw '无效的Idea id'
+      }
+      id = Number(obj._id)
+      if (isNaN(id) || id < 0) {
+        throw '无效的Idea id'
+      }
+    }
+    this.ideas.set(id, new Idea(obj))
+    return id
+  }
+
+  /**
    * 根据Idea管理器的rank计算规则计算输入的idea对象引用列表的每一个idea对象的rank值
    * @param {*} ideaList 需要计算的idea引用列表
    */

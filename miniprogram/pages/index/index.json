@@ -11,6 +11,7 @@
     "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog",
     "menu-button": "../components/menuButton/menuButton",
     "filter-view": "../components/filterView/filterView",
+    "search-view": "../components/searchView/searchView",
     "refresh-button": "../components/refreshButton/refreshButton"
   }
 }

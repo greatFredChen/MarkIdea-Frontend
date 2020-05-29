@@ -1,5 +1,4 @@
-<!-- components/filterView/filterView.wxml
-</mp-dialog> -->
+<!-- components/filterView/filterView.wxml -->
 <view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
