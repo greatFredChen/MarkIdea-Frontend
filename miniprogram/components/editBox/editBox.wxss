@@ -2,3 +2,10 @@
 .padding-top__16px {
   padding: 16px 32px 0 32px !important;
 }
+.idea-cell__subtitle {
+  border-top: 1px solid var(--weui-FG-2);
+  padding: 20px 32px 0 32px !important;
+}
+.weui-form__control-area__attach {
+  margin: 0 0 48px 0 !important;
+}

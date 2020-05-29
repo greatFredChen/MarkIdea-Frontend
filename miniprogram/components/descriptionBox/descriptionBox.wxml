@@ -4,14 +4,15 @@
 </view>
 <view class="weui-dialog__bd weui-dialog__hd__attach">
   <include src="../../comi/comi.wxml" />
-  <view class="page">
+  <view class="page" wx:if="{{items.length !== 0}}">
     <view class="page__bd">
       <view class="weui-article">
-        <view class="weui-article__section" wx:if="{{attach.length !== 0}}">
-          <view class="weui-article__h2">附加想法</view>
-          <view class="weui-article__section" wx:for="{{attach}}" wx:for-index="idx" wx:key="idx">
-            <view class="weui-article__h3">{{item.title}}</view>
-            <view class="weui-article__p weui-article__p__attach">{{item.description}}</view>
+        <view class="weui-article__section" wx:for="{{items}}" wx:for-index="idx" wx:key="idex">
+          <view class="weui-article__h3" wx:if="{{item.subTitle.length !== 0}}">
+            {{item.subTitle}}
+          </view>
+          <view class="weui-article__p weui-article__p__attach">
+            <!-- show mf media -->{{item.src}}{{item.type}}
           </view>
         </view>
       </view>
