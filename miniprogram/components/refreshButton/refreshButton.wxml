@@ -1,2 +1,4 @@
 <!--components/refreshButton/refreshButton.wxml-->
-<button class="round-button" bindtap="refreshMap">刷新地图</button>
+<a class="menu-a z-index__200" bindtap="refreshMap">
+  <mp-icon type="field" icon="refresh" size="{{30}}" color="white"></mp-icon>
+</a>

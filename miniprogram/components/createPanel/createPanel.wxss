@@ -25,6 +25,10 @@
   width: 33%;
 }
 
+.width_one_fourth {
+  width: 25%;
+}
+
 .mt20 {
   margin-top: 20rpx;
 }

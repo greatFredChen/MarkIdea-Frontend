@@ -26,6 +26,10 @@
   width: 50%;
 }
 
+.width_one_third {
+  width: 33%;
+}
+
 .mt20 {
   margin-top: 20rpx;
 }

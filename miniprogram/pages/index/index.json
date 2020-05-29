@@ -9,6 +9,7 @@
     "connect-panel": "../components/connectPanel/connectPanel",
     "idea-view": "../components/ideaView/ideaView",
     "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog",
-    "menu-button": "../components/menuButton/menuButton"
+    "menu-button": "../components/menuButton/menuButton",
+    "refresh-button": "../components/refreshButton/refreshButton"
   }
 }
