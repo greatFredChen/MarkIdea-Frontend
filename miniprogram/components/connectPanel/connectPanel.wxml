@@ -1,7 +1,13 @@
 <!--components/connectPanel/connectPanel.wxml-->
 <view class="connect-panel" wx:if="{{showMe}}">
   <view class="button-flex mt20">
-    <refresh class="width_half"></refresh>
-    <button class="round-button" bindtap="returnMap">浏览模式</button>
+    <button class="round-button" bindtap="returnMap">
+      <mp-icon type="field" icon="eyes-on" size="{{30}}" color="white"></mp-icon>
+      浏览模式
+    </button>
+    <button class="round-button" bindtap="showFilter">
+      <mp-icon type="field" icon="mosaic" size="{{30}}" color="white"></mp-icon>
+      过滤
+    </button>
   </view>
 </view>

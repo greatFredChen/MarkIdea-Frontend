@@ -75,6 +75,9 @@ Component({
       })
       // 通知menuButton和map组件现在关闭连接状态
       app.event.emit('linkStatus', false)
+    },
+    showFilter: () => {
+      app.event.emit('showFilterView')
     }
   }
 })
