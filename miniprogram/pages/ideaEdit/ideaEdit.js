@@ -34,9 +34,44 @@ Page({
   enter () {
     this[`enter${this.data.type}`]()
   },
-  enterCreate () { // 创建页面中按下确定按钮
+  async enterCreate () { // 创建页面中按下确定按钮
     const pck = this.getPackage()
-    app.event.emit('createIdeaMiddleman', pck)
+    const { title, description, markerIcon } = { ...pck }
+    if (title !== '') {
+      wx.showLoading({
+        title: '创建想法中'
+      })
+      try {
+        await app.ideaManager.createIdea(title, description, markerIcon, app.globalData.latitude, app.globalData.longitude)
+        console.log('创建想法成功')
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建成功'
+        })
+        await wxsleep(1000)
+        // 终止创建状态
+        app.event.emit('setcreating', false)
+        app.event.emit('refreshLocalDomain')
+        // 关闭编辑页
+        wx.navigateBack()
+      } catch (err) {
+        await wx.hideLoading()
+        await wx.showToast({
+          title: '创建失败',
+          icon: 'none',
+          duration: 2000
+        })
+        console.log('创建想法失败')
+        console.log(err)
+      }
+    } else {
+      // 标题为空
+      wx.showToast({
+        title: '标题不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+    }
   },
   async enterEdit () { // 编辑页面按下按钮
     try {
@@ -76,12 +111,12 @@ Page({
     // b. loadEdit()                        [package in args    set]           [o]                [edit]
     // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]                [noedit]
     // d. event singleIdeaUpdate            [package in args    set]           [n]                [edit]
-    // _. event createIdeaMiddleman         [package in package out]           [j]                [noedit]
+    // _. event createIdeaMiddleman         [package in package out]           [j]                [noedit]  [delete]
     // e. ideaManager::ideaEdit             [package in package net] [warning] [h]                [noedit]  [delete]
-    // f. enterCreate                       [package in package out]           [_]                [noedit]
+    // f. enterCreate                       [package in package out]           [**_**, k]         [noedit]
     // g. enterEdit                         [package in package out]           [c, d, **e**, p]   [noedit]
     // h. cloudFunction ideaEdit            [net     in args    out]                              [edit]
-    // j. createPanel::createIdeaMiddleman  [package in args    out]           [k]                [edit]
+    // j. createPanel::createIdeaMiddleman  [package in args    out]           [k]                [edit]    [delete]
     // k. ideaManager::createIdea           [args    in args    net]           [l]                [edit]
     // l. cloudFunction createIdea          [net     in package set] [warning]                    [noedit]
     // m. ideaView.wxml/js                                                                        [edit]
@@ -123,7 +158,6 @@ Page({
         title: '喂！再往前就是地狱啊',
         icon: 'none'
       })
-      // wx.navigateBack()
     }
   },
   loadEdit (type, { _id, title, description, markerIcon }) {
@@ -150,9 +184,6 @@ Page({
     const type = querys.type
     delete querys.type
     this.constructor(type, querys)
-    app.event.on('closeEdit', () => {
-      wx.navigateBack()
-    })
   },
 
   /**

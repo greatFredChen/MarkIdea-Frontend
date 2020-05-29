@@ -1,6 +1,5 @@
 // components/connectPanel/connectPanel.js
 const app = getApp()
-const util = require('../../utils/util')
 
 Component({
   /**
