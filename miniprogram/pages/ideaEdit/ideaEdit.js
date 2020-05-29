@@ -1,5 +1,6 @@
 // miniprogram/pages/ideaEdit/ideaEdit.js
 import { wxsleep } from '../../utils/util'
+import { IdeaType } from '../../class/IdeaType'
 const app = getApp()
 Page({
 
@@ -8,8 +9,7 @@ Page({
    */
   data: {
     type: '',
-    title: '',
-    description: '',
+    ...(new IdeaType(Math.E)),
     inEditPreview: 0,
     _id: -1,
     markerIconIndex: -1,
@@ -26,49 +26,54 @@ Page({
       inEditPreview: Number(e.currentTarget.id)
     })
   },
-  bindEditUpdate (pck) {
-    this.setData(pck.detail)
-  },
   enter () {
     this[`enter${this.data.type}`]()
   },
   async enterCreate () { // 创建页面中按下确定按钮
+    console.log('开始创建')
     const pck = this.getPackage()
-    const { title, description, markerIcon } = { ...pck }
+    const { title, description, markerIcon, items } = { ...pck }
     if (title !== '') {
-      wx.showLoading({
-        title: '创建想法中'
-      })
-      try {
-        await app.ideaManager.createIdea(title, description, markerIcon, app.globalData.latitude, app.globalData.longitude)
-        console.log('创建想法成功')
-        wx.hideLoading()
-        wx.showToast({
-          title: '创建成功'
-        })
-        await wxsleep(1000)
-        // 终止创建状态
-        app.event.emit('setcreating', false)
-        app.event.emit('refreshLocalDomain')
-        // 关闭编辑页
-        wx.navigateBack()
-      } catch (err) {
-        await wx.hideLoading()
-        await wx.showToast({
-          title: '创建失败',
-          icon: 'none',
-          duration: 2000
-        })
-        console.log('创建想法失败')
-        console.log(err)
-      }
-    } else {
-      // 标题为空
       wx.showToast({
         title: '标题不能为空',
         icon: 'none',
         duration: 1000
       })
+      return
+    }
+    if (this.data.markerIconIndex === -1) {
+      wx.showToast({
+        title: '图标不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
+    wx.showLoading({
+      title: '创建想法中'
+    })
+    try {
+      await app.ideaManager.createIdea(title, description, markerIcon, items, app.globalData.latitude, app.globalData.longitude)
+      console.log('创建想法成功')
+      wx.hideLoading()
+      wx.showToast({
+        title: '创建成功'
+      })
+      await wxsleep(1000)
+      // 终止创建状态
+      app.event.emit('setcreating', false)
+      app.event.emit('refreshLocalDomain')
+      // 关闭编辑页
+      wx.navigateBack()
+    } catch (err) {
+      await wx.hideLoading()
+      await wx.showToast({
+        title: '创建失败',
+        icon: 'none',
+        duration: 2000
+      })
+      console.log('创建想法失败')
+      console.log(err)
     }
   },
   async enterEdit () { // 编辑页面按下按钮
@@ -118,11 +123,13 @@ Page({
     // n. wedeaMap.wxml/js                                                                        [noedit]
     // o. ideaEdit.wxml/js                                                                        [edit]
     // p. Idea::edit                        [args    in net     out]           [h, d]             [edit]
+    console.log(this.data)
     return {
       // 修改的项
       title: this.data.title,
       description: this.data.description,
-      markerIcon: app.resourceManager.ideaIconRecordList[this.data.markerIconIndex].id
+      markerIcon: app.resourceManager.ideaIconRecordList[this.data.markerIconIndex].id,
+      items: this.data.items
     }
   },
   /**
@@ -144,6 +151,11 @@ Page({
       this.setData({
         icons,
         ideaIconRecordList: app.resourceManager.ideaIconRecordList
+      })
+      app.event.on('setItems', items => {
+        this.setData({
+          items
+        })
       })
       // 各自的构造
       this[funcName](type, payload)

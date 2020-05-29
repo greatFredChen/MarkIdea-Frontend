@@ -100,7 +100,8 @@ class IdeaManager {
    * @param {*} latitude
    * @param {*} longitude
    */
-  async createIdea (title, description, markerIcon, latitude, longitude) {
+  async createIdea (title, description, markerIcon, items, latitude, longitude) {
+    console.log(items)
     let res = []
     const currentTime = new Date().getTime() // 单位为ms
     // 获取当前位置的domain
@@ -122,7 +123,8 @@ class IdeaManager {
           likes: 0,
           description: description,
           // 云存储中的fileId
-          markerIcon // 传入的 markerIcon
+          markerIcon, // 传入的 markerIcon
+          items // 传入的 items, 类型为 ItemType
         },
         key: app.globalData.backendKey,
         backendHost: app.globalData.backendHost,

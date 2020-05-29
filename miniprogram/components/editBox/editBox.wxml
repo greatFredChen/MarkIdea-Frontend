@@ -4,14 +4,14 @@
       <view class="weui-cells__title">标题</view>
       <view class="weui-cell weui-cell_active">
         <view class="weui-cell__bd">
-          <input class="weui-input" id="title" placeholder="请输入标题" bindinput="bindinput" maxlength="200" value="{{title}}" />
+          <input class="weui-input" id="title" placeholder="必填" bindinput="bindinput" maxlength="200" model:value="{{title}}" />
         </view>
       </view>
       <view class="weui-cells__title">想法描述</view>
       <view class="weui-cells weui-cells_form">
         <view class="weui-cell weui-cell_active">
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" id="description" placeholder="请描述你的想法" maxlength="200" bindinput="bindinput" value="{{description}}"></textarea>
+            <textarea class="weui-textarea" id="description" maxlength="200" bindinput="bindinput" model:value="{{description}}"></textarea>
             <view class="weui-textarea-counter">
               <text>{{desCount}}</text>
               /200
@@ -30,7 +30,7 @@
           <view class="weui-cells__title idea-cell__subtitle">子标题</view>
           <view class="weui-cell weui-cell_active">
             <view class="weui-cell__bd">
-              <input class="weui-input" id="title" placeholder="请输入子标题" maxlength="200" />
+              <input class="weui-input" id="title" placeholder="选填" maxlength="200" model:value="{{item.subTitle}}" />
             </view>
           </view>
           <view wx:if="{{item.type === MediaType.MARKDOWN}}">
@@ -38,9 +38,9 @@
             <view class="weui-cells weui-cells_form">
               <view class="weui-cell weui-cell_active">
                 <view class="weui-cell__bd">
-                  <textarea class="weui-textarea" id="description" placeholder="请描述你的想法" maxlength="200"></textarea>
+                  <textarea class="weui-textarea" id="description" maxlength="200" model:value="{{item.src}}"></textarea>
                   <view class="weui-textarea-counter">
-                    <text>{{desCount}}</text>
+                    <text>{{item.src.length}}</text>
                     /200
                   </view>
                 </view>
@@ -48,11 +48,18 @@
             </view>
           </view>
           <view wx:else>
-            <view class="weui-cell weui-cell_active" bind:tap="choseFile" id="{{idx}}">
-              <text wx:if="{{item.src.length === 0}}">请选择文件</text>
-              <image wx:elif="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix"></image>
-              {{item.type}} {{item.src}}
+            <view class="weui-cell" wx:if="{{item.src.length !== 0}}">
+              <image wx:if="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix"></image>
+              <video wx:elif="{{item.type === MediaType.VIDEO}}" src="{{item.src}}" show-center-play-btn='{{true}}' show-play-btn="{{true}}" controls></video>
+              <audio wx:elif="{{item.type === MediaType.AUDIO}}" src="{{item.src}}" controls></audio>
             </view>
+            <view bind:tap="chooseFile" id="{{idx}}" class="weui-cell weui-cell_active">
+              <text wx:if="{{item.src.length === 0}}">请选择 {{item.type}} 文件</text>
+              <text wx:else>更换文件</text>
+            </view>
+          </view>
+          <view bind:tap="deleteItem" id="{{idx}}" class="weui-cell weui-cell_active">
+            <text>删除此想法子项</text>
           </view>
         </view>
       </view>
