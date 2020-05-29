@@ -168,6 +168,11 @@ Component({
       })
 
       // 初始化刷新地图
+      wx.showToast({
+        title: '正在加载想法..',
+        icon: 'loading',
+        duration: 1500
+      })
       app.event.emit('refreshLocalDomain')
     },
 

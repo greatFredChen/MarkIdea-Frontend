@@ -44,6 +44,7 @@
   border-radius: 50rpx 50rpx 0 0;
   box-shadow: 0 0 15rpx 1px #999;
   transform: translate3d(0, 100%, 0);
+  opacity: 0.8;
 }
 
 .round-button {
