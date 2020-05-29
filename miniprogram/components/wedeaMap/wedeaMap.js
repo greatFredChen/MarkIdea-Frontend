@@ -51,7 +51,6 @@ Component({
 
       // 获取用户坐标
       await this.getUserLocation()
-      // this.regionchange()
 
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
@@ -167,6 +166,9 @@ Component({
           linkMode: status
         })
       })
+
+      // 初始化刷新地图
+      app.event.emit('refreshLocalDomain')
     },
 
     hide () {
@@ -194,7 +196,9 @@ Component({
         }).then(res => {
           this.setData({
             longitude: res.longitude,
-            latitude: res.latitude
+            latitude: res.latitude,
+            centerLatitude: res.latitude,
+            centerLongitude: res.longitude
           })
           resolve(true)
         }).catch(err => {
@@ -264,7 +268,7 @@ Component({
     setMarkers (markers) {
       // console.log('setMarkers')
       // console.log(markers)
-      const base = 60.0
+      const base = 90.0
       const scaleBase2 = 20.0 * 20.0
       const scale2 = this.data.scale * this.data.scale
       for (let i = 0; i < markers.length; i++) {
