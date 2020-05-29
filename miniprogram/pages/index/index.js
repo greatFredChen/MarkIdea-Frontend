@@ -11,13 +11,6 @@ Page({
   // 加载
   onLoad: async function () {
     const that = this
-    if (!wx.cloud) {
-      wx.redirectTo({
-        url: '../chooseLib/chooseLib'
-      })
-      return
-    }
-
     // 获取用户信息
     wx.getSetting({
       success: res => {

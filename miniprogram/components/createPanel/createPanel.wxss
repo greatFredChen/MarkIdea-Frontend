@@ -10,11 +10,23 @@
   width: 100%;
 } */
 
-.two-button-flex {
+.button-flex {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.width_half {
+  width: 50%;
+}
+
+.width_one_third {
+  width: 33%;
+}
+
+.width_one_fourth {
+  width: 25%;
 }
 
 .mt20 {
@@ -36,4 +48,19 @@
   border-radius: 50rpx 50rpx 0 0;
   box-shadow: 0 0 15rpx 1px #999;
   transform: translate3d(0, 100%, 0);
+  opacity: 0.8;
+}
+
+.round-button {
+  width: 180rpx !important;
+  height: 180rpx !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: var(--weui-BRAND);
+  border-radius: 50%;
+  color: #FFF;
+  font-size: 35rpx;
 }

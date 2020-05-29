@@ -8,7 +8,7 @@ class IdeaManager {
   constructor () {
     this._rankCalculator = new IdeaRankCalculator({
       likes: 1
-    }, {}, 0.5)
+    }, {}, 0.08)
     // ideas 里存放着映射 id => idea，这个映射的构建在 event setIdeas 里完成
     // 绘制 polyline 想法关联需要使用这个映射，因此绘制动作可以发生在 ideaMap 更新之后
     this.ideas = new Map()

@@ -1,7 +1,7 @@
 <!--components/connectPanel/connectPanel.wxml-->
 <view class="connect-panel" wx:if="{{showMe}}">
-  <view class="two-button-flex mt20">
-    <refresh></refresh>
-    <button class="weui-btn weui-btn_primary" bindtap="returnMap">返回浏览模式</button>
+  <view class="button-flex mt20">
+    <refresh class="width_half"></refresh>
+    <button class="round-button" bindtap="returnMap">浏览模式</button>
   </view>
 </view>

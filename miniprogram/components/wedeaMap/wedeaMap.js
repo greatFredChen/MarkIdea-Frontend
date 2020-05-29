@@ -51,7 +51,6 @@ Component({
 
       // 获取用户坐标
       await this.getUserLocation()
-      // this.regionchange()
 
       // 获取视野范围
       const mapInstance = wx.createMapContext('testmap', this)
@@ -199,7 +198,9 @@ Component({
         }).then(res => {
           this.setData({
             longitude: res.longitude,
-            latitude: res.latitude
+            latitude: res.latitude,
+            centerLatitude: res.latitude,
+            centerLongitude: res.longitude
           })
           resolve(true)
         }).catch(err => {
@@ -217,6 +218,8 @@ Component({
     // 点击想法触发事件 修改想法
     ideatap: function (e) {
       // TODO: 查看想法信息以及修改想法信息
+      // 不论什么模式，先退出创建想法的面板状态
+      app.event.emit('setcreating', false)
       if (!this.data.linkMode) {
         app.event.emit('viewIdea', e.detail.markerId)
       } else { // 连接Idea模式
@@ -269,7 +272,7 @@ Component({
     setMarkers (markers) {
       // console.log('setMarkers')
       // console.log(markers)
-      const base = 60.0
+      const base = 90.0
       const scaleBase2 = 20.0 * 20.0
       const scale2 = this.data.scale * this.data.scale
       for (let i = 0; i < markers.length; i++) {

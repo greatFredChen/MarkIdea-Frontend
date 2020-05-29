@@ -4,6 +4,7 @@
   <create-panel class="z-index__200"></create-panel>
   <connect-panel class="z-index__200"></connect-panel>
   <menu-button class="z-index__200"></menu-button>
+  <refresh-button class="z-index__200"></refresh-button>
 </view>
 <idea-view class="z-index__300"></idea-view>
 <connect-dialog class="z-index__300"></connect-dialog>
