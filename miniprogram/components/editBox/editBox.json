@@ -1,4 +1,6 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "mp-actionSheet": "../../weui-miniprogram/miniprogram_dist/actionsheet/actionsheet"
+  }
 }

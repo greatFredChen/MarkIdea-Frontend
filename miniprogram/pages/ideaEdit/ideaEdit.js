@@ -14,9 +14,7 @@ Page({
     _id: -1,
     markerIconIndex: -1,
     icons: [], // for view list
-    ideaIconRecordList: [], // for view getter
-    latitude: -1, // 地图中心纬度
-    longitude: -1 // 地图中心经度
+    ideaIconRecordList: [] // for view getter
   },
   bindPickerChange (e) {
     this.setData({
@@ -108,15 +106,12 @@ Page({
     // 当修改可编辑或者可提交的内容，需要连带修改的有
     // 后期可以用一个类来统一管理
     // a. getPackage()                      [args    in package out]           [f, g]             [edit]
-    // b. loadEdit()                        [package in args    set]           [o]                [edit]
+    // b. loadEdit()                        [package in args    set] [warning] [o]                [edit]
     // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]                [noedit]
-    // d. event singleIdeaUpdate            [package in args    set]           [n]                [edit]
-    // _. event createIdeaMiddleman         [package in package out]           [j]                [noedit]  [delete]
-    // e. ideaManager::ideaEdit             [package in package net] [warning] [h]                [noedit]  [delete]
-    // f. enterCreate                       [package in package out]           [**_**, k]         [noedit]
-    // g. enterEdit                         [package in package out]           [c, d, **e**, p]   [noedit]
+    // d. event singleIdeaUpdate            [package in args    set] [warning] [n]                [edit]
+    // f. enterCreate                       [package in package out]           [k]                [noedit]
+    // g. enterEdit                         [package in package out]           [c, d, p]          [noedit]
     // h. cloudFunction ideaEdit            [net     in args    out]                              [edit]
-    // j. createPanel::createIdeaMiddleman  [package in args    out]           [k]                [edit]    [delete]
     // k. ideaManager::createIdea           [args    in args    net]           [l]                [edit]
     // l. cloudFunction createIdea          [net     in package set] [warning]                    [noedit]
     // m. ideaView.wxml/js                                                                        [edit]

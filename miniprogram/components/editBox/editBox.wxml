@@ -1,5 +1,5 @@
 <view class="weui-form">
-  <view class="weui-form__control-area">
+  <view class="weui-form__control-area weui-form__control-area__attach">
     <view class="weui-cells__group weui-cells__group_form">
       <view class="weui-cells__title">标题</view>
       <view class="weui-cell weui-cell_active">
@@ -25,12 +25,45 @@
           <slot></slot>
         </view>
       </view>
+      <view wx:if="{{items.length !== 0}}">
+        <view wx:for="{{items}}" wx:for-index="idx" wx:key="idx">
+          <view class="weui-cells__title idea-cell__subtitle">子标题</view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <input class="weui-input" id="title" placeholder="请输入子标题" maxlength="200" />
+            </view>
+          </view>
+          <view wx:if="{{item.type === MediaType.MARKDOWN}}">
+            <view class="weui-cells__title">想法描述</view>
+            <view class="weui-cells weui-cells_form">
+              <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__bd">
+                  <textarea class="weui-textarea" id="description" placeholder="请描述你的想法" maxlength="200"></textarea>
+                  <view class="weui-textarea-counter">
+                    <text>{{desCount}}</text>
+                    /200
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view wx:else>
+            <view class="weui-cell weui-cell_active" bind:tap="choseFile" id="{{idx}}">
+              <text wx:if="{{item.src.length === 0}}">请选择文件</text>
+              <image wx:elif="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix"></image>
+              {{item.type}} {{item.src}}
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
   <view class="weui-form__opr-area">
+    <button class="weui-btn weui-btn_default" bindtap="openChoseSheet">添加媒体</button>
     <button class="weui-btn weui-btn_primary" bindtap="enter" disabled="{{titleCount === 0}}">
-      确定
+      确    定
     </button>
     <navigator class="weui-btn weui-btn_default" open-type="navigateBack">取消</navigator>
   </view>
 </view>
+<mp-actionSheet bindactiontap="choseMediaType" show="{{showActionsheet}}" actions="{{actionGroups}}"></mp-actionSheet>

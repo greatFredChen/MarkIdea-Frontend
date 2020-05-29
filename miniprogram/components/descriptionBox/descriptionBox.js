@@ -1,13 +1,12 @@
 // components/descriptionBox/descriptionBox.js
+import { IdeaType } from '../../class/IdeaType'
 const comi = require('../../comi/comi.js')
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    title: String,
-    description: String,
-    attach: Array
+    ...(new IdeaType())
   },
 
   /**
