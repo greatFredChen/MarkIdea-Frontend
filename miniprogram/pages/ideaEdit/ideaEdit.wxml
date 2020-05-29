@@ -9,7 +9,8 @@
   </view>
   <view class="page__bd page__bd_spacing">
     <view hidden="{{inEditPreview !== 0}}">
-      <edit-box bind:editUpdate="bindEditUpdate" bind:enter="enter" title="{{title}}" description="{{description}}">
+      <!--I don't know why items can't be synced-->
+      <edit-box bind:enter="enter" model:title="{{title}}" model:description="{{description}}" items="{{items}}">
         <picker bindchange="bindPickerChange" range="{{icons}}" range-key="name" value="{{markerIconIndex}}">
           <view class="view-flex" wx:if="{{markerIconIndex === -1}}">未选择</view>
           <view class="view-flex" wx:else>

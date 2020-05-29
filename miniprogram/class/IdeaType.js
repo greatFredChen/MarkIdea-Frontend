@@ -1,3 +1,4 @@
+import { uuid } from '../utils/util'
 /**
  * 媒体类型
  */
@@ -12,6 +13,7 @@ class MediaType {
  * 想法子项类型
  */
 class ItemType {
+  _id = String
   subTitle = String
   type = MediaType
   src = String
@@ -25,8 +27,9 @@ class ItemType {
     }
     if (Object.prototype.hasOwnProperty.call(new MediaType(), type)) {
       this.type = type
-      this.subTitle = ''
-      this.src = ''
+      this.subTitle = this.subTitle()
+      this.src = this.src()
+      this._id = uuid()
     }
   }
 }
@@ -37,6 +40,16 @@ class IdeaType {
   title = String
   description = String
   items = Array
+  markerIcon = Number
+  constructor (isForData) {
+    if (isForData === undefined) {
+      return
+    }
+    this.title = this.title() // equ ''
+    this.description = this.description() // equ ''
+    this.items = this.items() // equ []
+    this.markerIcon = this.markerIcon() // equ 0
+  }
 }
 
 // 如何使用？

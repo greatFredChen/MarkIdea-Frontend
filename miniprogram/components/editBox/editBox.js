@@ -2,6 +2,7 @@
 import { IdeaType, MediaType, ItemType } from '../../class/IdeaType'
 import { uuid, formatTime } from '../../utils/util'
 const CLOUDFILEHEAD = 'cloud://'
+const app = getApp()
 Component({
   /**
    * 组件的属性列表
@@ -44,12 +45,23 @@ Component({
       }
     },
     async enter () {
-      wx.wx.showLoading({
+      wx.showLoading({
         title: '保存中',
         mask: true
       })
-      await this.uploadFile()
-      this.triggerEvent('enter')
+      try {
+        await this.uploadFile()
+        console.log(this.properties)
+        app.event.emit('setItems', this.properties.items)
+        this.triggerEvent('enter')
+      } catch (err) {
+        console.log(err)
+        wx.hideLoading()
+        wx.showToast({
+          title: '上传失败',
+          icon: 'none'
+        })
+      }
     },
     openChoseSheet () {
       this.setData({
@@ -72,12 +84,17 @@ Component({
     },
     async uploadFile () {
       for (const i of this.properties.items) {
-        if (i.src.startWith(CLOUDFILEHEAD)) {
+        if (i.src.startsWith(CLOUDFILEHEAD)) {
+          // 不上传 fileID
+          continue
+        }
+        if (i.type === this.properties.MediaType.MARKDOWN || i.type === this.properties.MediaType.LINK) {
+          // 不上传文本和链接
           continue
         }
         const tempFilePath = i.src
         const timestr = formatTime(new Date()).replace(/[ /:]/gi, '-')
-        const cloudPath = 'picture/' + timestr + '-' + uuid() + tempFilePath.split('.').pop()
+        const cloudPath = 'picture/' + timestr + '-' + uuid() + '.' + tempFilePath.split('.').pop()
         console.log(cloudPath)
         const upres = await wx.cloud.uploadFile({
           cloudPath,
@@ -89,6 +106,7 @@ Component({
         items: this.properties.items
       })
       console.log(this.properties.items)
+      console.log('文件上传完毕')
     },
     async chooseImage (idx) {
       try {
@@ -113,7 +131,7 @@ Component({
         }
       }
     },
-    async chooseFile (idx) {
+    async chooseMessageFile (idx) {
       // 微信仅允许获取聊天内容文件
       try {
         const res = await wx.chooseMessageFile({
@@ -123,18 +141,29 @@ Component({
         console.log(res)
         const tempFilePath = res.tempFiles[0].path
         this.properties.items[idx].src = tempFilePath
+        this.setData({
+          items: this.properties.items
+        })
       } catch (err) {
         console.log(err)
       }
     },
-    async choseFile (e) {
+    async chooseFile (e) {
       console.log(e)
       const idx = Number(e.currentTarget.id)
       if (this.properties.items[idx].type === this.properties.MediaType.PICTURE) {
         await this.chooseImage(idx)
       } else {
-        await this.chooseFile(idx)
+        await this.chooseMessageFile(idx)
       }
+    },
+    async deleteItem (e) {
+      console.log(e)
+      const idx = Number(e.currentTarget.id)
+      this.properties.items.splice(idx, 1)
+      this.setData({
+        items: this.properties.items
+      })
     }
   },
   observers: {
