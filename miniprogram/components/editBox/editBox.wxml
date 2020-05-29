@@ -61,7 +61,7 @@
   <view class="weui-form__opr-area">
     <button class="weui-btn weui-btn_default" bindtap="openChoseSheet">添加媒体</button>
     <button class="weui-btn weui-btn_primary" bindtap="enter" disabled="{{titleCount === 0}}">
-      确    定
+      保    存
     </button>
     <navigator class="weui-btn weui-btn_default" open-type="navigateBack">取消</navigator>
   </view>
