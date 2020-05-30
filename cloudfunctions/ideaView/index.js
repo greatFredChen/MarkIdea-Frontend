@@ -104,9 +104,9 @@ async function replaceCloudID2TempUrl (items) {
 
 /**
  * 通过Id列表获取对应对象的指定字段
- * @param {list} ideaIdList 
+ * @param {list} ideaIdList
  */
-async function getIdeasInfo(ideaIdList) {
+async function getIdeasInfo (ideaIdList) {
   try {
     ideaIdList = ideaIdList.map(String)
     let res = await db.collection('Idea').field({
@@ -116,13 +116,13 @@ async function getIdeasInfo(ideaIdList) {
       markerIcon: true
     }).where({ _id: cmd.in(ideaIdList) }).get()
     res = res.data
-    let resMap = new Map()
-    for(let i = 0; i < res.length; i++) {
+    const resMap = new Map()
+    for (let i = 0; i < res.length; i++) {
       resMap.set(Number(res[i]._id), res[i])
     }
     return resMap
   } catch (err) {
-    throw Error ({
+    throw Error({
       msg: '获取关联idea信息失败',
       error: err
     })
@@ -179,12 +179,12 @@ exports.main = async (event, context) => {
     const to = res.data.to
     // 获取直接关联的idea的更多信息, 比如经纬度, 标题, 图标等
     if (from && from.length > 0) {
-      let fromIdList = []
-      for(let i = 0; i < from.length; i++) {
+      const fromIdList = []
+      for (let i = 0; i < from.length; i++) {
         fromIdList.push(from[i].from)
       }
-      let ideaInfo = await getIdeasInfo(fromIdList)
-      for(let i = 0; i < from.length; i++) {
+      const ideaInfo = await getIdeasInfo(fromIdList)
+      for (let i = 0; i < from.length; i++) {
         from[i].from = {
           id: Number(from[i].from),
           ...ideaInfo.get(Number(from[i].from))
@@ -192,19 +192,19 @@ exports.main = async (event, context) => {
       }
     }
     if (to && to.length > 0) {
-      let toIdList = []
-      for(let i = 0; i < to.length; i++) {
+      const toIdList = []
+      for (let i = 0; i < to.length; i++) {
         toIdList.push(to[i].to)
       }
-      let ideaInfo = await getIdeasInfo(toIdList)
-      for(let i = 0; i < to.length; i++) {
+      const ideaInfo = await getIdeasInfo(toIdList)
+      for (let i = 0; i < to.length; i++) {
         to[i].to = {
           id: Number(to[i].to),
           ...ideaInfo.get(Number(to[i].to))
         }
       }
     }
-    
+
     const resWxdb = await fetchIdeaFromWxdb(ideaId, kvSetForWxdb)
     if (resWxdb[kvSetForWxdb.items] !== undefined) {
       await replaceCloudID2TempUrl(resWxdb[kvSetForWxdb.items])
@@ -213,8 +213,8 @@ exports.main = async (event, context) => {
       ...okPck,
       ...resWxdb,
       relationship: {
-        from: from ? from : [],
-        to: to ? to : []
+        from: from || [],
+        to: to || []
       }
     }
   } catch (e) {
