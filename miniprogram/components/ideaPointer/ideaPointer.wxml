@@ -11,8 +11,8 @@
     </view>
   </view>
   <view class="weui-panel__ft">
-    <a class="weui-cell weui-cell_active weui-cell_access weui-cell_link view-more" bindtap="viewIdea">
-      <view class="weui-cell__bd">查看</view>
+    <a class="weui-cell weui-cell_active weui-cell_access weui-cell_link view-more" bindtap="viewOrConnectIdea">
+      <view class="weui-cell__bd">{{linkMode? '连接': '查看'}}</view>
       <text class="weui-cell__ft"></text>
     </a>
   </view>

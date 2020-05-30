@@ -18,7 +18,8 @@ Component({
     show: false,
     inputVal: '',
     inputShown: false,
-    resultList: null
+    resultList: null,
+    linkMode: false
   },
 
   /**
@@ -85,6 +86,12 @@ Component({
 
       app.event.on('hideSearchView', () => {
         this.setData({ show: false })
+      })
+
+      app.event.on('linkStatus', (linkMode) => {
+        this.setData({
+          linkMode
+        })
       })
     }
   }

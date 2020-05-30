@@ -5,7 +5,8 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    idea: Object
+    idea: Object,
+    linkMode: Boolean
   },
 
   /**
@@ -20,7 +21,7 @@ Component({
    */
   methods: {
     // 跳转到指定想法所在地点, 并显示该想法, 并且自动点开该想法的查看页面
-    viewIdea: function () {
+    viewOrConnectIdea: function () {
       const idea = this.properties.idea
       const longitude = idea.longitude
       const latitude = idea.latitude
@@ -42,8 +43,14 @@ Component({
         longitude: longitude,
         latitude: latitude
       })
-      // 查看指定想法
-      app.event.emit('viewIdea', id)
+      if (!this.properties.linkMode) {
+        // 查看指定想法
+        app.event.emit('viewIdea', id)
+      } else {
+        // 连接指定idea
+        app.event.emit('hideConnectDialog', false)
+        app.event.emit('getToId', id)
+      }
     }
   }
 })
