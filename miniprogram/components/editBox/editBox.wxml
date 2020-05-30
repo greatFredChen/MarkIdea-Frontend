@@ -71,10 +71,10 @@
       <mp-icon icon="add" color="black" size="{{25}}"></mp-icon>
     </button>
     <navigator class="weui-btn weui-btn_default button_default__color" open-type="navigateBack">
-      取消
+      取   消
     </navigator>
-    <button class="weui-btn weui-btn_primary button_primary__color" bindtap="enter" disabled="{{titleCount === 0}}">
-      保 存
+    <button class="weui-btn weui-btn_primary button_primary__color" hover-class="button_primary__hover_color" bindtap="enter" disabled="{{titleCount === 0}}">
+      保   存
     </button>
   </view>
 </view>

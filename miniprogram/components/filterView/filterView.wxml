@@ -16,7 +16,7 @@
           <filter-item filterItem="{{item}}" itemId="{{index}}" binditemInput="itemInput"></filter-item>
         </view>
         <view class="weui-cell">
-          <a class="weui-btn weui-btn_primary button__color" bindtap="tapApply">应用</a>
+          <a class="weui-btn weui-btn_primary button_primary__color" bindtap="tapApply">应用</a>
         </view>
       </view>
     </view>
