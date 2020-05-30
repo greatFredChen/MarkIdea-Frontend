@@ -1,6 +1,5 @@
 // components/ideaView/ideaView.js
 import { IdeaType } from '../../class/IdeaType'
-import { Idea } from '../../class/Idea'
 /**
  * 用法
  * 查看想法详情组件
@@ -53,9 +52,6 @@ Component({
         }
         delete res.result.code
         delete res.result.Msg
-        if (res.result.items) { // 对老的没有 items 的 idea 不作处理
-          await Idea.replaceCloudID2TempUrl(res.result.items)
-        }
         this.setData({
           ...res.result,
           show: true,

@@ -1,7 +1,6 @@
 // components/editBox/editBox.js
 import { IdeaType, MediaType, ItemType } from '../../class/IdeaType'
 import { uuid, formatTime } from '../../utils/util'
-import { Idea } from '../../class/Idea'
 import { CLOUD_FILE_HEAD } from '../../class/Constants'
 const app = getApp()
 Component({
@@ -206,7 +205,6 @@ Component({
         })
       }
       const itemId2SwapSrc = new Map()
-      await Idea.replaceCloudID2TempUrl(this.properties.items)
       for (const item of this.properties.items) {
         itemId2SwapSrc.set(item._id, item.src)
       }

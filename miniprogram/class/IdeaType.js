@@ -7,7 +7,6 @@ class MediaType {
   AUDIO = 'AUDIO'
   VIDEO = 'VIDEO'
   PICTURE = 'PICTURE'
-  LINK = 'LINK'
 }
 /**
  * 想法子项类型，在数据库中可修改的字段

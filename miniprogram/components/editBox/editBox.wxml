@@ -53,12 +53,12 @@
 							<video wx:elif="{{item.type === MediaType.VIDEO}}" src="{{item.src}}" show-center-play-btn='{{true}}' show-play-btn="{{true}}" controls></video>
 							<audio wx:elif="{{item.type === MediaType.AUDIO}}" src="{{item.src}}" controls></audio>
 						</view>
-						<view bind:tap="chooseFile" id="{{idx}}" class="weui-cell weui-cell_active">
+						<view bind:tap="chooseFile" id="{{idx}}" class="weui-cell weui-cell_active cell-btn">
 							<text wx:if="{{item.src.length === 0}}">请选择 {{item.type}} 文件</text>
 							<text wx:else>更换文件</text>
 						</view>
 					</view>
-					<view bind:tap="deleteItem" id="{{idx}}" class="weui-cell weui-cell_active">
+					<view bind:tap="deleteItem" id="{{idx}}" class="weui-cell weui-cell_active cell-btn">
 						<text>删除此想法子项</text>
 					</view>
 				</view>
@@ -66,9 +66,9 @@
 		</view>
 	</view>
 	<view class="weui-form__opr-area">
-		<button class="weui-btn weui-btn_default" bindtap="openChoseSheet">添加媒体</button>
-		<navigator class="weui-btn weui-btn_default" open-type="navigateBack">取消</navigator>
-		<button class="weui-btn weui-btn_primary" bindtap="enter" disabled="{{titleCount === 0}}">
+		<button class="weui-btn weui-btn_default button_default__color" bindtap="openChoseSheet">添加媒体</button>
+		<navigator class="weui-btn weui-btn_default button_default__color" open-type="navigateBack">取消</navigator>
+		<button class="weui-btn weui-btn_primary button_primary__color" bindtap="enter" disabled="{{titleCount === 0}}">
 			保 存
 		</button>
 	</view>

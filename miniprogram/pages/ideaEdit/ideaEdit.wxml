@@ -1,9 +1,9 @@
 <view class="page">
   <view class="page__hd flex-wrp flex-wrp__attach">
-    <button id="0" class="inline-btn plain-border" type="primary" plain="{{inEditPreview !== 0}}" bindtap="bindtap">
+    <button id="0" class="inline-btn plain-border button__color" type="primary" plain="{{inEditPreview !== 0}}" bindtap="bindtap">
       编辑
     </button>
-    <button id="1" class="inline-btn plain-border" type="primary" plain="{{inEditPreview !== 1}}" bindtap="bindtap">
+    <button id="1" class="inline-btn plain-border button__color" type="primary" plain="{{inEditPreview !== 1}}" bindtap="bindtap">
       预览
     </button>
   </view>
