@@ -16,9 +16,13 @@
 }
 
 .weui-flex__attach {
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .icon__attach {
   margin-left: 14px;
+}
+
+.button__color {
+  background-color: #0099FF;
 }

@@ -2,19 +2,21 @@
 <view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
-    <view class="weui-flex weui-flex__attach">
-      <a class="icon__attach" bindtap="close">
-        <mp-icon icon="close" size="{{25}}"></mp-icon>
-      </a>
-    </view>
     <view class="weui-article">
       <view class="weui-article__section" wx:if="{{filterItemCache.length !== 0}}">
-        <view class="weui-article__h2">过滤器</view>
+        <view class="weui-article__h2">
+          <view class="weui-flex weui-flex__attach">
+            <strong>过滤器</strong>
+            <a class="icon__attach" bindtap="close">
+              <mp-icon icon="close" size="{{25}}"></mp-icon>
+            </a>
+          </view>
+        </view>
         <view wx:for="{{filterItemCache}}" data-index="{{index}}" wx:for-index="index">
           <filter-item filterItem="{{item}}" itemId="{{index}}" binditemInput="itemInput"></filter-item>
         </view>
-        <view class="weui-dialog__ft__attach weui-dialog__ft__flex">
-          <a class="weui-btn weui-btn_primary" bindtap="tapApply">应用</a>
+        <view class="weui-cell">
+          <a class="weui-btn weui-btn_primary button__color" bindtap="tapApply">应用</a>
         </view>
       </view>
     </view>
