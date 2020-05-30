@@ -48,45 +48,37 @@ async function fetchIdeaFromWxdb (ideaId, whatIneed) {
 }
 
 /**
- * 将想法子项中的 cloudID 替换成 tempUrl
+ * 将想法子项中的 file cloudID 替换成 tempUrl
  * @param {*} items 想法子项
- * @returns itemId2SwapSrc itemId 到 tempUrl 的映射
+ * @returns fileID2SwapSrc fileID 到 tempUrl 的映射
  */
 async function replaceCloudID2TempUrl (items) {
-  // 初始化非 markdown 类想法子项 idea 备份
-  // 获取 coudId 到 uuid _d 的映射
-  const cloudId2uuid = new Map()
-  for (const i of items) {
-    if (i.src.startsWith(CLOUD_FILE_HEAD)) {
-      cloudId2uuid.set(i.src, i._id)
-    }
-  }
-  // 获取分割的 cloudID list
+  // 获取分割的 fileID list
   // getTempUrl 每次最多获取 MAX_FETCH_URL_COUNT 个文件 url
   const tmpList = items.filter(item => item.type !== MARKDOWN)
   const fetchList = []
   const oneTimeFetchList = []
-  let cnt = 0
   for (const i in tmpList) {
-    if (cnt === MAX_FETCH_URL_COUNT) {
-      fetchList.push(oneTimeFetchList)
+    if ((oneTimeFetchList.length !== 0) && ((i % MAX_FETCH_URL_COUNT) === 0)) {
+      fetchList.push([...oneTimeFetchList])
       oneTimeFetchList.length = 0
-      cnt = 0
     }
     oneTimeFetchList.push(tmpList[i].src)
   }
   if (oneTimeFetchList.length !== 0) {
-    fetchList.push(oneTimeFetchList)
+    fetchList.push([...oneTimeFetchList])
   }
-  // 设置 uuid 到 换取的src 的映射
-  const itemId2SwapSrc = new Map()
+  console.log(fetchList)
+  // 设置 fileID 到 换取的src 的映射
+  const fileID2SwapSrc = new Map()
   for (const i of fetchList) {
     try {
+      console.log(`fetch ${i.length} urls`)
       const res = await cloud.getTempFileURL({
         fileList: i
       })
       for (const j of res.fileList) {
-        itemId2SwapSrc.set(cloudId2uuid.get(j.fileID), j.tempFileURL)
+        fileID2SwapSrc.set(j.fileID, j.tempFileURL)
       }
     } catch (err) {
       console.log(err)
@@ -94,11 +86,15 @@ async function replaceCloudID2TempUrl (items) {
   }
   // 将 换取的src 设置到 items 上
   for (const i of items) {
-    if (itemId2SwapSrc.has(i._id)) {
-      i.src = itemId2SwapSrc.get(i._id)
+    if (i.type === MARKDOWN) {
+      // 纯文本保持原样
+      continue
+    }
+    if (fileID2SwapSrc.has(i.src)) {
+      i.src = fileID2SwapSrc.get(i.src)
     }
   }
-  return itemId2SwapSrc
+  return fileID2SwapSrc
 }
 
 /**
