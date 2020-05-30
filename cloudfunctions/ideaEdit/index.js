@@ -34,6 +34,7 @@ exports.main = async (event, context) => {
    * @param {String} _id 想法 id
    * @param {String} title 修改后的标题
    * @param {String} description 修改后的描述
+   * @param {String} items 想法子项
    * @param {String} markerIcon 修改后的图标 id
    * @returns
    * 成功
@@ -48,7 +49,7 @@ exports.main = async (event, context) => {
    * }
    */
   app.router('ideaEdit', async (ctx, next) => {
-    const resKey = ['_id', 'title', 'description', 'markerIcon']
+    const resKey = ['_id', 'title', 'description', 'items', 'markerIcon']
     console.log(ctx)
     try {
       // 检查负载是否缺少
@@ -80,6 +81,7 @@ exports.main = async (event, context) => {
         data: {
           title: event.title,
           description: event.description,
+          items: event.items,
           markerIcon: event.markerIcon
         }
       })

@@ -10,7 +10,7 @@ class MediaType {
   LINK = 'LINK'
 }
 /**
- * 想法子项类型
+ * 想法子项类型，在数据库中可修改的字段
  */
 class ItemType {
   _id = String
@@ -34,7 +34,7 @@ class ItemType {
   }
 }
 /**
- * 想法类型
+ * 想法类型，在数据库中可修改的字段
  */
 class IdeaType {
   title = String

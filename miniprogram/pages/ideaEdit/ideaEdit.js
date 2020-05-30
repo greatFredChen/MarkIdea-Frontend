@@ -12,7 +12,7 @@ Page({
     ...(new IdeaType(Math.E)),
     inEditPreview: 0,
     _id: -1,
-    markerIconIndex: -1,
+    markerIconIndex: 0,
     icons: [], // for view list
     ideaIconRecordList: [] // for view getter
   },
@@ -22,28 +22,21 @@ Page({
     })
   },
   bindtap (e) {
-    this.setData({
-      inEditPreview: Number(e.currentTarget.id)
+    app.event.emit('setItemsToParent', (items) => {
+      this.setData({ items })
     })
+    this.setData({ inEditPreview: Number(e.currentTarget.id) })
   },
   enter () {
+    app.event.emit('setItemsToParent', (items) => this.setData({ items }))
     this[`enter${this.data.type}`]()
   },
   async enterCreate () { // 创建页面中按下确定按钮
-    console.log('开始创建')
     const pck = this.getPackage()
     const { title, description, markerIcon, items } = { ...pck }
-    if (title !== '') {
+    if (title === '') {
       wx.showToast({
         title: '标题不能为空',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
-    if (this.data.markerIconIndex === -1) {
-      wx.showToast({
-        title: '图标不能为空',
         icon: 'none',
         duration: 1000
       })
@@ -78,20 +71,11 @@ Page({
   },
   async enterEdit () { // 编辑页面按下按钮
     try {
-      wx.showLoading({
-        title: '发送电波中...'
-      })
       const pck = this.getPackage()
       const idea = app.ideaManager.ideas.get(Number(this.data._id))
-      // 获得icon的资源id
-      const markerIcon = app.resourceManager.ideaIconRecordList[this.data.markerIconIndex].id
-      await idea.edit({
-        title: this.data.title,
-        description: this.data.description,
-        markerIcon
-      })
+      await idea.edit(pck)
       // 更新查看详情页
-      app.event.emit('viewIdeaLocalUpdate', pck)
+      app.event.emit('viewIdea', this.data._id)
       wx.hideLoading()
       wx.showToast({
         title: '修改成功'
@@ -112,7 +96,7 @@ Page({
     // 后期可以用一个类来统一管理
     // a. getPackage()                      [args    in package out]           [f, g]             [edit]
     // b. loadEdit()                        [package in args    set] [warning] [o]                [edit]
-    // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]                [noedit]
+    // c. event viewIdeaLocalUpdate         [package in package set] [warning] [m]                [noedit] [delete]
     // d. event singleIdeaUpdate            [package in args    set] [warning] [n]                [edit]
     // f. enterCreate                       [package in package out]           [k]                [noedit]
     // g. enterEdit                         [package in package out]           [c, d, p]          [noedit]
@@ -123,7 +107,6 @@ Page({
     // n. wedeaMap.wxml/js                                                                        [noedit]
     // o. ideaEdit.wxml/js                                                                        [edit]
     // p. Idea::edit                        [args    in net     out]           [h, d]             [edit]
-    console.log(this.data)
     return {
       // 修改的项
       title: this.data.title,
@@ -134,7 +117,7 @@ Page({
   },
   /**
    * 在 onLoad 中调用
-   * @param {构造函数的和确认函数名字后缀 ['Create', 'Edit', 'Discuss']} type
+   * @param {构造函数的和确认函数名字后缀 ['Create', 'Edit']} type
    * @param {负载} payload
    */
   async constructor (type, payload) {
@@ -152,11 +135,6 @@ Page({
         icons,
         ideaIconRecordList: app.resourceManager.ideaIconRecordList
       })
-      app.event.on('setItems', items => {
-        this.setData({
-          items
-        })
-      })
       // 各自的构造
       this[funcName](type, payload)
     } else {
@@ -167,15 +145,14 @@ Page({
       })
     }
   },
-  loadEdit (type, { _id, title, description, markerIcon }) {
-    markerIcon = Number(markerIcon)
-    const markerIconIndex = app.resourceManager.ideaIconRecordList.findIndex(it => it.id === markerIcon)
+  loadEdit (type, args) {
+    // args: { _id, title, description, markerIcon, items }
+    args.markerIcon = Number(args.markerIcon)
+    const markerIconIndex = app.resourceManager.ideaIconRecordList.findIndex(it => it.id === args.markerIcon)
     this.setData({
       type,
-      _id,
-      title,
-      description,
-      markerIconIndex
+      markerIconIndex,
+      ...args
     })
   },
   loadCreate (type, payload) {
@@ -189,8 +166,8 @@ Page({
    */
   onLoad: function (querys) {
     const type = querys.type
-    delete querys.type
-    this.constructor(type, querys)
+    const args = app.globalData.argsStack.pop()
+    this.constructor(type, args)
   },
 
   /**

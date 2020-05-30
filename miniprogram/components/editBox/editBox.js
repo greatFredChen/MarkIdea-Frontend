@@ -1,7 +1,8 @@
 // components/editBox/editBox.js
 import { IdeaType, MediaType, ItemType } from '../../class/IdeaType'
 import { uuid, formatTime } from '../../utils/util'
-const CLOUDFILEHEAD = 'cloud://'
+import { Idea } from '../../class/Idea'
+import { CLOUD_FILE_HEAD } from '../../class/Constants'
 const app = getApp()
 Component({
   /**
@@ -20,7 +21,8 @@ Component({
     showActionsheet: false,
     actionGroups: [],
     ItemType: new ItemType(),
-    MediaType: new MediaType()
+    MediaType: new MediaType(),
+    itemId2SwapSrc: new Map() // 初始的非 markdown 想法子项 uuid 到 src [cloudId 换取的 tempPath] 的映射
   },
 
   /**
@@ -44,6 +46,24 @@ Component({
         }
       }
     },
+    bindSubTitle (e) {
+      // 子项标题输入
+      const idx = Number(e.currentTarget.id)
+      const str = e.detail.value
+      this.properties.items[idx].subTitle = str
+      this.setData({
+        items: this.properties.items
+      })
+    },
+    bindSubDes (e) {
+      // 子项描述输入
+      const idx = Number(e.currentTarget.id)
+      const str = e.detail.value
+      this.properties.items[idx].src = str
+      this.setData({
+        items: this.properties.items
+      })
+    },
     async enter () {
       wx.showLoading({
         title: '保存中',
@@ -51,8 +71,6 @@ Component({
       })
       try {
         await this.uploadFile()
-        console.log(this.properties)
-        app.event.emit('setItems', this.properties.items)
         this.triggerEvent('enter')
       } catch (err) {
         console.log(err)
@@ -75,16 +93,14 @@ Component({
     },
     choseMediaType (e) {
       const type = e.detail.value
-      console.log(e)
       const item = new ItemType(type)
       this.properties.items.push(item)
       this.setData({ items: this.properties.items })
-      console.log(this.properties.items)
       this.closeChoseSheet()
     },
     async uploadFile () {
       for (const i of this.properties.items) {
-        if (i.src.startsWith(CLOUDFILEHEAD)) {
+        if (i.src.startsWith(CLOUD_FILE_HEAD)) {
           // 不上传 fileID
           continue
         }
@@ -92,10 +108,14 @@ Component({
           // 不上传文本和链接
           continue
         }
+        if (this.data.itemId2SwapSrc.has(i._id) && i.src === this.data.itemId2SwapSrc.get(i._id)) {
+          // 不上传没有改变的文件
+          continue
+        }
+        console.log('上传文件', i)
         const tempFilePath = i.src
         const timestr = formatTime(new Date()).replace(/[ /:]/gi, '-')
         const cloudPath = 'picture/' + timestr + '-' + uuid() + '.' + tempFilePath.split('.').pop()
-        console.log(cloudPath)
         const upres = await wx.cloud.uploadFile({
           cloudPath,
           filePath: tempFilePath
@@ -105,7 +125,6 @@ Component({
       this.setData({
         items: this.properties.items
       })
-      console.log(this.properties.items)
       console.log('文件上传完毕')
     },
     async chooseImage (idx) {
@@ -138,7 +157,6 @@ Component({
           count: 1,
           type: 'file'
         })
-        console.log(res)
         const tempFilePath = res.tempFiles[0].path
         this.properties.items[idx].src = tempFilePath
         this.setData({
@@ -149,7 +167,6 @@ Component({
       }
     },
     async chooseFile (e) {
-      console.log(e)
       const idx = Number(e.currentTarget.id)
       if (this.properties.items[idx].type === this.properties.MediaType.PICTURE) {
         await this.chooseImage(idx)
@@ -158,7 +175,6 @@ Component({
       }
     },
     async deleteItem (e) {
-      console.log(e)
       const idx = Number(e.currentTarget.id)
       this.properties.items.splice(idx, 1)
       this.setData({
@@ -180,7 +196,8 @@ Component({
     }
   },
   lifetimes: {
-    attached () {
+    async attached () {
+      // 初始化媒体选择列表
       const groups = []
       for (const idx in this.data.MediaType) {
         groups.push({
@@ -188,9 +205,20 @@ Component({
           value: this.data.MediaType[idx]
         })
       }
+      const itemId2SwapSrc = new Map()
+      await Idea.replaceCloudID2TempUrl(this.properties.items)
+      for (const item of this.properties.items) {
+        itemId2SwapSrc.set(item._id, item.src)
+      }
       this.setData({
-        actionGroups: groups
+        actionGroups: groups,
+        itemId2SwapSrc: new Map(itemId2SwapSrc),
+        items: this.properties.items
       })
+      app.event.on('setItemsToParent', func => func(this.properties.items))
+    },
+    detached () {
+      app.event.off('setItemsToParent')
     }
   }
 })
