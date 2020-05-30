@@ -8,7 +8,8 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    ...(new IdeaType())
+    ...(new IdeaType()),
+    itemId2SwapSrc: Object
   },
 
   /**
@@ -20,8 +21,7 @@ Component({
     showActionsheet: false,
     actionGroups: [],
     ItemType: new ItemType(),
-    MediaType: new MediaType(),
-    itemId2SwapSrc: new Map() // 初始的非 markdown 想法子项 uuid 到 src [cloudId 换取的 tempPath] 的映射
+    MediaType: new MediaType()
   },
 
   /**
@@ -72,6 +72,8 @@ Component({
         await this.uploadFile()
         this.triggerEvent('enter')
       } catch (err) {
+        console.log(this.properties.items)
+        console.log(this.data.itemId2SwapSrc)
         console.log(err)
         wx.hideLoading()
         wx.showToast({
@@ -107,7 +109,7 @@ Component({
           // 不上传文本和链接
           continue
         }
-        if (this.data.itemId2SwapSrc.has(i._id) && i.src === this.data.itemId2SwapSrc.get(i._id)) {
+        if (this.data.itemId2SwapSrc[i._id] === i.src) {
           // 不上传没有改变的文件
           continue
         }
@@ -204,14 +206,8 @@ Component({
           value: this.data.MediaType[idx]
         })
       }
-      const itemId2SwapSrc = new Map()
-      for (const item of this.properties.items) {
-        itemId2SwapSrc.set(item._id, item.src)
-      }
       this.setData({
-        actionGroups: groups,
-        itemId2SwapSrc: new Map(itemId2SwapSrc),
-        items: this.properties.items
+        actionGroups: groups
       })
       app.event.on('setItemsToParent', func => func(this.properties.items))
     },
