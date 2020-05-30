@@ -1,5 +1,5 @@
 // components/editBox/editBox.js
-import { IdeaType, MediaType, ItemType } from '../../class/IdeaType'
+import { IdeaType, MediaType, MediaTypeView, ItemType } from '../../class/IdeaType'
 import { uuid, formatTime } from '../../utils/util'
 import { CLOUD_FILE_HEAD } from '../../class/Constants'
 const app = getApp()
@@ -202,7 +202,7 @@ Component({
       const groups = []
       for (const idx in this.data.MediaType) {
         groups.push({
-          text: this.data.MediaType[idx],
+          text: MediaTypeView[this.data.MediaType[idx]],
           value: this.data.MediaType[idx]
         })
       }

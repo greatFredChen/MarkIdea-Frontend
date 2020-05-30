@@ -67,11 +67,11 @@ Component({
     returnMap () {
       // 关闭想法关联的按钮面板
       app.event.emit('menuButtonStatus', false)
-      wx.showToast({
-        title: '返回浏览模式..',
-        icon: 'loading',
-        duration: 1500
-      })
+      // wx.showToast({
+      //   title: '返回浏览模式..',
+      //   icon: 'loading',
+      //   duration: 1500
+      // })
       // 通知menuButton和map组件现在关闭连接状态
       app.event.emit('linkStatus', false)
     },
