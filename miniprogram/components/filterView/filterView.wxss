@@ -1,6 +1,7 @@
 /* components/filterView/filterView.wxss */
 @import "../../style/weui.wxss";
 @import "../../comi/comi.wxss";
+@import "../../style/theme.wxss";
 
 .weui-dialog__attach {
   left: 16px;
@@ -21,8 +22,4 @@
 
 .icon__attach {
   margin-left: 14px;
-}
-
-.button__color {
-  background-color: #0099FF;
 }

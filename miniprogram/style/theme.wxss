@@ -1,10 +1,6 @@
-page {
-  --weui-BRAND: #0099FF;
-}
-
 .button__color[type='primary'][plain] {
-  color: var(--weui-BRAND);
-  border-color: var(--weui-BRAND);
+  color: #0099FF;
+  border-color: #0099FF;
 }
 
 .button__color,
@@ -12,16 +8,19 @@ page {
 .button__color:active,
 .button__color[type='primary'],
 .button__color[type='primary'].button-hover {
-  background-color: var(--weui-BRAND);
-  border-color: var(--weui-BRAND);
+  background-color: #0099FF;
+  border-color: #0099FF;
 }
 
 .button_default__color {
-  color: var(--weui-BRAND);
+  color: #0099FF !important;
 }
 
-.button_primary__color,
-.button_primary__color:hover,
-.button_primary__color:active {
-  background-color: var(--weui-BRAND);
+.button_primary__hover_color,
+.button_primary__color:hover {
+  background-color: #0099DD !important;
+}
+
+.button_primary__color {
+  background-color: #0099FF;
 }
