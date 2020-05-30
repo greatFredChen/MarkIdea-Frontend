@@ -174,7 +174,7 @@ Component({
       })
 
       // 设置地图的中心点
-      app.event.on('setLocation', ({longitude, latitude}) => {
+      app.event.on('setLocation', ({ longitude, latitude }) => {
         this.setData({
           longitude,
           latitude
@@ -307,7 +307,7 @@ Component({
           ideaRemain.push(value)
         }
       })
-      
+
       const filterIdeaIdSet = new Set()
       const markers = []
       const rank = app.ideaManager.getRank(ideaRemain)

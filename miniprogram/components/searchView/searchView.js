@@ -38,13 +38,13 @@ Component({
     },
     clearInput: function () {
       this.setData({
-          inputVal: '',
-          inputShown: false
+        inputVal: '',
+        inputShown: false
       })
     },
     inputTyping: function (event) {
       this.setData({
-          inputVal: event.detail.value
+        inputVal: event.detail.value
       })
     },
     confirm: async function () {
@@ -52,9 +52,9 @@ Component({
       const id = Number(input)
       if (!isNaN(id) && id >= 0) {
         wx.showLoading({
-          title: '查询中',
+          title: '查询中'
         })
-        let res = await this.idSearch(id)
+        const res = await this.idSearch(id)
         if (res !== null) {
           this.setData({
             resultList: [res]
@@ -96,4 +96,3 @@ Component({
     }
   }
 })
-

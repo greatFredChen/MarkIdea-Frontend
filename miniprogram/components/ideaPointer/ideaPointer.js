@@ -36,7 +36,7 @@ Component({
       app.event.emit('hideSearchView')
       // 向全局ideaManager放置这个idea记录, 并且更新地图显示, 并且过滤器在
       // 该次更新中将不会检查该节点
-      let id = app.ideaManager.putIdea(idea)
+      const id = app.ideaManager.putIdea(idea)
       app.event.emit('updateGraph', (new Set()).add(id))
       // 移动地图
       app.event.emit('setLocation', {

@@ -69,15 +69,15 @@ class IdeaManager {
     if (obj.id) {
       id = Number(obj.id)
       if (isNaN(id) || id < 0) {
-        throw '无效的Idea id'
+        throw new Error('无效的Idea id')
       }
     } else {
       if (!obj._id) {
-        throw '无效的Idea id'
+        throw new Error('无效的Idea id')
       }
       id = Number(obj._id)
       if (isNaN(id) || id < 0) {
-        throw '无效的Idea id'
+        throw new Error('无效的Idea id')
       }
     }
     this.ideas.set(id, new Idea(obj))
