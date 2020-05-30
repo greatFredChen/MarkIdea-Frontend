@@ -117,7 +117,7 @@ Component({
         console.log('上传文件', i)
         const tempFilePath = i.src
         const timestr = formatTime(new Date()).replace(/[ /:]/gi, '-')
-        const cloudPath = 'picture/' + timestr + '-' + uuid() + '.' + tempFilePath.split('.').pop()
+        const cloudPath = i.type.toLowerCase() + '/' + timestr + '-' + uuid() + '.' + tempFilePath.split('.').pop()
         const upres = await wx.cloud.uploadFile({
           cloudPath,
           filePath: tempFilePath
