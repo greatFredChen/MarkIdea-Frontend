@@ -3,3 +3,31 @@
 .weui-flex__attach {
   justify-content: space-between;
 }
+
+.relationship-hd {
+  border-radius: 20px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.relationship-hd-close {
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.relationship-hd-open {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.1);
+}
+
+.relationship-item {
+  padding: 8px 0 4px 0
+}
+
+.relationship-open {
+  color: rgba(0, 0, 0, 0, 0.7)
+}
+
+.article-section {
+  margin-bottom: 0.5em;
+}
