@@ -78,6 +78,9 @@ Component({
     },
     showFilter: () => {
       app.event.emit('showFilterView')
+    },
+    showSearch: () => {
+      app.event.emit('showSearchView')
     }
   }
 })

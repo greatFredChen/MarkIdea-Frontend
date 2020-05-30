@@ -33,7 +33,7 @@
             <text class="no-data-tip">暂无数据</text>
           </view>
           <view wx:for="{{resultList}}">
-            <idea-pointer idea="{{item}}"></idea-pointer>
+            <idea-pointer idea="{{item}}" linkMode="{{linkMode}}"></idea-pointer>
           </view>
         </view>
         <!-- <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">

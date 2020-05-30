@@ -9,5 +9,9 @@
       <mp-icon type="field" icon="mosaic" size="{{30}}" color="white"></mp-icon>
       过滤
     </button>
+    <button class="round-button" bindtap="showSearch">
+      <mp-icon type="field" icon="search" size="{{30}}" color="white"></mp-icon>
+      搜索
+    </button>
   </view>
 </view>
