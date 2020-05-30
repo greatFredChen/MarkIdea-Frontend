@@ -1,6 +1,8 @@
 {
   "component": true,
-  "usingComponents": {},
+  "usingComponents": {
+    "markdown-box": "../markdownBox/markdownBox"
+  },
   "options": {
     "multipleSlots": true
   }

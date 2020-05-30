@@ -1,6 +1,5 @@
 // components/descriptionBox/descriptionBox.js
-import { IdeaType } from '../../class/IdeaType'
-const comi = require('../../comi/comi.js')
+import { IdeaType, MediaType } from '../../class/IdeaType'
 Component({
   /**
    * 组件的属性列表
@@ -13,21 +12,6 @@ Component({
    * 组件的初始数据
    */
   data: {
-
-  },
-
-  /**
-   * 组件的方法列表
-   */
-  methods: {
-
-  },
-  attached: function () {
-    comi(this.properties.description, this)
-  },
-  observers: {
-    description (description) {
-      comi(description, this)
-    }
+    MediaType: new MediaType()
   }
 })

@@ -3,11 +3,11 @@
 <view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
-    <description-box title="{{title}}" description="{{description}}" attach="{{attach}}">
+    <description-box title="{{title}}" description="{{description}}" items="{{items}}">
       <view class="weui-flex weui-flex__attach">
-        <navigator class="icon__attach" wx:if="{{showPrivateBtns}}" url="/pages/ideaEdit/ideaEdit?type=Edit&_id={{ideaId}}&title={{title}}&description={{description}}&markerIcon={{markerIcon}}">
+        <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapNavigator">
           <mp-icon type="field" icon="pencil" size="{{25}}"></mp-icon>
-        </navigator>
+        </view>
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapDeleteIdea">
           <mp-icon type="field" icon="delete" size="{{25}}"></mp-icon>
         </view>

@@ -26,7 +26,8 @@ App({
       backendKey: sensitiveData.backendKey,
       qqmapKey: sensitiveData.qqmapSdkKey,
       latitude: 0,
-      longitude: 0
+      longitude: 0,
+      argsStack: [] // 全局参数传递栈，例如跨页面数据传送
     }
   },
   event: new Event(),

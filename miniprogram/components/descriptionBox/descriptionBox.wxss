@@ -1,6 +1,5 @@
 /* components/descriptionBox/descriptionBox.wxss */
 @import "../../style/weui.wxss";
-@import "../../comi/comi.wxss";
 .weui-flex__attach {
   justify-content: space-between;
 }

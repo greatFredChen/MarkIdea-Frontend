@@ -1,0 +1,3 @@
+const CLOUD_FILE_HEAD = 'cloud://'
+const MAX_FETCH_URL_COUNT = 50
+export { CLOUD_FILE_HEAD, MAX_FETCH_URL_COUNT }

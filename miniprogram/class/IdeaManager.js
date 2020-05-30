@@ -101,7 +101,6 @@ class IdeaManager {
    * @param {*} longitude
    */
   async createIdea (title, description, markerIcon, items, latitude, longitude) {
-    console.log(items)
     let res = []
     const currentTime = new Date().getTime() // 单位为ms
     // 获取当前位置的domain

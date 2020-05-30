@@ -20,7 +20,7 @@
       </edit-box>
     </view>
     <view wx:if="{{inEditPreview === 1}}">
-      <description-box title="{{title}}" description="{{description}}"></description-box>
+      <description-box title="{{title}}" description="{{description}}" items="{{items}}"></description-box>
     </view>
   </view>
 </view>

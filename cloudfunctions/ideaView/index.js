@@ -17,7 +17,8 @@ const kvSetForWxdb = {
   title: 'title',
   description: 'description',
   author_id: 'author_id',
-  markerIcon: 'markerIcon'
+  markerIcon: 'markerIcon',
+  items: 'items'
 }
 
 /**
@@ -32,7 +33,9 @@ async function fetchIdeaFromWxdb (ideaId, whatIneed) {
 
   const ret = {}
   for (const key in whatIneed) {
-    if (!Object.prototype.hasOwnProperty.call(res.data, key)) {
+    if (!Object.prototype.hasOwnProperty.call(res.data, key) &&
+        key !== kvSetForWxdb.items // 兼容老的没有 items 的 idea
+    ) {
       throw new Error(`record has not key [${key}]`)
     }
     ret[whatIneed[key]] = res.data[key]
