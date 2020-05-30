@@ -3,7 +3,8 @@
 <view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
-    <description-box title="{{title}}" description="{{description}}" items="{{items}}">
+    <description-box title="{{title}}" description="{{description}}" items="{{items}}"
+      relationship="{{relationship}}">
       <view class="weui-flex weui-flex__attach">
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapNavigator">
           <mp-icon type="field" icon="pencil" size="{{25}}"></mp-icon>
