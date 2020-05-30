@@ -1,5 +1,5 @@
 /* miniprogram/pages/ideaEdit/ideaEdit.wxss */
-
+@import "../../style/theme.wxss";
 .plain-border {
   border: 1px solid #1aad19;
 }

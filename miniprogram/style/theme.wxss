@@ -1,0 +1,21 @@
+[data-weui-theme=light],page{
+  --weui-BRAND: #0099FF;
+}
+.button__color[type='primary'][plain] {
+  color: var(--weui-BRAND);
+  border-color: var(--weui-BRAND);
+}
+
+.button__color[type='primary'],
+.button__color[type='primary'].button-hover {
+  background-color: var(--weui-BRAND);
+  border-color: var(--weui-BRAND);
+}
+
+.button_default__color {
+  color: var(--weui-BRAND);
+}
+
+.button_primary__color {
+  background-color: var(--weui-BRAND);
+}
