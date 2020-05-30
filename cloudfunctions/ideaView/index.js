@@ -152,7 +152,7 @@ exports.main = async (event, context) => {
     console.log(e)
     return {
       ...failPck,
-      Error: e
+      Error: e.toString()
     }
   }
 }
