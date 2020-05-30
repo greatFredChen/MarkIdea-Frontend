@@ -13,5 +13,13 @@ Component({
    */
   data: {
     MediaType: new MediaType()
+  },
+  methods: {
+    openImage (e) {
+      const idx = Number(e.currentTarget.id)
+      wx.previewImage({
+        urls: [this.properties.items[idx].src]
+      })
+    }
   }
 })

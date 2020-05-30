@@ -15,7 +15,7 @@
 				</view>
 				<view class="weui-article__p weui-article__p__attach">
 					<markdown-box wx:if="{{item.type === MediaType.MARKDOWN}}" src="{{item.src}}"></markdown-box>
-					<image wx:elif="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix"></image>
+					<image wx:elif="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix" bindtap="openImage"></image>
 					<video wx:elif="{{item.type === MediaType.VIDEO}}" src="{{item.src}}" show-center-play-btn='{{true}}' show-play-btn="{{true}}" controls></video>
 					<audio wx:elif="{{item.type === MediaType.AUDIO}}" src="{{item.src}}" controls></audio>
 				</view>
