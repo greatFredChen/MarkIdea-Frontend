@@ -21,7 +21,8 @@ Component({
     showActionsheet: false,
     actionGroups: [],
     ItemType: new ItemType(),
-    MediaType: new MediaType()
+    MediaType: new MediaType(),
+    MediaTypeView // for View
   },
 
   /**
@@ -180,6 +181,12 @@ Component({
       this.properties.items.splice(idx, 1)
       this.setData({
         items: this.properties.items
+      })
+    },
+    openImage (e) {
+      const idx = Number(e.currentTarget.id)
+      wx.previewImage({
+        urls: [this.properties.items[idx].src]
       })
     }
   },

@@ -29,7 +29,7 @@
         <view wx:for="{{items}}" wx:for-index="idx" wx:key="idx">
           <view class="weui-cell weui-cell_active">
             <view class="weui-cell__bd idea-cell__subtitle">
-              <input class="weui-input" id="{{idx}}" placeholder="标题" maxlength="200" bindinput="bindSubTitle" value="{{item.subTitle}}" />
+              <input class="weui-input" id="{{idx}}" placeholder="{{MediaTypeView[item.type]}}标题" maxlength="200" bindinput="bindSubTitle" value="{{item.subTitle}}" />
             </view>
           </view>
           <view wx:if="{{item.type === MediaType.MARKDOWN}}">
@@ -48,7 +48,7 @@
           <view wx:else>
             <view wx:if="{{item.src.length !== 0}}">
               <view class="weui-cell">
-                <image wx:if="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix"></image>
+                <image wx:if="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix" bindtap="openImage"></image>
                 <video wx:elif="{{item.type === MediaType.VIDEO}}" src="{{item.src}}" show-center-play-btn='{{true}}' show-play-btn="{{true}}" controls></video>
                 <audio wx:elif="{{item.type === MediaType.AUDIO}}" src="{{item.src}}" controls></audio>
               </view>
