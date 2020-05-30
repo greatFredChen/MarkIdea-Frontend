@@ -8,6 +8,14 @@ class MediaType {
   VIDEO = 'VIDEO'
   PICTURE = 'PICTURE'
 }
+
+const mediaType = new MediaType()
+const MediaTypeView = {}
+MediaTypeView[mediaType.MARKDOWN] = 'MARKDOWN'
+MediaTypeView[mediaType.AUDIO] = '音乐'
+MediaTypeView[mediaType.VIDEO] = '视频'
+MediaTypeView[mediaType.PICTURE] = '图片'
+
 /**
  * 想法子项类型，在数据库中可修改的字段
  */
@@ -56,4 +64,4 @@ class IdeaType {
 // properties: {
 //   ...(new ***Type())
 // }
-export { MediaType, ItemType, IdeaType }
+export { MediaType, MediaTypeView, ItemType, IdeaType }

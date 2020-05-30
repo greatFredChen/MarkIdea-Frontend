@@ -6,36 +6,15 @@
 }
 
 .idea-cell__subtitle {
-  margin-top: 32px !important;
-  padding: 20px 32px 0 32px !important;
-  border-top: 1px solid var(--weui-FG-3);
-}
-
-.idea-cell__subtitle:before {
-  content: " ";
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  height: 1px;
-  
-  color: var(--weui-FG-2);
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scaleY(.5);
-  transform: scaleY(.5);
-  left: 16px;
-  z-index: 2;
+  padding-top: 16px !important;
+  margin-top: 0px !important;
+  border-top: 1px solid var(--weui-FG-2);
 }
 
 .weui-form__control-area__attach {
   margin: 0 0 48px 0 !important;
 }
 
-.cell-btn {
-  display: block;
-  background-color: var(--weui-BTN-DEFAULT-BG);
-  margin: 16px 32px 16px 32px !important;
-  text-align: center !important;
-  color: var(--weui-BRAND);
+.align-right {
+  justify-content: flex-end;
 }

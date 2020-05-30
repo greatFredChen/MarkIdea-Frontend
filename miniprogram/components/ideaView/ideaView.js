@@ -89,11 +89,11 @@ Component({
       this.setData({
         show: false
       })
-      wx.showToast({
-        title: '进入关联模式..',
-        icon: 'loading',
-        duration: 1000
-      })
+      // wx.showToast({
+      //   title: '进入关联模式..',
+      //   icon: 'loading',
+      //   duration: 1000
+      // })
     },
     tapNavigator () {
       app.globalData.argsStack.push({
