@@ -14,7 +14,8 @@ Page({
     _id: -1,
     markerIconIndex: 0,
     icons: [], // for view list
-    ideaIconRecordList: [] // for view getter
+    ideaIconRecordList: [], // for view getter
+    itemId2SwapSrc: {} // 初始的非 markdown 想法子项 uuid 到 src [cloudId 换取的 tempPath] 的映射
   },
   bindPickerChange (e) {
     this.setData({
@@ -149,9 +150,14 @@ Page({
     // args: { _id, title, description, markerIcon, items }
     args.markerIcon = Number(args.markerIcon)
     const markerIconIndex = app.resourceManager.ideaIconRecordList.findIndex(it => it.id === args.markerIcon)
+    const itemId2SwapSrc = {}
+    for (const item of args.items) {
+      itemId2SwapSrc[item._id] = item.src
+    }
     this.setData({
       type,
       markerIconIndex,
+      itemId2SwapSrc,
       ...args
     })
   },

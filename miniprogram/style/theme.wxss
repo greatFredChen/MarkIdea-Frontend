@@ -8,6 +8,8 @@ page {
 }
 
 .button__color,
+.button__color:hover,
+.button__color:active,
 .button__color[type='primary'],
 .button__color[type='primary'].button-hover {
   background-color: var(--weui-BRAND);
@@ -18,6 +20,8 @@ page {
   color: var(--weui-BRAND);
 }
 
-.button_primary__color {
+.button_primary__color,
+.button_primary__color:hover,
+.button_primary__color:active {
   background-color: var(--weui-BRAND);
 }
