@@ -1,4 +1,4 @@
-/* components/createPanel/createPanel.wxss */
+/* components/OperationPanel/OperationPanel.wxss */
 @import "../../style/weui.wxss";
 
 /* .tellinput {
@@ -37,7 +37,7 @@
   margin-right: 20rpx;
 }
 
-.create-panel {
+.operation-panel {
   width: 100%;
   height: auto;
   left: 0;

@@ -1,5 +1,5 @@
-<!--components/createPanel/createPanel.wxml-->
-<view class="create-panel" wx:if="{{showMe}}">
+<!--components/OperationPanel/OperationPanel.wxml-->
+<view class="operation-panel" wx:if="{{showMe}}">
   <view class="button-flex mt20" hidden="{{switchButtonGroup}}">
     <button class="round-button" bindtap="createIdea">
       <mp-icon type="field" icon="pencil" size="{{30}}" color="white"></mp-icon>

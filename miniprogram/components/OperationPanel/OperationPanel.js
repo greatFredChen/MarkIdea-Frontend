@@ -1,4 +1,4 @@
-// components/createPanel/createPanel.js
+// components/OperationPanel/OperationPanel.js
 const app = getApp()
 
 Component({
@@ -55,7 +55,7 @@ Component({
       this.setData({
         showMe: true
       })
-      this.animate('.create-panel', [
+      this.animate('.operation-panel', [
         {
           translate3d: [0, 200, 0]
         },
@@ -66,7 +66,7 @@ Component({
       })
     },
     slideDown () {
-      this.animate('.create-panel', [
+      this.animate('.operation-panel', [
         {
           translate3d: [0, 0, 0]
         },
