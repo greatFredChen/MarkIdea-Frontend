@@ -4,6 +4,10 @@
   justify-content: space-between;
 }
 
+.weui-dialog__hd {
+  padding: 16px 24px 16px;
+}
+
 .relationship-hd {
   border-radius: 20px;
   padding: 5px;

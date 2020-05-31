@@ -3,6 +3,7 @@ const cloud = require('wx-server-sdk')
 
 cloud.init()
 
+const MAX_LIMIT = 100 // 规定最大获取idea数
 const axios = require('axios')
 const db = cloud.database()
 const cmd = db.command
@@ -36,7 +37,10 @@ exports.main = async (event, context) => {
   try {
     const res = await axios({
       url: event.backend_host + '/domain/get_domain_contains',
-      params: { domain_id: event.domain_id },
+      params: { 
+        domain_id: event.domain_id,
+        limit: MAX_LIMIT // 默认25个，这里设置100个
+      },
       method: 'GET',
       responseType: 'json'
     })
@@ -69,8 +73,7 @@ exports.main = async (event, context) => {
 
   // 查询云数据库补全idea信息
   const result = await db.collection('Idea')
-    .where({ _id: cmd.in(ideaList) }).get()
-  // console.log(result)
+    .where({ _id: cmd.in(ideaList) }).limit(MAX_LIMIT).get()
   const res = result.data
   for (let i = 0; i < res.length; i++) {
     const eachIdea = res[i]

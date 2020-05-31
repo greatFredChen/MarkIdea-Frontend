@@ -12,6 +12,7 @@
     "menu-button": "../components/menuButton/menuButton",
     "filter-view": "../components/filterView/filterView",
     "search-view": "../components/searchView/searchView",
-    "refresh-button": "../components/refreshButton/refreshButton"
+    "refresh-button": "../components/refreshButton/refreshButton",
+    "mode-view": "../components/ModeView/ModeView"
   }
 }
