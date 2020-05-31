@@ -105,7 +105,7 @@ Page({
     // k. ideaManager::createIdea           [args    in args    net]           [l]                [edit]
     // l. cloudFunction createIdea          [net     in package set] [warning]                    [noedit]
     // m. ideaView.wxml/js                                                                        [edit]
-    // n. wedeaMap.wxml/js                                                                        [noedit]
+    // n. MarkIdeaMap.wxml/js                                                                        [noedit]
     // o. ideaEdit.wxml/js                                                                        [edit]
     // p. Idea::edit                        [args    in net     out]           [h, d]             [edit]
     return {

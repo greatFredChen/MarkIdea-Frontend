@@ -1,4 +1,4 @@
-// components/wedeaMap/wedeaMap.js
+// components/MarkIdeaMap/MarkIdeaMap.js
 import { ResourceManager } from '../../class/ResourceManager'
 import { IdeaManager } from '../../class/IdeaManager'
 import { DomainManager } from '../../class/DomainManager'
@@ -42,7 +42,7 @@ Component({
   lifetimes: {
     async attached () {
       // 设置地图key
-      console.log('wedeaMap 正在重新初始化')
+      console.log('MarkIdeaMap 正在重新初始化')
       this.setData({
         setting: {
           subkey: app.globalData.qqmapKey
@@ -183,7 +183,7 @@ Component({
     },
 
     hide () {
-      console.log('wedeaMap 隐藏')
+      console.log('MarkIdeaMap 隐藏')
       // app.event.off('ideaLikesChange')
       // app.event.off('singleIdeaUpdate')
       // app.event.off('getCenterRequest')

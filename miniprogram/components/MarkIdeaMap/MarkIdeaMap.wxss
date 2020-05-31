@@ -1,4 +1,4 @@
-/* components/wedeaMap/wedeaMap.wxss */
+/* components/MarkIdeaMap/MarkIdeaMap.wxss */
 .testmap {
   width: 100%;
   height: 100%;
