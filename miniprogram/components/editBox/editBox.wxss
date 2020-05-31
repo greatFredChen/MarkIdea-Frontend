@@ -18,3 +18,7 @@
 .align-right {
   justify-content: flex-end;
 }
+
+.all-width {
+  width: 100%;
+}

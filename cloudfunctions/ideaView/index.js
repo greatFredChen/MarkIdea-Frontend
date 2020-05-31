@@ -23,9 +23,7 @@ const kvSetForWxdb = {
   items: 'items'
 }
 
-const MAX_FETCH_URL_COUNT = 50
-const CLOUD_FILE_HEAD = 'cloud://'
-const MARKDOWN = 'MARKDOWN'
+const MAX_FETCH_URL_COUNT = 100
 
 /**
  * 从微信云开发数据库中获取 idea 信息
@@ -53,7 +51,7 @@ async function fetchIdeaFromWxdb (ideaId, whatIneed) {
  * @param {*} items 想法子项
  * @returns fileID2SwapSrc fileID 到 tempUrl 的映射
  */
-async function replaceCloudID2TempUrl (items) {
+/*async function replaceCloudID2TempUrl (items) {
   // 获取分割的 fileID list
   // getTempUrl 每次最多获取 MAX_FETCH_URL_COUNT 个文件 url
   const tmpList = items.filter(item => item.type !== MARKDOWN)
@@ -96,7 +94,7 @@ async function replaceCloudID2TempUrl (items) {
     }
   }
   return fileID2SwapSrc
-}
+}*/
 
 /**
  * 通过Id列表获取对应对象的指定字段
@@ -202,9 +200,7 @@ exports.main = async (event, context) => {
     }
 
     const resWxdb = await fetchIdeaFromWxdb(ideaId, kvSetForWxdb)
-    if (resWxdb[kvSetForWxdb.items] !== undefined) {
-      await replaceCloudID2TempUrl(resWxdb[kvSetForWxdb.items])
-    } else {
+    if (resWxdb[kvSetForWxdb.items] === undefined) {
       resWxdb[kvSetForWxdb.items] = [] // 返回的项里一定要有这个数组
     }
     return {

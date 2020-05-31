@@ -50,7 +50,7 @@
               <view class="weui-cell">
                 <image wx:if="{{item.type === MediaType.PICTURE}}" src="{{item.src}}" mode="widthFix" bindtap="openImage"></image>
                 <video wx:elif="{{item.type === MediaType.VIDEO}}" src="{{item.src}}" show-center-play-btn='{{true}}' show-play-btn="{{true}}" controls></video>
-                <audio wx:elif="{{item.type === MediaType.AUDIO}}" src="{{item.src}}" controls></audio>
+                <idea-audio class="all-width" wx:elif="{{item.type === MediaType.AUDIO}}" src="{{item.src}}"></idea-audio>
               </view>
             </view>
           </view>

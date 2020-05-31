@@ -1,0 +1,24 @@
+<view class="audio-view__body">
+	<view class="audio-column-flex button-width">
+		<mp-icon wx:if="{{status !== PLAY}}" icon="play2" color="black" size="{{30}}" bindtap="bindplay"></mp-icon>
+		<mp-icon wx:if="{{status === PLAY}}" icon="pause" color="black" size="{{30}}" bindtap="bindpause"></mp-icon>
+	  <mp-icon icon="close2" color="black" size="{{30}}" bindtap="bindstop"></mp-icon>
+	</view>
+	<view class="audio-column-flex audio-width">
+		<!-- 分别对应音量调节(voice) 倍速播放(add2) 播放进度条(music) -->
+		<view class="audio-row-flex all-width">
+			<mp-icon icon="voice" color="black" size="{{30}}"></mp-icon>
+			<view class="label-style">音量</view>
+			<slider class="audio-slider" min="0" max="100" 
+			value="{{currentVolume}}" show-value="true"
+			bindchanging="volumeChange" block-size="18"></slider>
+		</view>
+		<view class="audio-row-flex all-width">
+			<mp-icon icon="add2" color="black" size="{{30}}"></mp-icon>
+			<view class="label-style">倍速</view>
+			<slider class="audio-slider" min="0.5" max="2.0" 
+			value="{{currentRate}}" show-value="true" step="0.1"
+			bindchanging="rateChange" block-size="18"></slider>
+		</view>
+	</view>
+</view>
