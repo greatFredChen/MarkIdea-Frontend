@@ -53,7 +53,7 @@ exports.main = async (event, context) => {
     return {
       code: error.response.status ? error.response.status : 500,
       error: error,
-      msg: '创建Idea连接失败!'
+      msg: '创建Idea关联失败!'
     }
   }
 

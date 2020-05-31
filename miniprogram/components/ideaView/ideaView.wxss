@@ -16,6 +16,16 @@
   display: unset;
 }
 
+.weui-flex__attach__under {
+  right: 16px;
+  top: 40px;
+  bottom: 32px;
+  overflow: auto;
+  text-align: right;
+  padding: 8px 0 8px 8px;
+  position: absolute;
+}
+
 .weui-dialog__hd__attach {
   color: var(--weui-FG-0);
 }

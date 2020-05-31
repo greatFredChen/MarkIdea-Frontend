@@ -3,23 +3,24 @@ const cloud = require('wx-server-sdk')
 
 cloud.init()
 
-const MAX_LIMIT = 100 // 规定最大获取idea数
 const axios = require('axios')
 const db = cloud.database()
 const cmd = db.command
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  // 请求后端服务器获取指定Domain对象所包含的所有Idea对象和Relationship对象
+  // 请求后端服务器获取指定idea对象的近邻idea对象和关系对象
   // 参数: event
   // {
-  //    domain_id 必要
+  //    idea_id 必要
+  //    max_jump: 不必要: 返回的结果idea中与指定idea相隔关联关系的最大值, 默认3
+  //    limit: 不必要: 返回的记录限制, 默认25
   //    backend_host 必要 后端服务器主机
   // }
   // 返回
   // 正常:
   // {
-  //   code: 200,
+  //   code: 200, 与get_domain_contains一致
   //   idea: idea对象列表,
   //   relationship: 关联对象列表
   // }
@@ -30,16 +31,24 @@ exports.main = async (event, context) => {
   //   msg: 异常错误信息描述
   // }
   // 参数检查
-  if (!event.domain_id || !event.backend_host) { return { code: 400, msg: '输入参数不正确', error: {} } }
-
+  if (!event.idea_id || !event.backend_host) { return { code: 400, msg: '输入参数不正确', error: {} } }
+  let maxJump = event.max_jump
+  let limit = event.limit
+  if (!maxJump) {
+    maxJump = 3
+  }
+  if (!limit) {
+    limit = 25
+  }
   let idea = null
   let relationship = null
   try {
     const res = await axios({
-      url: event.backend_host + '/domain/get_domain_contains',
-      params: { 
-        domain_id: event.domain_id,
-        limit: MAX_LIMIT // 默认25个，这里设置100个
+      url: event.backend_host + '/idea/get_neighbor',
+      params: {
+        idea_id: event.idea_id,
+        max_jump: maxJump,
+        limit: limit
       },
       method: 'GET',
       responseType: 'json'
@@ -73,7 +82,8 @@ exports.main = async (event, context) => {
 
   // 查询云数据库补全idea信息
   const result = await db.collection('Idea')
-    .where({ _id: cmd.in(ideaList) }).limit(MAX_LIMIT).get()
+    .where({ _id: cmd.in(ideaList) }).get()
+  // console.log(result)
   const res = result.data
   for (let i = 0; i < res.length; i++) {
     const eachIdea = res[i]

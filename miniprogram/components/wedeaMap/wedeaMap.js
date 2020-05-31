@@ -331,8 +331,8 @@ Component({
         const from = ideas.get(Number(value.from))
         const to = ideas.get(Number(value.to))
         // 线宽的缩放是两个链接点rank的调和平均
-        const widthScale = 1 / (1 / from.rank + 1 / to.rank)
-        if (filterIdeaIdSet.has(from.id) && filterIdeaIdSet.has(to.id)) {
+        if (from && to && filterIdeaIdSet.has(from.id) && filterIdeaIdSet.has(to.id)) {
+          const widthScale = 1 / (1 / from.rank + 1 / to.rank)
           polyline.push({
             points: [
               {

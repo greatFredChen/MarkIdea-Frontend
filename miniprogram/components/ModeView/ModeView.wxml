@@ -1,0 +1,4 @@
+<!--components/ModeView/ModeView.wxml-->
+<view class="mode-view {{linkMode? 'link-width': ''}} z-index__200" wx:if="{{linkMode}}">
+  {{linkMode? '请选择你要关联的想法': ''}}
+</view>
