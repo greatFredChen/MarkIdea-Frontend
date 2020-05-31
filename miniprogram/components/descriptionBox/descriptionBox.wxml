@@ -10,7 +10,7 @@
 				<markdown-box src="{{description}}"></markdown-box>
 			</view>
 			<view class="page__bd page__bd_spacing">
-        <view wx:if="relationship.from.length || relationship.to.length">
+        <view wx:if="{{relationship.from.length || relationship.to.length}}">
           <view class="weui-flex relationship-hd {{openRelationship ? 'relationship-hd-open' : 'relationship-hd-close'}} " bindtap="showRelationship">
               <view class="weui-flex__item relationship-item">{{"关联关系"}}</view>
               <mp-icon type="field" icon="arrow" size="{{20}}"
