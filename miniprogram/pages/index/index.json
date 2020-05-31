@@ -6,7 +6,7 @@
     "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
     "markidea-map": "../components/MarkIdeaMap/MarkIdeaMap",
     "operation-panel": "../components/OperationPanel/OperationPanel",
-    "connect-panel": "../components/connectPanel/connectPanel",
+    "connect-panel": "../components/ConnectPanel/ConnectPanel",
     "idea-view": "../components/ideaView/ideaView",
     "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog",
     "menu-button": "../components/menuButton/menuButton",
