@@ -15,7 +15,7 @@
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapLinkIdea">
           <mp-icon type="field" icon="link" size="{{25}}"></mp-icon>
         </view>
-        <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapGetNeighbor">
+        <view class="icon__attach" bindtap="tapGetNeighbor">
           <mp-icon type="field" icon="discover" size="{{25}}"></mp-icon>
         </view>
         <a class="icon__attach" bindtap="close">
