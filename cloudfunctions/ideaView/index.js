@@ -22,7 +22,6 @@ const kvSetForWxdb = {
 }
 
 const MAX_FETCH_URL_COUNT = 50
-const CLOUD_FILE_HEAD = 'cloud://'
 const MARKDOWN = 'MARKDOWN'
 
 /**

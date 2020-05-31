@@ -1,0 +1,5 @@
+<view>
+	<mp-icon wx:if="{{status !== PLAY}}" icon="play" color="black" size="{{30}}" bindtap="bindplay"></mp-icon>
+	<mp-icon wx:if="{{status === PLAY}}" icon="pause" color="black" size="{{30}}" bindtap="bindpause"></mp-icon>
+	<!-- <mp-icon wx:if="{{status === PLAY}}" icon="stop" color="black" size="{{30}}" bindtap="bindstop"></mp-icon> -->
+</view>

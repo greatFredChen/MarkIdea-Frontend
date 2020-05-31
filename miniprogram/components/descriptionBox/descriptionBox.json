@@ -1,7 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "markdown-box": "../markdownBox/markdownBox"
+    "markdown-box": "../markdownBox/markdownBox",
+    "idea-audio": "../audioBox/audioBox"
   },
   "options": {
     "multipleSlots": true
