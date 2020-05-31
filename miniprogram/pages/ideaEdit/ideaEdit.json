@@ -2,7 +2,7 @@
   "navigationBarTitleText": "想法编辑",
   "navigationBarBackgroundColor": "#ffffff",
   "usingComponents": {
-    "edit-box": "../components/editBox/editBox",
-    "description-box": "../components/descriptionBox/descriptionBox"
+    "edit-box": "../components/EditBox/EditBox",
+    "description-box": "../components/DescriptionBox/DescriptionBox"
   }
 }

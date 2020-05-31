@@ -1,0 +1,19 @@
+<!--components/IdeaPointer/IdeaPointer.wxml-->
+<view class="weui-panel idea-pointer">
+  <view class="weui-panel__hd body-fix">{{idea.title}}</view>
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_text box-fix ">
+      <!-- <h4 class="weui-media-box__title">标题一</h4> -->
+      <view class="weui-media-box__desc">{{idea.description}}</view>
+      <view class="weui-media-box__info">
+        <view class="weui-media-box__info__meta">id: {{idea._id}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-panel__ft">
+    <a class="weui-cell weui-cell_active weui-cell_access weui-cell_link view-more" bindtap="viewOrConnectIdea">
+      <view class="weui-cell__bd">{{linkMode? '关联': '查看'}}</view>
+      <text class="weui-cell__ft"></text>
+    </a>
+  </view>
+</view>

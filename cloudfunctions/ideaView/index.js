@@ -23,8 +23,6 @@ const kvSetForWxdb = {
   items: 'items'
 }
 
-const MAX_FETCH_URL_COUNT = 100
-
 /**
  * 从微信云开发数据库中获取 idea 信息
  * @param {ideaId 应对应着集合 Idea 中的 _id 字段} ideaId
@@ -51,7 +49,7 @@ async function fetchIdeaFromWxdb (ideaId, whatIneed) {
  * @param {*} items 想法子项
  * @returns fileID2SwapSrc fileID 到 tempUrl 的映射
  */
-/*async function replaceCloudID2TempUrl (items) {
+/* async function replaceCloudID2TempUrl (items) {
   // 获取分割的 fileID list
   // getTempUrl 每次最多获取 MAX_FETCH_URL_COUNT 个文件 url
   const tmpList = items.filter(item => item.type !== MARKDOWN)
@@ -94,7 +92,7 @@ async function fetchIdeaFromWxdb (ideaId, whatIneed) {
     }
   }
   return fileID2SwapSrc
-}*/
+} */
 
 /**
  * 通过Id列表获取对应对象的指定字段

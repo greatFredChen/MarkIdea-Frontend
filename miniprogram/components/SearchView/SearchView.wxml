@@ -1,0 +1,65 @@
+<!-- components/SearchView/SearchView.wxml -->
+<view class="weui-animate-fade-in" wx:if="{{show}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog weui-dialog__attach">
+    <view class="weui-article">
+      <view class="page__hd">
+        <view class="page__title">
+          <view class="weui-flex weui-flex__attach">
+            <strong>搜索栏</strong>
+            <a class="icon__attach" bindtap="close">
+              <mp-icon icon="close" size="{{25}}"></mp-icon>
+            </a>
+          </view>
+        </view>
+        <!-- <view class="page__desc"></view> -->
+      </view>
+      <view class="page__bd">
+        <view class="weui-search-bar {{inputShown ? 'weui-search-bar_focusing' : ''}}" id="searchBar">
+          <form class="weui-search-bar__form">
+            <view class="weui-search-bar__box weui-flex input-view">
+              <!-- <i class="weui-icon-search"></i> -->
+              <input type="text" class="input" placeholder="目前只支持id搜索" value="{{inputVal}}" focus="{{inputShown}}" bindinput="inputTyping" bindconfirm="confirm" />
+              <mp-icon wx:if="{{inputVal.length > 0}}" type="field" icon="close" size="{{20}}" color="rgb(180, 180, 180)" bindtap="clearInput"></mp-icon>
+            </view>
+            <label class="weui-search-bar__label" bindtap="showInput">
+              <mp-icon type="field" icon="search" size="{{20}}" color="rgb(180, 180, 180)" />
+              <span class="weui-search-bar__text">目前只支持id搜索</span>
+            </label>
+          </form>
+          <!-- <view class="weui-search-bar__cancel-btn cancle-button" bindtap="clearInput">取消</view> -->
+        </view>
+        <view wx:if="{{resultList !== null}}">
+          <view wx:if="{{resultList.length === 0}}" class="weui-loadmore weui-loadmore_line">
+            <text class="no-data-tip">暂无数据</text>
+          </view>
+          <view wx:for="{{resultList}}">
+            <idea-pointer idea="{{item}}" linkMode="{{linkMode}}"></idea-pointer>
+          </view>
+        </view>
+        <!-- <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
+          <view class="weui-cell weui-cell_active weui-cell_access">
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>实时搜索文本</view>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active weui-cell_access">
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>实时搜索文本</view>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active weui-cell_access">
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>实时搜索文本</view>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active weui-cell_access">
+            <view class="weui-cell__bd weui-cell_primary">
+              <view>实时搜索文本</view>
+            </view>
+          </view>
+        </view> -->
+      </view>
+    </view>
+  </view>
+</view>

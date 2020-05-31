@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
+    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon",
+    "filter-item": "../FilterItem/FilterItem"
+  }
+}
