@@ -4,6 +4,9 @@
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
       <view class="weui-flex weui-flex__attach">
+        <view class="icon__attach" bindtap="tapGetNeighbor">
+          <mp-icon type="field" icon="discover" size="{{25}}"></mp-icon>
+        </view>
         <a class="icon__attach" bindtap="close">
           <mp-icon icon="close" size="{{25}}"></mp-icon>
         </a>
@@ -18,9 +21,7 @@
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapLinkIdea">
           <mp-icon type="field" icon="link" size="{{25}}"></mp-icon>
         </view>
-        <view class="icon__attach" bindtap="tapGetNeighbor" wx:if="{{showPrivateBtns}}">
-          <mp-icon type="field" icon="discover" size="{{25}}"></mp-icon>
-        </view>
+        
       </view>
     <description-box title="{{title}}" description="{{description}}" items="{{items}}"
       relationship="{{relationship}}"></description-box>
