@@ -1,4 +1,4 @@
-// components/connectCreateBox/connectCreateBox.js
+// components/RelationshipCreateBox/RelationshipCreateBox.js
 Component({
   /**
    * 组件的属性列表
