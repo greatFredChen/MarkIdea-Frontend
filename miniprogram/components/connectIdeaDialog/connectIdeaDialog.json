@@ -1,6 +1,6 @@
 {
   "component": true,
   "usingComponents": {
-    "connect-box": "../connectCreateBox/connectCreateBox"
+    "connect-box": "../RelationshipCreateBox/RelationshipCreateBox"
   }
 }

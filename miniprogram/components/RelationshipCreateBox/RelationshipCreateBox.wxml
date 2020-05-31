@@ -1,4 +1,4 @@
-<!--components/connectCreateBox/connectCreateBox.wxml-->
+<!--components/RelationshipCreateBox/RelationshipCreateBox.wxml-->
 <view class="weui-form">
   <view class="weui-form__control-area">
     <view class="weui-cells__group weui-cells__group_form">

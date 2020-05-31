@@ -1,0 +1,2 @@
+/* components/RelationshipCreateBox/RelationshipCreateBox.wxss */
+@import '../../style/weui.wxss';
