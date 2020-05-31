@@ -143,7 +143,7 @@ Component({
     },
     async tapGetNeighbor () {
       wx.showLoading({
-        title: '正在走访邻居',
+        title: '正在走访邻居'
       })
       try {
         const res = await wx.cloud.callFunction({

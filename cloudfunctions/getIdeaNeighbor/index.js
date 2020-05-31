@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
   // 请求后端服务器获取指定idea对象的近邻idea对象和关系对象
   // 参数: event
   // {
-  //    idea_id 必要 
+  //    idea_id 必要
   //    max_jump: 不必要: 返回的结果idea中与指定idea相隔关联关系的最大值, 默认3
   //    limit: 不必要: 返回的记录限制, 默认25
   //    backend_host 必要 后端服务器主机
@@ -32,10 +32,10 @@ exports.main = async (event, context) => {
   // }
   // 参数检查
   if (!event.idea_id || !event.backend_host) { return { code: 400, msg: '输入参数不正确', error: {} } }
-  let max_jump = event.max_jump
+  let maxJump = event.max_jump
   let limit = event.limit
-  if (!max_jump) {
-    max_jump = 3
+  if (!maxJump) {
+    maxJump = 3
   }
   if (!limit) {
     limit = 25
@@ -45,7 +45,11 @@ exports.main = async (event, context) => {
   try {
     const res = await axios({
       url: event.backend_host + '/idea/get_neighbor',
-      params: { idea_id: event.idea_id },
+      params: {
+        idea_id: event.idea_id,
+        max_jump: maxJump,
+        limit: limit
+      },
       method: 'GET',
       responseType: 'json'
     })
