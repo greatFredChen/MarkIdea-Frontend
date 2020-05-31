@@ -2,7 +2,9 @@
   "component": true,
   "usingComponents": {
     "markdown-box": "../markdownBox/markdownBox",
-    "idea-audio": "../audioBox/audioBox"
+    "idea-audio": "../audioBox/audioBox",
+    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon",
+    "relationship-item": "../relationshipItem/relationshipItem"
   },
   "options": {
     "multipleSlots": true

@@ -1,12 +1,12 @@
-// components/ideaPointer/ideaPointer.js
+// components/relationshipItem/relationshipItem.js
 const app = getApp()
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    idea: Object,
-    linkMode: Boolean
+    towardIdeaInfo: Object,
+    type: String
   },
 
   /**
@@ -21,10 +21,10 @@ Component({
    */
   methods: {
     // 跳转到指定想法所在地点, 并显示该想法, 并且自动点开该想法的查看页面
-    viewOrConnectIdea: function () {
-      const idea = this.properties.idea
-      const longitude = idea.longitude
-      const latitude = idea.latitude
+    viewTowardIdea: function () {
+      const towardIdeaInfo = this.properties.towardIdeaInfo
+      const longitude = towardIdeaInfo.longitude
+      const latitude = towardIdeaInfo.latitude
       if (!longitude || !latitude) {
         wx.showToast({
           title: '我忘了想法在哪了...',
@@ -32,25 +32,18 @@ Component({
         })
         return
       }
-      // 隐藏搜索界面
-      app.event.emit('hideSearchView')
+      // 隐藏查看Idea界面
+      app.event.emit('closeIdeaView')
       // 向全局ideaManager放置这个idea记录, 并且更新地图显示, 并且过滤器在
       // 该次更新中将不会检查该节点
-      const id = app.ideaManager.putIdea(idea)
+      const id = app.ideaManager.putIdea(towardIdeaInfo)
       app.event.emit('updateGraph', (new Set()).add(id))
       // 移动地图
       app.event.emit('setLocation', {
         longitude: longitude,
         latitude: latitude
       })
-      if (!this.properties.linkMode) {
-        // 查看指定想法
-        app.event.emit('viewIdea', id)
-      } else {
-        // 连接指定idea
-        app.event.emit('hideConnectDialog', false)
-        app.event.emit('getToId', id)
-      }
+      app.event.emit('viewIdea', id)
     }
   }
 })

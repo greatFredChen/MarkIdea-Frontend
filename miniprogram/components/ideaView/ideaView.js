@@ -24,7 +24,8 @@ Component({
     markerIcon: -1,
     ideaId: String(-1),
     deleteDialogHidden: true,
-    buttons: [{ text: '取消' }, { text: '确认' }]
+    buttons: [{ text: '取消' }, { text: '确认' }],
+    relationship: {}
   },
 
   /**
@@ -44,6 +45,7 @@ Component({
         const res = await wx.cloud.callFunction({
           name: 'ideaView',
           data: {
+            backend_host: app.globalData.backendHost,
             ideaId
           }
         })
@@ -144,6 +146,9 @@ Component({
     attached () {
       app.event.on('viewIdea', (ideaId) => {
         this.fetchIdea(ideaId)
+      })
+      app.event.on('closeIdeaView', () => {
+        this.close()
       })
     },
     detached () {

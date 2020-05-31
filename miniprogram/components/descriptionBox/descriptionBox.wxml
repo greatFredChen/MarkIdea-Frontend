@@ -6,9 +6,24 @@
 	<view class="page">
 		<view class="page__bd">
 			<!-- <view class="weui-article"> -->
-			<view class="weui-article__section">
+			<view class="article-section">
 				<markdown-box src="{{description}}"></markdown-box>
 			</view>
+			<view class="page__bd page__bd_spacing">
+        <view wx:if="{{relationship.from.length || relationship.to.length}}">
+          <view class="weui-flex relationship-hd {{openRelationship ? 'relationship-hd-open' : 'relationship-hd-close'}} " bindtap="showRelationship">
+              <view class="weui-flex__item relationship-item">{{"关联关系"}}</view>
+              <mp-icon type="field" icon="arrow" size="{{20}}"
+								color="{{openRelationship ? 'rgba(0, 0, 0, 0.1)' : 'rgba(0, 0, 0, 0.5)'}}"></mp-icon>
+          </view>
+					<view wx:if="{{openRelationship}}" wx:for="{{relationship.from}}">
+						<relationship-item towardIdeaInfo="{{item.from}}" type="{{item.type}}"></relationship-item>
+					</view>
+					<view wx:if="{{openRelationship}}" wx:for="{{relationship.to}}">
+						<relationship-item towardIdeaInfo="{{item.to}}" type="{{item.type}}"></relationship-item>
+					</view>
+        </view>
+      </view>
 			<view wx:if="{{items.length !== 0}}" class="weui-article__section" wx:for="{{items}}" wx:for-index="idx" wx:key="idx">
 				<view class="weui-article__h3" wx:if="{{item.subTitle.length !== 0}}">
 					{{item.subTitle}}
