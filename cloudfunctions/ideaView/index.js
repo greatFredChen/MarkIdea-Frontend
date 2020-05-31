@@ -204,6 +204,8 @@ exports.main = async (event, context) => {
     const resWxdb = await fetchIdeaFromWxdb(ideaId, kvSetForWxdb)
     if (resWxdb[kvSetForWxdb.items] !== undefined) {
       await replaceCloudID2TempUrl(resWxdb[kvSetForWxdb.items])
+    } else {
+      resWxdb[kvSetForWxdb.items] = [] // 返回的项里一定要有这个数组
     }
     return {
       ...okPck,
