@@ -4,6 +4,7 @@ const STATUS = {
   PAUSE: 2,
   STOP: 3
 }
+const app = getApp()
 Component({
   /**
    * 组件的属性列表
