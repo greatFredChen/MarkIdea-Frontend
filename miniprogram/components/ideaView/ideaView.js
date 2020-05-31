@@ -140,6 +140,40 @@ Component({
         console.log(e)
       }
       wx.hideLoading()
+    },
+    async tapGetNeighbor () {
+      wx.showLoading({
+        title: '正在走访邻居',
+      })
+      try {
+        const res = await wx.cloud.callFunction({
+          name: 'getIdeaNeighbor',
+          data: {
+            backend_host: app.globalData.backendHost,
+            idea_id: this.data.ideaId,
+            max_jump: 2,
+            limit: 25
+          }
+        })
+        if (res.result.code !== 200) {
+          throw new Error(res)
+        }
+        this.close()
+        app.event.emit('setGraph', {
+          ideas: res.result.idea,
+          relationships: res.result.relationship,
+          clear: true
+        })
+      } catch (e) {
+        console.log(JSON.stringify(e))
+        wx.showToast({
+          title: '这个想法不太正常呢~',
+          icon: 'none',
+          duration: 1500,
+          mask: false
+        })
+      }
+      wx.hideLoading()
     }
   },
   lifetimes: {
