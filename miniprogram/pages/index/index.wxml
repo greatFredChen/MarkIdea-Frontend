@@ -1,7 +1,7 @@
 <!-- index.wxml -->
 <view class="container map-view-height page__bd page__bd_spacing map-view-zindex">
   <wedea-map class="map_size z-index__100"></wedea-map>
-  <create-panel class="z-index__200"></create-panel>
+  <operation-panel class="z-index__200"></operation-panel>
   <connect-panel class="z-index__200"></connect-panel>
   <menu-button class="z-index__200"></menu-button>
   <refresh-button class="z-index__200"></refresh-button>
