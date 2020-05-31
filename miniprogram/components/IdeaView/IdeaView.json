@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
+    "like-button": "../LikeButton/LikeButton",
+    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon",
+    "description-box": "../DescriptionBox/DescriptionBox"
+  }
+}

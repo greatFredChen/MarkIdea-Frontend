@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "mp-actionSheet": "../../weui-miniprogram/miniprogram_dist/actionsheet/actionsheet",
-    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon",
-    "idea-audio": "../audioBox/audioBox"
-  }
-}

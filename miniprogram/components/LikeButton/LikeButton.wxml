@@ -1,0 +1,8 @@
+<!--components/LikeButton.wxml-->
+<view class="bgwhite">
+    <view class="col-flex" bindtap="ontap">
+        <mp-icon style="visibility: {{loading ? 'hidden' : 'visible'}}" color="{{liked ? 'rgb(252, 156, 153)':'grey'}}" type="field" icon="like" size="{{32}}"></mp-icon>
+        <font style="visibility: {{loading ? 'hidden' : 'visible'}}" class="{{liked ? 'liked':'normal'}}">{{likes}}</font>
+        <i wx:if="{{loading}}" class="weui-loading loading-icon"></i>
+    </view>
+</view>

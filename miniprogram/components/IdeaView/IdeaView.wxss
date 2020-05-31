@@ -1,0 +1,74 @@
+/* components/IdeaView/IdeaView.wxss */
+@import "../../style/weui.wxss";
+
+.weui-dialog__attach {
+  left: 16px;
+  right: 16px;
+  top: 32px;
+  bottom: 32px;
+  -webkit-transform: unset;
+  transform: unset;
+  width: unset;
+  max-height: unset;
+  overflow: auto;
+  text-align: left;
+  padding: 16px;
+  display: unset;
+}
+
+.weui-flex__attach__under {
+  right: 16px;
+  top: 40px;
+  bottom: 32px;
+  overflow: auto;
+  text-align: right;
+  padding: 8px 0 8px 8px;
+  position: absolute;
+  height: 35px;
+}
+
+.weui-dialog__hd__attach {
+  color: var(--weui-FG-0);
+}
+
+.weui-dialog__ft__attach {
+  display: block;
+  /* position: absolute;
+  bottom: 16px; */
+  width: 100%;
+  height: 60px;
+}
+
+.weui-dialog__ft__attach::after {
+  border-top: unset;
+}
+
+.weui-article__p__attach {
+  color: var(--weui-FG-1);
+  height: 50px;
+}
+
+.weui-dialog__ft__flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.weui-dialog__ft__button {
+  background-color: var(--weui-BRAND);
+  color: #FFF;
+  height: 40px;
+  line-height: 40px;
+  width: 40%;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.icon__attach {
+  margin-left: 14px;
+}
+
+.weui-flex__attach {
+  justify-content: flex-end;
+}

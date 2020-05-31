@@ -7,12 +7,12 @@
     "markidea-map": "../components/MarkIdeaMap/MarkIdeaMap",
     "operation-panel": "../components/OperationPanel/OperationPanel",
     "connect-panel": "../components/ConnectPanel/ConnectPanel",
-    "idea-view": "../components/ideaView/ideaView",
-    "connect-dialog": "../components/connectIdeaDialog/connectIdeaDialog",
-    "menu-button": "../components/menuButton/menuButton",
-    "filter-view": "../components/filterView/filterView",
-    "search-view": "../components/searchView/searchView",
-    "refresh-button": "../components/refreshButton/refreshButton",
+    "idea-view": "../components/IdeaView/IdeaView",
+    "connect-dialog": "../components/ConnectIdeaDialog/ConnectIdeaDialog",
+    "menu-button": "../components/MenuButton/MenuButton",
+    "filter-view": "../components/FilterView/FilterView",
+    "search-view": "../components/SearchView/SearchView",
+    "refresh-button": "../components/RefreshButton/RefreshButton",
     "mode-view": "../components/ModeView/ModeView"
   }
 }

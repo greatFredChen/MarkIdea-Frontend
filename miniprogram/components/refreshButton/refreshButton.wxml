@@ -1,4 +1,0 @@
-<!--components/refreshButton/refreshButton.wxml-->
-<a class="menu-a z-index__200" bindtap="refreshMap">
-  <mp-icon type="field" icon="refresh" size="{{30}}" color="white"></mp-icon>
-</a>

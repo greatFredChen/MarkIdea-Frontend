@@ -1,0 +1,18 @@
+<!--components/RelationshipItem/RelationshipItem.wxml-->
+<view class="weui-panel idea-pointer">
+  <view class="weui-panel__hd body-fix">{{type}}:</view>
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_text box-fix ">
+      <h4 class="weui-media-box__title">{{towardIdeaInfo.title}}</h4>
+      <view class="weui-media-box__info">
+        <view class="weui-media-box__info__meta">id: {{towardIdeaInfo.id}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-panel__ft">
+    <a class="weui-cell weui-cell_active weui-cell_access weui-cell_link view-more" bindtap="viewTowardIdea">
+      <view class="weui-cell__bd">查看</view>
+      <text class="weui-cell__ft"></text>
+    </a>
+  </view>
+</view>

@@ -1,0 +1,21 @@
+/* components/RelationshipItem/RelationshipItem.wxss */
+@import "../../style/weui.wxss";
+
+.idea-pointer {
+  margin: 10px;
+  border-radius: 15px;
+}
+
+.view-more {
+  font-size: 14px;
+  padding: 10px;
+}
+
+.body-fix {
+  padding-top: 10px;
+  padding-bottom: 5px; 
+}
+
+.box-fix {
+  padding: 2px 16px 5px 16px !important;
+}

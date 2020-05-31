@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "markdown-box": "../MarkdownBox/MarkdownBox",
+    "idea-audio": "../AudioBox/AudioBox",
+    "mp-icon": "../../weui-miniprogram/miniprogram_dist/icon/icon",
+    "relationship-item": "../RelationshipItem/RelationshipItem"
+  },
+  "options": {
+    "multipleSlots": true
+  }
+}

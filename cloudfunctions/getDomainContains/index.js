@@ -37,7 +37,7 @@ exports.main = async (event, context) => {
   try {
     const res = await axios({
       url: event.backend_host + '/domain/get_domain_contains',
-      params: { 
+      params: {
         domain_id: event.domain_id,
         limit: MAX_LIMIT // 默认25个，这里设置100个
       },
