@@ -1,4 +1,4 @@
-// components/connectPanel/connectPanel.js
+// components/ConnectPanel/ConnectPanel.js
 const app = getApp()
 
 Component({

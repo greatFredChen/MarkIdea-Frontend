@@ -1,4 +1,4 @@
-/* components/connectPanel/connectPanel.wxss */
+/* components/ConnectPanel/ConnectPanel.wxss */
 @import "../../style/weui.wxss";
 
 .connect-panel {

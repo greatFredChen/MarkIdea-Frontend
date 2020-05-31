@@ -1,4 +1,4 @@
-<!--components/connectPanel/connectPanel.wxml-->
+<!--components/ConnectPanel/ConnectPanel.wxml-->
 <view class="connect-panel" wx:if="{{showMe}}">
   <view class="button-flex mt20">
     <button class="round-button" bindtap="returnMap">
