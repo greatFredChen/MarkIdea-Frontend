@@ -3,9 +3,12 @@
 <view class="weui-animate-fade-in" wx:if="{{show}}">
   <view class="weui-mask"></view>
   <view class="weui-dialog weui-dialog__attach">
-    <description-box title="{{title}}" description="{{description}}" items="{{items}}"
-      relationship="{{relationship}}">
       <view class="weui-flex weui-flex__attach">
+        <a class="icon__attach" bindtap="close">
+          <mp-icon icon="close" size="{{25}}"></mp-icon>
+        </a>
+      </view>
+      <view class="weui-flex weui-flex__attach__under" wx:if="{{showPrivateBtns}}">
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapNavigator">
           <mp-icon type="field" icon="pencil" size="{{25}}"></mp-icon>
         </view>
@@ -15,14 +18,12 @@
         <view class="icon__attach" wx:if="{{showPrivateBtns}}" bindtap="tapLinkIdea">
           <mp-icon type="field" icon="link" size="{{25}}"></mp-icon>
         </view>
-        <view class="icon__attach" bindtap="tapGetNeighbor">
+        <view class="icon__attach" bindtap="tapGetNeighbor" wx:if="{{showPrivateBtns}}">
           <mp-icon type="field" icon="discover" size="{{25}}"></mp-icon>
         </view>
-        <a class="icon__attach" bindtap="close">
-          <mp-icon icon="close" size="{{25}}"></mp-icon>
-        </a>
       </view>
-    </description-box>
+    <description-box title="{{title}}" description="{{description}}" items="{{items}}"
+      relationship="{{relationship}}"></description-box>
     <view class="weui-dialog__ft__attach weui-dialog__ft__flex">
       <like-button ideaId="{{ideaId}}"></like-button>
     </view>
