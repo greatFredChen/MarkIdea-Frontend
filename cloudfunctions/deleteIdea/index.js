@@ -77,6 +77,47 @@ async function deleteLikeEvent (ideaId) {
   })
 }
 
+// 删除idea的时候将item里的文件全部删除
+// fileList: 云文件 ID 字符串数组 用来删除idea中的items里的文件
+async function deleteIdeaFiles (ideaId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // 获取items列表
+      const idea = await db.collection('Idea').doc(ideaId).get()
+      const items = idea.data.items
+      let fileList = []
+      for(let i = 0; i < items.length; i++) {
+        fileList.push(items[i].src) // 把cloudId加入文件数组
+      }
+      const result = await cloud.deleteFile({
+        fileList
+      })
+      if (!deleteStatus(result.fileList)) {
+        // 删除失败，抛出异常
+        throw new Error(result.errMsg)
+      }
+      resolve(result.fileList)
+    } catch (e) {
+      reject({
+        code: 500,
+        Msg: 'delete file failed!',
+        err: e
+      })
+    }
+  })
+}
+
+// 判断删除文件是否异常，若正常返回true，异常返回false
+function deleteStatus (fileList) {
+  for(let i = 0; i < fileList.length; i++) {
+    fileDeleteRes = fileList[i]
+    if (fileDeleteRes.status !== 0) {
+      return false
+    }
+  }
+  return true
+}
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   // 用户删除指定Idea
@@ -129,6 +170,11 @@ exports.main = async (event, context) => {
     await deleteLikeEvent(ideaId)
   } catch (e) {
     console.log('delete like event error:', e)
+  }
+  try {
+    await deleteIdeaFiles(ideaId)
+  } catch (e) {
+    console.log('delete idea files error!', e)
   }
   // 删除idea
   return deleteIdeaTransaction(event.backend_host, event.key, ideaId)
