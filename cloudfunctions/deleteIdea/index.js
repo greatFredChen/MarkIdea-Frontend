@@ -52,6 +52,31 @@ async function deleteIdeaTransaction (backendHost, key, ideaId) {
   }
 }
 
+// 删除idea的时候将idea对应的点赞事件全部删除
+// 参数: ideaId: String
+async function deleteLikeEvent (ideaId) {
+  // 因为要一次删除多个节点，因此无法使用事务...
+  return new Promise(async (resolve, reject) => {
+    try {
+      let res = await db.collection('IdeaLikeEvent').where({
+        idea_id: ideaId
+      }).remove()
+      if (res.stats.removed === undefined || res.stats.removed === null) {
+        throw new Error(res.errMsg)
+      }
+      resolve({
+        code: 204 // 删除成功
+      })
+    } catch (e) {
+      reject({
+        code: 500,
+        msg: '删除点赞事件失败！',
+        error: e
+      })
+    }
+  })
+}
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   // 用户删除指定Idea
@@ -99,5 +124,12 @@ exports.main = async (event, context) => {
       msg: '无权限, 该Idea不是由该用户创建的'
     }
   }
+  // 删除点赞事件
+  try {
+    await deleteLikeEvent(ideaId)
+  } catch (e) {
+    console.log('delete like event error:', e)
+  }
+  // 删除idea
   return deleteIdeaTransaction(event.backend_host, event.key, ideaId)
 }
