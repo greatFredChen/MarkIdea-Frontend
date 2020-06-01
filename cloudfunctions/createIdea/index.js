@@ -1,6 +1,7 @@
 const cloud = require('wx-server-sdk')
 const axios = require('axios')
 const qs = require('qs')
+const util = require('util')
 
 cloud.init()
 
@@ -47,7 +48,7 @@ exports.main = async (event, context) => {
       key: key,
       domain_id: domainId
     }))
-    console.log('connecting to Neo4j server', res)
+    console.log('connecting to Neo4j server', util.inspect(res))
     if (res.data.idea_id === undefined) {
       throw new Error()
     }
@@ -55,7 +56,8 @@ exports.main = async (event, context) => {
   } catch (e) {
     console.log('connect to Neo4j server failed!', e)
     return {
-      ...failPck
+      ...failPck,
+      Error: e
     }
   }
 
