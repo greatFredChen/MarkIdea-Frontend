@@ -3,9 +3,17 @@
 #### 项目结构:
 
 - cloudfunctions/: 云函数目录
-  - getOpenId/: 获取openid的云函数
-
   - createIdea/: 处理想法创建并同步到数据库的云函数
+  - createRelationship/: 创建关联关系云函数
+  - deleteIdea/: 删除想法云函数
+  - getDomainContains/: 加载当前区域想法云函数
+  - getIdeaNeighbor/: 获取邻居节点云函数
+  - getLocalDomain/: 获取当前区域id云函数
+  - getOpenId/: 获取用户openid云函数
+  - getUserLikeIdeaInfo/: 获取用户点赞信息云函数
+  - ideaEdit/: 编辑想法云函数
+  - ideaView/: 查看想法云函数
+  - likeIdea/: 点赞想法/取消点赞云函数
 
 - miniprogram/: 小程序源代码(前端)
 
@@ -18,6 +26,8 @@
       qqmapSdkKey: "your QQMapSDK develop key", // 详情请见下方微信小程序位置服务
     }
     ```
+
+  - class/: 静态类，用于各类数据的初始化/处理
 
   - components/: 组件目录
 
@@ -35,7 +45,7 @@
 
   - app.wxss: 全局页面/组件布局以及引用外部wxss
 
-  - sitemap.json:
+  - sitemap.json: 路由规则
 
 - 项目基于微信小程序云开发以及weui组件库，云开发负责实现请求以及关系型数据库，weui组件库负责实现外观美化
 
