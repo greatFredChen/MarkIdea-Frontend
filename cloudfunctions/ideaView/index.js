@@ -151,7 +151,7 @@ async function getIdeasInfo (ideaIdList) {
  *   type: String
  * }]
  * 数据库中的 items.src 可能是文本或者cloud file ID
- * 从此接口流出的数据其 items src 可能是文本或者 tempUrl，即将 cloudID 替换成了 url
+ * 从此接口流出的数据其 items src 可能是文本或者 cloudID
  */
 exports.main = async (event, context) => {
   try {
