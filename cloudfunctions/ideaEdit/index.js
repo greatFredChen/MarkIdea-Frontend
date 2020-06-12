@@ -20,8 +20,57 @@ cloud.init()
 
 const db = cloud.database()
 
+/**
+ * 从文件存储中删除用户移除或者替换的文件
+ * @param {Array} oldItems 旧的 items 列表
+ * @param {Array} newItems 新的 items 列表
+ */
+function removeDeletedFiles (oldItems, newItems) {
+  const MARKDOWN = 'MARKDOWN'
+  const CLOUD_PRE_FIX = 'cloud://'
+  const MAX_REMOVE_ITEMS = 50
+  // 预删除列表
+  const deletedCloudFileSet = new Set()
+  // 假设所有的文件都要删除
+  for (const oldItem of oldItems) {
+    if (oldItem.type !== MARKDOWN && oldItem.src !== undefined && oldItem.src.startsWith(CLOUD_PRE_FIX)) {
+      if (!deletedCloudFileSet.has(oldItem.src)) {
+        deletedCloudFileSet.add(oldItem.src)
+      }
+    }
+  }
+  console.log('旧文件列表: ', deletedCloudFileSet)
+  // 将仍然存在的文件从预删除列表移除
+  for (const newItem of newItems) {
+    if (newItem.type !== MARKDOWN && newItem.src !== undefined && newItem.src.startsWith(CLOUD_PRE_FIX)) {
+      if (deletedCloudFileSet.has(newItem.src)) { // 如果文件没有被删除，就把它从预删除文件列表删除
+        deletedCloudFileSet.delete(newItem.src)
+      }
+    }
+  }
+  // 预删除文件列表中剩下的都是新 items 中不需要的文件
+  // 批量删除
+  console.log('将要删除文件：', deletedCloudFileSet)
+  const deleteEpoch = [] // 批量删除列表
+  for (const item of deletedCloudFileSet) {
+    deleteEpoch.push(item)
+    if (deleteEpoch.length >= MAX_REMOVE_ITEMS) {
+      // 异步删除, 不需要用户等待
+      cloud.deleteFile({
+        fileList: Array.from(deleteEpoch)
+      }).then(res => console.log).catch(err => console.error)
+      deleteEpoch.length = 0
+    }
+  }
+  if (deleteEpoch.length > 0) {
+    cloud.deleteFile({
+      fileList: Array.from(deleteEpoch)
+    }).then(res => console.log).catch(err => console.error)
+  }
+}
+
 exports.main = async (event, context) => {
-  console.log('last 05280155')
+  console.log('last 06121812')
   console.log(event)
   const app = new TcbRouter({
     event
@@ -77,6 +126,11 @@ exports.main = async (event, context) => {
         throw new Error('Description is too long')
       }
 
+      // 移除用户删除的文件
+      // 文件删除有可能会失败，不需要用户等待
+      removeDeletedFiles(Array.from(idea.items || []),Array.from(event.items || []))
+
+      // 更新数据库
       await doc.update({
         data: {
           title: event.title,
