@@ -3,7 +3,6 @@
   "navigationBarBackgroundColor": "#ffffff",
   "usingComponents": {
     "mp-dialog": "../../weui-miniprogram/miniprogram_dist/dialog/dialog",
-    "auth-dialog": "../components/AuthorizeDialog/AuthorizeDialog",
     "markidea-map": "../components/MarkIdeaMap/MarkIdeaMap",
     "operation-panel": "../components/OperationPanel/OperationPanel",
     "connect-panel": "../components/ConnectPanel/ConnectPanel",

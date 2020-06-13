@@ -14,15 +14,23 @@
   opacity: 0.8;
   box-shadow: 0 0 10rpx 0rpx #000;
   transition: transform .4s;
+}
+
+.menu-a, .refresh {
   width: 80rpx !important;
   height: 80rpx !important;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  display: block;
+  padding: 0;
+  margin: 0;
   overflow: hidden;
   background: #0099FF;
   border-radius: 50%;
+}
+
+.refresh {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .menu-a:hover {
