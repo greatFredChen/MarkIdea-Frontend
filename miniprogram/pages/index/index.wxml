@@ -11,4 +11,3 @@
 <connect-dialog class="z-index__300"></connect-dialog>
 <filter-view class="z-index__300"></filter-view>
 <search-view class="z-index__300"></search-view>
-<auth-dialog authorizeHidden="{{authorizeHidden}}" class="z-index__400"></auth-dialog>

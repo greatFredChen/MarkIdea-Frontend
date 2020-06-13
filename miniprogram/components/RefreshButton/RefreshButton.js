@@ -63,6 +63,20 @@ Component({
         app.event.emit('setGraph', { ideas: [], relationships: [], clear: true })
       }
       wx.hideLoading()
+    },
+    // 获取用户授权
+    onGetUserInfo: function (e) {
+      if (e.detail.userInfo) {
+        app.globalData.logged = true
+        app.globalData.avatarUrl = e.detail.userInfo.avatarUrl
+        app.globalData.userInfo = e.detail.userInfo
+      } else {
+        wx.showToast({
+          title: 'Get userInfo failed!',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     }
   }
 })

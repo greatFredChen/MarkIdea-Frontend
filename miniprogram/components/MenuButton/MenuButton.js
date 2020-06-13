@@ -29,6 +29,20 @@ Component({
       } else {
         app.event.emit('menuConnectStatus', this.data.status)
       }
+    },
+    // 获取用户授权
+    onGetUserInfo: function (e) {
+      if (e.detail.userInfo) {
+        app.globalData.logged = true
+        app.globalData.avatarUrl = e.detail.userInfo.avatarUrl
+        app.globalData.userInfo = e.detail.userInfo
+      } else {
+        wx.showToast({
+          title: 'Get userInfo failed!',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     }
   },
   lifetimes: {

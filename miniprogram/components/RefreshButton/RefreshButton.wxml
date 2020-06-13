@@ -1,4 +1,5 @@
 <!--components/RefreshButton/RefreshButton.wxml-->
-<a class="menu-a z-index__200" bindtap="refreshMap">
-  <mp-icon type="field" icon="refresh" size="{{30}}" color="white"></mp-icon>
-</a>
+<button class="menu-a z-index__200" bindtap="refreshMap" open-type="getUserInfo"
+bindgetuserinfo="onGetUserInfo">
+  <mp-icon type="field" icon="refresh" size="{{30}}" color="white" class="refresh"></mp-icon>
+</button>
