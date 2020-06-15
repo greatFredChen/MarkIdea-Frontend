@@ -14,11 +14,11 @@
   opacity: 0.8;
   box-shadow: 0 0 10rpx 0rpx #000;
   transition: transform .4s;
+  width: 40px !important;
+  height: 40px !important;
 }
 
 .menu-a, .refresh {
-  width: 80rpx !important;
-  height: 80rpx !important;
   text-align: center;
   display: block;
   padding: 0;
@@ -29,8 +29,9 @@
 }
 
 .refresh {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  width: 30px !important;
+  height: 30px !important;
+  padding: 5px;
 }
 
 .menu-a:hover {
