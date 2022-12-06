@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "wx-server-sdk": "~2.0.3"
   }
 }
